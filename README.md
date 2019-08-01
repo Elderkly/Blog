@@ -104,8 +104,7 @@ obj.__proto__ === Object.prototype
 **所以得出结论，不是所有函数都是`new Function()`产生的**  
 有了`Function.prototype`后才有了`function Function(){}`，然后其他的构造函数都是`Function()`生成的。  
 由于其他构造函数都可以通过原型链找到`Function.prototype`，并且`function Function()`本质也是函数，为了不产生混乱就将`function Function()`的`__proto__`联系到`Function.prototype`上。  
-
-
+   
 每一个函数都有`prototype`属性，除了Function.prototype.bind()。该属性指向原型。  
 每一个对象都有`__proto__`属性，指向创建该对象的构造函数的原型。  
 `Function.prototype`和`Object.prototype`是两个特殊的对象，他们由引擎来创建。  

@@ -69,4 +69,38 @@ JSONP只限于get请求
 只需要给页面添加document.domain = 'qq.com'表示二级域名都相同就可以实现跨域。   
 * postMessage:常用于获取嵌入页面中的第三方页面数据，一个页面发送消息，另一个页面判断来源，并接收消息。   
 
+https://yuchengkai.cn/docs/frontend/browser.html#%E8%B7%A8%E5%9F%9F
+
+## 19.8.1
+### 原型链
+
+```javascript
+/* function(){} 为构造函数 */
+const fn = function() {}
+/*  prototype 指向原型（一个对象） */
+fn.prototype     // {constructor: ƒ}
+/*  constructor  指向原型的构造函数 */
+fn.prototype.constructor    //  ƒ () {}
+/* __proto__  指向创建该对象的构造函数的原型  即Function.prototype*/
+fn.__proto__    //  ƒ () { [native code] }
+/* 访问创建fn的构造函数 即Function(){} */
+fn.__proto__.constructor    //  ƒ Function() { [native code] }
+/* 创建一个对象 */
+const obj = {a:1}
+/*  */
+/* 对象由Object(){}创建 */
+obj.constructor     //  ƒ Object() { [native code] }
+/* __proto__ 指向创建该对象的构造函数的原型 即Object.prototype*/
+obj.__proto__ === Object.prototype
+/* Object由Function创建 */
+Object.constructor === Function
+```
+
+每一个函数都有prototype属性，除了Function.prototype.bind()，该属性指向原型。  
+每一个对象都有__proto__属性，指向创建该对象的构造函数的原型。  
+Function.prototype和Object.prototype是两个特殊的对象，他们由引擎来创建。  
+函数的prototype是一个对象，也就是原型。  
+对象的__proto__指向原型，__proto__将对象和原型连接起来组成了原型链。  
+
+https://github.com/KieSun/Dream/issues/2
 

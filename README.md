@@ -78,23 +78,24 @@ https://yuchengkai.cn/docs/frontend/browser.html#%E8%B7%A8%E5%9F%9F
 /* function(){} 为构造函数 */
 const fn = function() {}
 /*  prototype 指向原型（一个对象） */
-fn.prototype     // {constructor: ƒ}
+fn.prototype === {constructor: ƒ}
 /*  constructor  指向原型的构造函数 */
-fn.prototype.constructor    //  ƒ () {}
+fn.prototype.constructor === fn
 /* __proto__  指向创建该对象的构造函数的原型  即Function.prototype*/
-fn.__proto__    //  ƒ () { [native code] }
+fn.__proto__  === Function.prototype
 /* 访问创建fn的构造函数 即Function(){} */
-fn.__proto__.constructor    //  ƒ Function() { [native code] }
+fn.__proto__.constructor === Function
+
 /* 创建一个对象 */
 const obj = {a:1}
-/*  */
 /* 对象由Object(){}创建 */
-obj.constructor     //  ƒ Object() { [native code] }
+obj.constructor === Object
 /* __proto__ 指向创建该对象的构造函数的原型 即Object.prototype*/
 obj.__proto__ === Object.prototype
-/* Object由Function创建 */
-Object.constructor === Function
 ```
+
+
+
 
 每一个函数都有prototype属性，除了Function.prototype.bind()，该属性指向原型。  
 每一个对象都有__proto__属性，指向创建该对象的构造函数的原型。  

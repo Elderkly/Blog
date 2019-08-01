@@ -75,22 +75,22 @@ https://yuchengkai.cn/docs/frontend/browser.html#%E8%B7%A8%E5%9F%9F
 ### 原型链
 
 ```javascript
-/* function(){} 为构造函数 */
+// function(){} 为构造函数
 const fn = function() {}
-/*  prototype 指向原型（一个对象） */
+//  prototype 指向原型（一个对象） 
 fn.prototype === {constructor: ƒ}
-/*  constructor  指向原型的构造函数 */
+//  constructor  指向原型的构造函数 
 fn.prototype.constructor === fn
-/* __proto__  指向创建该对象的构造函数的原型  即Function.prototype*/
+// __proto__  指向创建该对象的构造函数的原型  即Function.prototype
 fn.__proto__  === Function.prototype
-/* 访问创建fn的构造函数 即Function(){} */
+// 访问创建fn的构造函数 即Function(){} 
 fn.__proto__.constructor === Function
 
-/* 创建一个对象 */
+// 创建一个对象 
 const obj = {a:1}
-/* 对象由Object(){}创建 */
+// 对象由Object(){}创建 
 obj.constructor === Object
-/* __proto__ 指向创建该对象的构造函数的原型 即Object.prototype*/
+// __proto__ 指向创建该对象的构造函数的原型 即Object.prototype
 obj.__proto__ === Object.prototype
 ```
 

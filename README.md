@@ -86,9 +86,9 @@ const fn = function() {}
 fn.prototype
 //  constructor  指向原型的构造函数 
 fn.prototype.constructor === fn
-// __proto__  指向创建该对象的构造函数的原型  即Function.prototype
+//  __proto__  指向创建该对象的构造函数的原型  即Function.prototype
 fn.__proto__  === Function.prototype
-// 访问创建fn的构造函数 即Function(){} 
+//  访问创建fn的构造函数 即Function(){} 
 fn.__proto__.constructor === Function
 
 // 创建一个对象 
@@ -100,7 +100,8 @@ obj.prototype === undefined
 // __proto__ 指向创建该对象的构造函数的原型 即Object.prototype
 obj.__proto__ === Object.prototype
 ```
-每一个函数都有`prototype`属性，该属性指向原型。除了Function.prototype.bind()，通过bind函数生成的函数没有`prototype`属性。    
+![原型链](https://camo.githubusercontent.com/8c32afe801835586c6ee59ef570fe2b322eadd6e/68747470733a2f2f79636b2d313235343236333432322e636f732e61702d7368616e676861692e6d7971636c6f75642e636f6d2f626c6f672f323031392d30362d30312d3033333932352e706e67)
+每一个函数都有`prototype`属性，该属性指向原型。除了Function.prototype.bind()，通过bind方法生成的函数没有`prototype`属性。    
 每一个对象都有`__proto__`属性，指向创建该对象的构造函数的原型。  
 `Function.prototype`和`Object.prototype`是两个特殊的对象，他们由引擎来创建。  
 函数的`prototype`是一个对象，也就是原型。  
@@ -111,7 +112,7 @@ obj.__proto__ === Object.prototype
 **所以可以这么说，所有实例都是对象，但是对象不一定都是实例。**  
 `Function.prototype`这个实例其实是个函数，这个函数也是引擎自己创建的。  
 首先引擎创建了`Object.prototype`，接着创建`Function.prototype`,并且用`__proto__`将两者连接起来。  
-**所以得出结论，不是所有函数都是`new Function()`产生的**  
+**所以得出结论，不是所有函数都是`new Function()`产生的。**    
 有了`Function.prototype`后才有了`function Function(){}`，然后其他的构造函数都是`Function()`生成的。  
 由于其他构造函数都可以通过原型链找到`Function.prototype`，并且`function Function()`本质也是函数，为了不产生混乱就将`function Function()`的`__proto__`联系到`Function.prototype`上。  
    

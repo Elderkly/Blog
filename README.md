@@ -77,8 +77,8 @@ https://yuchengkai.cn/docs/frontend/browser.html#%E8%B7%A8%E5%9F%9F
 ```javascript
 // function(){} 为构造函数
 const fn = function() {}
-//  prototype 指向原型（一个对象） 
-fn.prototype === {constructor: ƒ}
+//  prototype 指向原型（一个对象） {constructor: ƒ}
+fn.prototype
 //  constructor  指向原型的构造函数 
 fn.prototype.constructor === fn
 // __proto__  指向创建该对象的构造函数的原型  即Function.prototype

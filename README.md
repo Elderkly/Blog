@@ -95,8 +95,13 @@ obj.prototype === undefined
 // __proto__ 指向创建该对象的构造函数的原型 即Object.prototype
 obj.__proto__ === Object.prototype
 ```
-
+每一个函数都有`prototype`属性，除了Function.prototype.bind()。该属性指向原型。  
+每一个对象都有`__proto__`属性，指向创建该对象的构造函数的原型。  
+`Function.prototype`和`Object.prototype`是两个特殊的对象，他们由引擎来创建。  
+函数的`prototype`是一个对象，也就是原型。  
+对象的`__proto__`指向原型，`__proto__`将对象和原型连接起来组成了原型链。  
 #### Function.proto === Function.prototype
+
 所有对象都可以通过原型链最终找到`Object.prototype`，虽然`Object.prototype`也是一个对象，但是这个对象不是`Object`创建的，而是引擎自己创建的`Object.prototype`。  
 **所以可以这么说，所有实例都是对象，但是对象不一定都是实例。**  
 `Function.prototype`这个实例其实是个函数，这个函数也是引擎自己创建的。  
@@ -105,11 +110,5 @@ obj.__proto__ === Object.prototype
 有了`Function.prototype`后才有了`function Function(){}`，然后其他的构造函数都是`Function()`生成的。  
 由于其他构造函数都可以通过原型链找到`Function.prototype`，并且`function Function()`本质也是函数，为了不产生混乱就将`function Function()`的`__proto__`联系到`Function.prototype`上。  
    
-每一个函数都有`prototype`属性，除了Function.prototype.bind()。该属性指向原型。  
-每一个对象都有`__proto__`属性，指向创建该对象的构造函数的原型。  
-`Function.prototype`和`Object.prototype`是两个特殊的对象，他们由引擎来创建。  
-函数的`prototype`是一个对象，也就是原型。  
-对象的`__proto__`指向原型，`__proto__`将对象和原型连接起来组成了原型链。  
-
 https://github.com/KieSun/Dream/issues/2
 

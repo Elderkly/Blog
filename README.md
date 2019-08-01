@@ -73,7 +73,6 @@ https://yuchengkai.cn/docs/frontend/browser.html#%E8%B7%A8%E5%9F%9F
 
 ## 19.8.1
 ### 原型链
-
 ```javascript
 // function(){} 为构造函数
 const fn = function() {}
@@ -95,13 +94,19 @@ obj.prototype === undefined
 // __proto__ 指向创建该对象的构造函数的原型 即Object.prototype
 obj.__proto__ === Object.prototype
 ```
-每一个函数都有`prototype`属性，除了Function.prototype.bind()。该属性指向原型。  
+每一个函数都有`prototype`属性，该属性指向原型。除了Function.prototype.bind()，通过bind函数生成的函数没有`prototyoe`属性。    
 每一个对象都有`__proto__`属性，指向创建该对象的构造函数的原型。  
 `Function.prototype`和`Object.prototype`是两个特殊的对象，他们由引擎来创建。  
 函数的`prototype`是一个对象，也就是原型。  
 对象的`__proto__`指向原型，`__proto__`将对象和原型连接起来组成了原型链。  
-#### Function.proto === Function.prototype
 
+#### new 的过程
+1.新生成一个对象   
+2.链接到原型   
+3.绑定this   
+4.返回新对象   
+
+#### Function.proto === Function.prototype
 所有对象都可以通过原型链最终找到`Object.prototype`，虽然`Object.prototype`也是一个对象，但是这个对象不是`Object`创建的，而是引擎自己创建的`Object.prototype`。  
 **所以可以这么说，所有实例都是对象，但是对象不一定都是实例。**  
 `Function.prototype`这个实例其实是个函数，这个函数也是引擎自己创建的。  

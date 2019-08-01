@@ -79,7 +79,7 @@ https://yuchengkai.cn/docs/frontend/browser.html#%E8%B7%A8%E5%9F%9F
 4.返回新对象   
 
 ### 原型链
-![原型链](https://camo.githubusercontent.com/8c32afe801835586c6ee59ef570fe2b322eadd6e/68747470733a2f2f79636b2d313235343236333432322e636f732e61702d7368616e676861692e6d7971636c6f75642e636f6d2f626c6f672f323031392d30362d30312d3033333932352e706e67)
+![原型链](https://user-images.githubusercontent.com/15377484/48185513-25833c00-e370-11e8-9939-678da278704d.png)
 ```javascript
 // function(){} 为构造函数
 const fn = function() {}

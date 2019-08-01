@@ -72,13 +72,13 @@ JSONP只限于get请求
 https://yuchengkai.cn/docs/frontend/browser.html#%E8%B7%A8%E5%9F%9F
 
 ## 19.8.1
-### 原型链
-#### new 的过程
+### new 的过程
 1.新生成一个对象   
 2.链接到原型   
 3.绑定this   
 4.返回新对象   
 
+### 原型链
 ```javascript
 // function(){} 为构造函数
 const fn = function() {}

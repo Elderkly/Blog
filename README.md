@@ -79,6 +79,7 @@ https://yuchengkai.cn/docs/frontend/browser.html#%E8%B7%A8%E5%9F%9F
 4.返回新对象   
 
 ### 原型链
+![原型链](https://camo.githubusercontent.com/8c32afe801835586c6ee59ef570fe2b322eadd6e/68747470733a2f2f79636b2d313235343236333432322e636f732e61702d7368616e676861692e6d7971636c6f75642e636f6d2f626c6f672f323031392d30362d30312d3033333932352e706e67)
 ```javascript
 // function(){} 为构造函数
 const fn = function() {}
@@ -100,7 +101,6 @@ obj.prototype === undefined
 // __proto__ 指向创建该对象的构造函数的原型 即Object.prototype
 obj.__proto__ === Object.prototype
 ```
-![原型链](https://camo.githubusercontent.com/8c32afe801835586c6ee59ef570fe2b322eadd6e/68747470733a2f2f79636b2d313235343236333432322e636f732e61702d7368616e676861692e6d7971636c6f75642e636f6d2f626c6f672f323031392d30362d30312d3033333932352e706e67)
 每一个函数都有`prototype`属性，该属性指向原型。除了Function.prototype.bind()，通过bind方法生成的函数没有`prototype`属性。    
 每一个对象都有`__proto__`属性，指向创建该对象的构造函数的原型。  
 `Function.prototype`和`Object.prototype`是两个特殊的对象，他们由引擎来创建。  

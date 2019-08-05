@@ -126,9 +126,9 @@ XSS通过修改HTML节点或者执行JS代码来攻击网站。
 <div>{{name}}</div>
 ```
 #### CSRF
-CSRF就是利用用户的登录状态发起恶意请求。  
+CSRF就是利用用户的登录状态发起恶意****请求。  
 如果是Get请求则可以在img标签中设置图片地址为对应接口，如果是Post请求则需要用表单来提交接口。  
-**如何防御**
+**如何防御**   
 1.Get请求不对数据进行修改。   
 2.Cookie设置`SameSite`属性，使Cookie不随着跨域请求发送。  
 3.阻止第三方网站请求接口。  
@@ -138,3 +138,5 @@ CSRF就是利用用户的登录状态发起恶意请求。
 #### CSP
 CSP本质上是建立白名单，规定浏览器只能执行特定来源的代码。   
 通常可以在HTTP Header（请求头）或者HTML的meta标签中设置`Content-Security-Policy`（只允许加载本站资源/只加载HTTPS协议图片/允许加载任何来源框架）来开启CSP。   
+
+https://yuchengkai.cn/docs/frontend/safety.html#xss

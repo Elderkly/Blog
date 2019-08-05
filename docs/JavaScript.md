@@ -115,7 +115,8 @@ obj.__proto__ === Object.prototype
    
 https://github.com/KieSun/Dream/issues/2
 
-## 安全
+## 19.8.5
+### 安全
 #### XSS
 XSS通过修改HTML节点或者执行JS代码来攻击网站。   
 通常的防御手段是转义输入的内容，对引号、尖括号、斜杠进行转义。   

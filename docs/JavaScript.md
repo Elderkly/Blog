@@ -107,7 +107,7 @@ obj.__proto__ === Object.prototype
 #### Function.proto === Function.prototype
 所有对象都可以通过原型链最终找到`Object.prototype`，虽然`Object.prototype`也是一个对象，但是这个对象不是`Object`创建的，而是引擎自己创建的`Object.prototype`。  
 **所以可以这么说，所有实例都是对象，但是对象不一定都是实例。**  
-`Function.prototype`这个实例其实是个函数，这个函数也是引擎自己创建的。  
+`Function.prototype`这个对象其实是个函数，这个函数也是引擎自己创建的。  
 首先引擎创建了`Object.prototype`，接着创建`Function.prototype`,并且用`__proto__`将两者连接起来。  
 **所以得出结论，不是所有函数都是`new Function()`产生的。**    
 有了`Function.prototype`后才有了`function Function(){}`，然后其他的构造函数都是`Function()`生成的。  
@@ -126,13 +126,13 @@ XSS通过修改HTML节点或者执行JS代码来攻击网站。
 <div>{{name}}</div>
 ```
 #### CSRF
-CSRF就是利用用户的登录状态发起恶意****请求。  
+CSRF就是利用用户的登录状态发起恶意请求。  
 如果是Get请求则可以在img标签中设置图片地址为对应接口，如果是Post请求则需要用表单来提交接口。  
 **如何防御**   
 1.Get请求不对数据进行修改。   
 2.Cookie设置`SameSite`属性，使Cookie不随着跨域请求发送。  
 3.阻止第三方网站请求接口。  
-4.请求时附带验证信息，入token。  
+4.请求时附带验证信息，如token。  
 5.验证Referer。浏览器发送请求时会带上Referer，通过验证Referer判断请求是否是第三方网站发起的。  
 
 #### CSP

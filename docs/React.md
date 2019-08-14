@@ -11,4 +11,8 @@ state可能会异步更新，所以不要依赖他的值来更新下一个状态
 setState也可以接收一个函数，在这个函数可以拿到先前的状态，并通过这个函数的返回值得到下一个状态。   
 setState的异步可以通过Promise或者setTimeout来实现。   
 
+### redux的更新流程
+触发action后，将原先的store和action传给reducer，经过计算后返回新的store。   
+
+https://www.cnblogs.com/goodjobluo/p/9077010.html
 

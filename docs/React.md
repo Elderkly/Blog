@@ -15,8 +15,16 @@ state可能会异步更新，所以不要依赖他的值来更新下一个状态
 setState也可以接收一个函数，在这个函数可以拿到先前的状态，并通过这个函数的返回值得到下一个状态。   
 setState的异步可以通过Promise或者setTimeout来实现。   
 
+### redux
+store：是一个对象，它保存整个应用的state。可以通过`getState()`访问state，通过`dispatch(action)`改变state。   
+action:是一个对象，描述已发生事件的普通对象，它们必须有一个`type`属性表明正在执行的 action 的类型。    
+reducer:是一个纯函数，接收先前的state和action，并且返回新的state。       
+
 ### redux的更新流程
 触发action后，将原先的store和action传给reducer，经过计算后返回新的store。   
 
-https://www.cnblogs.com/goodjobluo/p/9077010.html
+https://www.cnblogs.com/goodjobluo/p/9077010.html    
+
+### redux thunk
+
 

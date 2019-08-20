@@ -15,6 +15,10 @@ state可能会异步更新，所以不要依赖他的值来更新下一个状态
 setState也可以接收一个函数，在这个函数可以拿到先前的状态，并通过这个函数的返回值得到下一个状态。   
 setState的异步可以通过Promise或者setTimeout来实现。   
 
+### react生命周期
+shouldComponentUpdate:当props和state发生变化时，`shouldComponentUpdate`会在渲染前被调用，默认返回true，如果返回false则会拦截更新。   
+componentWillReceiveProps:父组件重新传递props时就会调用这个函数。   
+
 ### redux
 store：是一个对象，它保存整个应用的state。可以通过`getState()`访问state，通过`dispatch(action)`改变state。   
 action:是一个对象，描述已发生事件的普通对象，它们必须有一个`type`属性表明正在执行的 action 的类型。    

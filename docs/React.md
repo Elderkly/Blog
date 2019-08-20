@@ -23,7 +23,8 @@ reducer:是一个纯函数，接收先前的state和action，并且返回新的s
 ### redux的更新流程
 触发action后，将原先的store和action传给reducer，经过计算后返回新的store。   
 通过`store.dispatch(action)`触发action后，store会自动调用reducer，并且传入当前state和action，reducer会返回新的state。state一旦有变化，就会调用监听函数`store.subscribe(function)`。如果是react，这个时候就会触发重新渲染View。   
-https://www.cnblogs.com/goodjobluo/p/9077010.html    
+https://www.cnblogs.com/goodjobluo/p/9077010.html      
+http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_one_basic_usages.html
 
 ### redux thunk
 

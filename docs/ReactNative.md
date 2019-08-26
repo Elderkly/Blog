@@ -4,12 +4,12 @@
 
 ## 接入原生组件
 ### 安卓
-UI组件：通过`requireNativeComponent`API引入组件。 
+UI组件：通过`requireNativeComponent`API引入组件。    
 原生模块：使用`NativeModules.ModelName`来访问原生组件。    
 事件监听：使用`DeviceEventEmitter`监听。   
 
 ### IOS
-UI组件：与安卓相同使用`requireNativeComponent`引入组件。 
+UI组件：与安卓相同使用`requireNativeComponent`引入组件。    
 原生模块：与安卓一样使用`NativeModules.ModelName`来访问原生组件。    
 事件监听：与安卓不同，这里使用`NativeEventEmitter`来监听事件，实例化`NativeEventEmitter`模块，并且将原生模块名传入，最后通过实例化后的`addListener`方法传入需要监听的事件名称和回调函数即可监听事件。   
 

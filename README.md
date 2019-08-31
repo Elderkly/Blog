@@ -3,7 +3,8 @@
 
 [[JS笔记]](./docs/JavaScript.md)    
 [[React]](./docs/React.md)   
-[[React-Native]](./docs/ReactNative.md)
+[[React-Native]](./docs/ReactNative.md)  
+[[C]](./docs/C.md)
 
 
 

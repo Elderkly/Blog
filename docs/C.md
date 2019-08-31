@@ -5,3 +5,5 @@
 循环：父循环一次，子循环需要全部执行完，直到跳出循环。   
 break语句与continue语句的区别是：break是跳出当前整个循环，continue结束本次循环开始下一次循环。   
 goto语句:使用`LOOP:`指定锚点位置后执行`goto LOOP;`即可跳转到锚点位置执行。   
+递归函数：先向下执行函数，等到满足结束条件时，再一级一级向上计算结果。   
+<image src="http://img.mukewang.com/5577e0390001d23705970304.jpg"></image>

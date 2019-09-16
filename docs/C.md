@@ -24,5 +24,7 @@ struct {
     float score;  //成绩
 } stu1, stu2;
 ````
+**malloc(sizeof(Node))**:sizeof获取字节大小，malloc根据传入的大小分配内存空间，成功则返回指向该内存的地址，失败返回NULL。   
+**free(Node)**: 释放之前调用`calloc`、`malloc` 或 `realloc` 所分配的内存空间。    
 
 

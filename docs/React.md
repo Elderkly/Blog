@@ -31,5 +31,34 @@ https://www.cnblogs.com/goodjobluo/p/9077010.html
 http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_one_basic_usages.html
 
 ### redux thunk
+常规`action`只会返回一个对象，里面包含type值以及要修改的参数。    
+在`redux`的`createStore`中使用`applyMiddleware`引入`redux-thunk`中间件后，    
+允许`action`返回一个函数，这个函数接受两个参数`dispatch`和`getState`。   
+```javascript
+//  常规action 请求开始
+function AjaxStart() {
+    return {
+        type: AJAX_START
+    }
+}
+//  请求成功
+function AjaxSuccess(data){}
+//  请求失败
+function AjaxError(message) {}
+
+//  异步action
+function GetData(){
+    return dispath => {
+        //  请求开始前触发action修改state为请求中
+        dispath(AjaxStart())
+        //  发起请求
+        fetch('https://www.baidu.com')
+        //  请求成功 修改state为请求完成 将数据存入state
+            .then( res => dispath(AjaxSuccess(res)))
+        //  请求失败 修改对应state
+            .catch( error => dispath(AjaxError(error)))
+    }
+}
+```
 
 

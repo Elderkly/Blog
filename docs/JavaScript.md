@@ -140,3 +140,38 @@ CSP本质上是建立白名单，规定浏览器只能执行特定来源的代�
 通常可以在HTTP Header（请求头）或者HTML的meta标签中设置`Content-Security-Policy`（只允许加载本站资源/只加载HTTPS协议图片/允许加载任何来源框架）来开启CSP。   
 
 https://yuchengkai.cn/docs/frontend/safety.html#xss
+
+### H5新特性
+1.video/radio   
+2.canvas   
+3.webSocket   
+4.webWorker js多线程   
+5.语义化标签如header、footer、nav等   
+6.新增了很多表单属性如min和max、autofocus、placehoder等   
+7.sessionStorage 短期存储浏览器关闭就删除;localStorage 长期数据存储，与cookie相比cookie大小只有4kb左右，而localStorage有5Mb。
+
+### 继承
+使用call或apply借用其他构造函数的成员。
+```javascript
+//  父类
+function Person(name) {
+    this.name = name
+    this.attr = ['小黄','小白']
+    this.print = () => {
+        console.log(this.name)
+    }
+}
+//  子类
+function Student(name) {
+    Person.call(this,name)
+}
+
+const a = new Person('A')
+a.print()            // A
+const b = new Student('B')
+b.print()            // B
+b.attr.push('小黑');
+console.log(b.attr)  // ["小黄", "小白", "小黑"]
+console.log(a.attr)  // ["小黄", "小白"]
+```
+https://www.jianshu.com/p/b76ddb68df0e  

@@ -5,6 +5,7 @@
 [[React]](./docs/React.md)   
 [[React-Native]](./docs/ReactNative.md)  
 [[C]](./docs/C.md)
+[[TypeScript]](./docs/TypeScript.md)
 
 
 

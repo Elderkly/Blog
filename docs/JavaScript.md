@@ -175,3 +175,5 @@ console.log(b.attr)  // ["小黄", "小白", "小黑"]
 console.log(a.attr)  // ["小黄", "小白"]
 ```
 https://www.jianshu.com/p/b76ddb68df0e  
+
+### 深拷贝浅拷贝

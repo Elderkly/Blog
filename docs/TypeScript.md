@@ -108,4 +108,54 @@ class Animal2 {
         this.age = thisAge
     }
 }
+
+//  存取器
+const passcode = '1234'
+class Employee {
+    private _fullName: string
+    get fullName(): string {
+        return this._fullName
+    }
+    set fullName(newName: string) {
+        if (passcode === '123456') {
+            this._fullName = newName
+        } else {
+            console.log("密码有误")
+        }   
+    }   
+}
+
+const employee = new Employee()
+employee.fullName = "ABCD"
+
+//  静态属性
+class Grid {
+    static name: string = 'tom'
+    print() {
+        console.log(this.name)
+    }
+    static _print() {
+        console.log(this.name)
+    }
+}
+
+Grid._print()   //  tom
+const a = new Grid()
+a.print()       //  undefined
+
+//  抽象类
+/**
+    抽象类只能被继承不能被实例化
+    抽象类中的抽象方法必须在派生类中实现
+*/
+abstract class ABS {
+    constructor(public name: string) {}
+    abstract move(num: number): void
+}
+
+class ABS2 extends ABS {
+    move(num:number) {
+        console.log("MOVE")
+    }
+}
 ```

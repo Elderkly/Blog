@@ -58,3 +58,54 @@ interface Point3 extends Point1,Point2{
 */
 ```
 ####   当接口继承了一个类类型时，它会继承类的成员但不包括其实现。 就好像接口声明了所有类中存在的成员，但并没有提供具体实现一样。 接口同样会继承到类的private和protected成员。 这意味着当你创建了一个接口继承了一个拥有私有或受保护的成员的类时，这个接口类型只能被这个类或其子类所实现（implement）。
+
+## class类
+```typescript
+//  继承
+class Animal {
+    name: string
+    constructor(thisName: string) {
+        this.name = thisName 
+    }
+    move(num: number = 0) {
+        console.log(`${this.name}移动了${num}米`)
+    }
+}
+
+class Dog extends Animal{
+    constructor(name: string) {
+        super(name)
+    }
+    move(num: number) {
+        console.log("重写move方法后调用父类move方法")
+        super.move(num)
+    }
+}
+
+const dog: Animal = new Dog("tim")
+dog.move(8)
+
+//  权限
+class Animal2 {
+    //  公用
+    public name: string
+    //  私有
+    private move(name: string) {}
+    /**
+        与private类似 外部不能访问 子类可以访问
+        可以将构造函数指定为protected
+        这样类将不能被实例化但能被继承
+    */  
+    protected jump(num: number) {}
+    /**
+        readonly 只读属性
+        只读属性必须在声明时或构造函数里被初始化
+    */
+    readonly age: number
+    readonly six: number = 0
+    //  在构造函数中创建并赋值私有成员
+    constructor(private thisAge: number) {
+        this.age = thisAge
+    }
+}
+```

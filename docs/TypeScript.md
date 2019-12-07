@@ -1,4 +1,4 @@
-## interface接口
+# interface接口
 ```typescript
 //  可选属性
 interface Point {
@@ -62,7 +62,7 @@ interface Point3 extends Point1,Point2{
 接口同样会继承到类的private和protected成员。       
 这意味着当你创建了一个接口继承了一个拥有私有或受保护的成员的类时，这个接口类型只能被这个类或其子类所实现（implement）。**    
 
-## class类
+# class类
 ```typescript
 //  继承
 class Animal {
@@ -162,3 +162,11 @@ class ABS2 extends ABS {
     }
 }
 ```
+
+# 函数
+```typescript
+//  定义函数类型
+const myFn: (x: number, y: number) => number = 
+    function(x: number, y: number): number { return x + y }
+```
+

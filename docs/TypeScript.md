@@ -170,3 +170,26 @@ const myFn: (x: number, y: number) => number =
     function(x: number, y: number): number { return x + y }
 ```
 
+# 泛型
+```typescript
+function logging<T>(arg: T[]): T[] {
+    return arg
+}
+logging<number>([1,2,3])
+
+//  泛型接口
+interface IdentityFn {
+  <T>(arg: T): T;
+}
+let myFn: IdentityFn = logging
+
+//  泛型类
+class GenericNumber<T> {
+    zeroValue: T
+    add: (x: T, y: T) => T
+}
+
+const class1 = new GenericNumber<number>()
+class1.zeroValue = 0
+class1.add(9,1)
+```

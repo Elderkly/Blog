@@ -203,7 +203,7 @@ function fn2<T extends ILengthwise>(arg: T): T{
 }
 fn2({length:2,value:[1,2]})
 ```
-针对react中的 class A extents React.Component<Props,State>      
+针对react中的 `class A extents React.Component<Props,State>`       
 这里泛型内的约束顺序是由父类Component规定的    
 ```typescript
 class Component<P, S> {

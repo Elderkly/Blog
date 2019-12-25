@@ -192,4 +192,31 @@ class GenericNumber<T> {
 const class1 = new GenericNumber<number>()
 class1.zeroValue = 0
 class1.add(9,1)
+
+//  泛型约束
+interface ILengthwise {
+  length: number
+}
+function fn2<T extends ILengthwise>(arg: T): T{
+    console.log(arg.length)
+    return T
+}
+fn2({length:2,value:[1,2]})
+```
+针对react中的 class A extents React.Component<Props,State>      
+这里泛型内的约束顺序是由父类Component规定的    
+```typescript
+class Component<P, S> {
+    constructor(props?: P, context?: any);
+    setState<K extends keyof S>(f: (prevState: S, props: P) => Pick<S, K>, callback?: () => any): void;
+    setState<K extends keyof S>(state: Pick<S, K>, callback?: () => any): void;
+    forceUpdate(callBack?: () => any): void;
+    render(): JSX.Element | null | false;
+    props: Readonly<{ children?: ReactNode }> & Readonly<P>;
+    state: Readonly<S>;
+    context: any;
+    refs: {
+        [key: string]: ReactInstance
+    };
+}
 ```

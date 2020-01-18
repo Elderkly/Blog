@@ -220,3 +220,14 @@ class Component<P, S> {
     };
 }
 ```
+
+# Pick/Omit
+```typescript
+interface _Props {
+  index: number,
+  name: string
+}
+
+type string = Pick<_Props,'name'>       //  {name: string}
+type number = Omit<_Props, 'name'>      //  {index: number}
+```

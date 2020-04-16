@@ -61,7 +61,7 @@ UI组件：与安卓相同使用`requireNativeComponent`引入组件。
     //  禁用左右方向  向下聚焦到Dom2
     Dom.setNativeProps(
         {
-            nextFocusLeft: ID,          //  将ID指定为自身 即禁用该方向          
+            nextFocusLeft: ID,                 
             nextFocusRight: ID, 
             nextFocusDown: ID2,
         },
@@ -69,7 +69,7 @@ UI组件：与安卓相同使用`requireNativeComponent`引入组件。
     //  恢复左右方向聚焦
     Dom.setNativeProps(
         {
-            nextFocusLeft: -1,          //  将ID指定为自身 即禁用该方向          
+            nextFocusLeft: -1,                
             nextFocusRight: -1, 
             nextFocusDown: ID2,
         },

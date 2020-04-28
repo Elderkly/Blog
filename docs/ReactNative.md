@@ -86,5 +86,35 @@ UI组件：与安卓相同使用`requireNativeComponent`引入组件。
 ## `TouchableOpacity`组件的自动聚焦属性`hasTVPreferredFocus`可能会带来严重的性能问题
 在需要频繁地通过`hasTVPreferredFocus`设置聚焦元素的场景中，如果频繁修改该属性会出现焦点在元素间自动鬼畜切换的BUG，解决这个问题的思路就是在父组件聚焦时，将其中的一个子组件的`hasTVPreferredFocus`设置为`true`,之后就不再调整这个属性了,等到下一次父组件聚焦再设置一个子组件自动聚焦，以此为周期。
 
+##  在部分模拟器上不触发`onFocus`和`onBlie`事件
+**巨坑!!!!!!!!!**
+`TouchableOpacity`源码
+```javascript
+//  位置：node_modules/react-native/Libraries/Components/Touchable/Touchable.js:373
+  componentDidMount: function() {
+    if (!Platform.isTV) {
+      return;
+    }
+    this._tvEventHandler = new TVEventHandler();
+    this._tvEventHandler.enable(this, function(cmp, evt) {
+      const myTag = ReactNative.findNodeHandle(cmp);
+      evt.dispatchConfig = {};
+      if (myTag === evt.tag) {
+        if (evt.eventType === 'focus') {
+          cmp.touchableHandleFocus(evt);
+        } else if (evt.eventType === 'blur') {
+          cmp.touchableHandleBlur(evt);
+        } else if (evt.eventType === 'select') {
+          cmp.touchableHandlePress &&
+            !cmp.props.disabled &&
+            cmp.touchableHandlePress(evt);
+        }
+      }
+    });
+  }
+```
+RN根据`TVEventHandler`的回调判断元素是聚焦还是失焦，而RN为了区分手机版跟TV版，只有`Platform.isTV`为`true`才会创建监听，但是部分机顶盒例如天猫魔盒对`isTV`的判断会出现为`false`的情况，导致了在TV端上无法实现聚焦和失焦的监听。     
+要想解决这个问题，只需要进入`node_modules/react-native/Libraries/Utilities/Platform.android.js`将`isTV`方法的返回值改为`true`即可。
+
  
 

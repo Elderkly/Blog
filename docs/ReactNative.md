@@ -86,8 +86,8 @@ UI组件：与安卓相同使用`requireNativeComponent`引入组件。
 ## `TouchableOpacity`组件的自动聚焦属性`hasTVPreferredFocus`可能会带来严重的性能问题
 在需要频繁地通过`hasTVPreferredFocus`设置聚焦元素的场景中，如果频繁修改该属性会出现焦点在元素间自动鬼畜切换的BUG，解决这个问题的思路就是在父组件聚焦时，将其中的一个子组件的`hasTVPreferredFocus`设置为`true`,之后就不再调整这个属性了,等到下一次父组件聚焦再设置一个子组件自动聚焦，以此为周期。
 
-##  在部分模拟器上不触发`onFocus`和`onBlie`事件
-**巨坑!!!!!!!!!**
+##  在部分模拟器上不触发`onFocus`和`onBlur`事件
+**巨坑!!!!!!!!!**    
 `TouchableOpacity`源码
 ```javascript
 //  位置：node_modules/react-native/Libraries/Components/Touchable/Touchable.js:373

@@ -116,5 +116,48 @@ UI组件：与安卓相同使用`requireNativeComponent`引入组件。
 RN根据`TVEventHandler`的回调判断元素是聚焦还是失焦，而RN为了区分手机版跟TV版，只有`Platform.isTV`为`true`才会创建监听，但是部分机顶盒例如天猫魔盒对`isTV`的判断会出现为`false`的情况，导致了在TV端上无法实现聚焦和失焦的监听。     
 要想解决这个问题，只需要进入`node_modules/react-native/Libraries/Utilities/Platform.android.js`将`isTV`方法的返回值改为`true`即可。
 
- 
+
+#  `react-native-image-picker`组件的相关问题
+版本:    
+`"react-native": "0.61.1",`      
+`"react-native-image-picker": "1.1.0",`     
+
+#### 针对ios选择icloud图片无法引起崩溃的问题:
+```
+    //  node_modules/react-native-image-picker/ios/ImagePickerManager.m:380
+             [data writeToFile:path atomically:YES];
+
+             if (![[self.options objectForKey:@"noData"] boolValue]) {
+-                NSString *dataString = [data base64EncodedStringWithOptions:0]; // base64 encoded image string
+-                [self.response setObject:dataString forKey:@"data"];
++                NSString *dataString = [data base64EncodedStringWithOptions:0];
++                NSLog(@"ERROR IMG");
++                [self.response setObject:@"" forKey:@"uri"];
+             }
+
+             BOOL vertical = (editedImage.size.width < editedImage.size.height) ? YES : NO;
+```
+
+#### 针对华为机型设置`mediaType:'photo'`后还能选择视频的问题
+```
+    //  node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/ImagePickerModule.java:475
+     else
+     {
+       imageConfig = getResizedImage(reactContext, this.options, imageConfig, initialWidth, initialHeight, requestCode);
+-      if (imageConfig.resized == null)
++      if (imageConfig == null) {
++        imageConfig = new ImageConfig(null, null, 0, 0, 100, 0, false);
++        responseHelper.putString("error", "illegal file format");
++        responseHelper.invokeResponse(callback);
++        callback = null;
++        this.options = null;
++        return;
++      }
++      else if (imageConfig.resized == null)
+       {
+         removeUselessFiles(requestCode, imageConfig);
+         responseHelper.putString("error", "Can't resize the image");
+```
+
+
 

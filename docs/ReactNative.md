@@ -122,7 +122,7 @@ RN根据`TVEventHandler`的回调判断元素是聚焦还是失焦，而RN为了
 `"react-native": "0.61.1",`      
 `"react-native-image-picker": "1.1.0",`     
 
-#### 针对ios选择icloud图片无法引起崩溃的问题:
+#### 针对ios选择iCloud图片引起崩溃的问题:
 ```
     //  node_modules/react-native-image-picker/ios/ImagePickerManager.m:380
              [data writeToFile:path atomically:YES];
@@ -138,7 +138,7 @@ RN根据`TVEventHandler`的回调判断元素是聚焦还是失焦，而RN为了
              BOOL vertical = (editedImage.size.width < editedImage.size.height) ? YES : NO;
 ```
 
-#### 针对华为机型设置`mediaType:'photo'`后还能选择视频的问题
+#### 针对华为机型设置`mediaType:'photo'`后还能选择视频的问题 选择视频后引起崩溃的问题：
 ```
     //  node_modules/react-native-image-picker/android/src/main/java/com/imagepicker/ImagePickerModule.java:475
      else

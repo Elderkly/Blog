@@ -1,3 +1,4 @@
+# Raect
 ### 说说react的虚拟dom
 通过babel将JSX编译成`React.createElement`的形式，通过这个方法返回的对象记录了这个DOM节点的所有信息，这个记录信息的对象我们称之为**虚拟DOM**。
 
@@ -15,11 +16,57 @@ state可能会异步更新，所以不要依赖他的值来更新下一个状态
 setState也可以接收一个函数，在这个函数可以拿到先前的状态，并通过这个函数的返回值得到下一个状态。   
 setState的异步可以通过Promise或者setTimeout来实现。   
 
+### setState什么时候是同步的什么时候是异步的
+异步：由React控制或封装的函数例如onChange、onClick、onTouchMove等，以及React的生命周期内setState也是异步的。   
+```javascript
+constructor() {
+  this.state = {
+    count: 10
+  }
+
+  this.handleClickOne = this.handleClickOne.bind(this)
+  this.handleClickTwo = this.handleClickTwo.bind(this)
+}
+
+handleClickOne() {
+  this.setState({ count: this.state.count + 1})
+  console.log(this.state.count)     //  10
+}
+
+render() {
+  return (
+    <button onClick={this.hanldeClickOne}>clickOne</button>
+    <button onClick={this.hanldeClickTwo}>clickTwo</button>
+    <button id="btn">clickTwo</button>
+  )
+}
+```
+同步：React控制之外的事件中调用setState是同步更新的。比如通过addEventListener绑定的事件，setTimeout/setInterval等。
+```javascript
+componentDidMount() {
+  document.getElementById('btn').addEventListener('clcik', () => {
+    this.setState({ count: this.state.count + 1})
+    console.log(this.state.count)       //  11
+  })
+}
+
+handleClickTwo() {
+  setTimeout(() => {
+    this.setState({ count: this.state.count + 1})
+    console.log(this.state.count)       //  11
+  }, 10)  
+}
+```
+
+### React是怎样控制异步和同步的呢？
+在 React 的 setState 函数实现中，会根据一个变量 isBatchingUpdates 判断是直接更新 this.state 还是放到队列中延时更新，而 isBatchingUpdates 默认是 false，表示 setState 会同步更新 this.state；但是，有一个函数 batchedUpdates，该函数会把 isBatchingUpdates 修改为 true，而当 React 在调用事件处理函数之前就会先调用这个 batchedUpdates将isBatchingUpdates修改为true，这样由 React 控制的事件处理过程 setState 不会同步更新 this.state。   
+https://www.jianshu.com/p/799b8a14ef96   
+
 ### react生命周期
 shouldComponentUpdate:当props和state发生变化时，`shouldComponentUpdate`会在渲染前被调用，默认返回true，如果返回false则会拦截更新。   
 componentWillReceiveProps:父组件重新传递props时就会调用这个函数。   
 
-### redux
+# Redux
 store：是一个对象，它保存整个应用的state。可以通过`getState()`访问state，通过`dispatch(action)`改变state。   
 action:是一个对象，描述已发生事件的普通对象，它们必须有一个`type`属性表明正在执行的 action 的类型。    
 reducer:是一个纯函数，接收先前的state和action，并且返回新的state。       

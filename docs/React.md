@@ -72,6 +72,7 @@ store：是一个对象，它保存整个应用的state。可以通过`getState(
 action:是一个对象，描述已发生事件的普通对象，它们必须有一个`type`属性表明正在执行的 action 的类型。    
 reducer:是一个纯函数，接收先前的state和action，并且返回新的state。       
 
+### 为什么要用redux
 ### redux的更新流程
 触发action后，将原先的store和action传给reducer，经过计算后返回新的store。   
 通过`store.dispatch(action)`触发action后，store会自动调用reducer，并且传入当前state和action，reducer会返回新的state。state一旦有变化，就会调用监听函数`store.subscribe(function)`。如果是react，这个时候就会触发重新渲染View。   

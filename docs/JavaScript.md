@@ -177,3 +177,10 @@ console.log(a.attr)  // ["小黄", "小白"]
 https://www.jianshu.com/p/b76ddb68df0e  
 
 ### 深拷贝浅拷贝
+
+### super()
+
+### 正则
+正则截取`id`后的内容
+
+### 图片懒加载实现原理

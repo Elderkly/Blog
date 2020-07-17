@@ -182,6 +182,7 @@ https://www.jianshu.com/p/b76ddb68df0e
 const a = {a:1,b:2,c:3}
 const b = a
 b.d = 4
+console.log(b)      //  {a: 1, b: 2, c: 3, d: 4}
 console.log(a)      //  {a: 1, b: 2, c: 3, d: 4}
 
 //  深拷贝
@@ -207,7 +208,7 @@ console.log(c)      //  {a: 1, b: 2, c: 3, d: 4, e: 5}
 console.log(a)      //  {a: 1, b: 2, c: 3, d: 4}
 ```
 ### super()
-
+https://es6.ruanyifeng.com/#docs/class-extends    
 ### 正则
 正则截取`id`后的内容
 

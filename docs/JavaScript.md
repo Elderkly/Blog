@@ -177,7 +177,35 @@ console.log(a.attr)  // ["小黄", "小白"]
 https://www.jianshu.com/p/b76ddb68df0e  
 
 ### 深拷贝浅拷贝
+```javascript
+//  浅拷贝
+const a = {a:1,b:2,c:3}
+const b = a
+b.d = 4
+console.log(a)      //  {a: 1, b: 2, c: 3, d: 4}
 
+//  深拷贝
+function clone(num) {
+    let newNum
+    if (num instanceof Array) {
+        newNum = []
+        num.map((e,index) => newNum[index] = clone(num[index]))
+        return newNum
+    } else if (num instanceof Object) {
+        newNum = {}
+        for (let i in num) {
+            newNum[i] = clone(num[i])
+        }
+        return newNum
+    } else {
+        return num
+    }
+}
+const c = clone(a)
+c.e = 5
+console.log(c)      //  {a: 1, b: 2, c: 3, d: 4, e: 5}
+console.log(a)      //  {a: 1, b: 2, c: 3, d: 4}
+```
 ### super()
 
 ### 正则

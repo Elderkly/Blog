@@ -209,7 +209,7 @@ console.log(a)      //  {a: 1, b: 2, c: 3, d: 4}
 ```
 ### super()
 说明：`super`是es6新增的语法糖 用于访问父类     
-功能：在构造函数中调用`super`相当于把父类的`construcrtor`给执行了 并且将`this`指向指定为子类 `super`中传递的参数相当于给父类的`constructor`传递参数       
+功能：在构造函数中调用`super`相当于把父类的`construcrtor`给执行了 并且将`this`指向指定为子类  `super`中传递的参数相当于给父类的`constructor`传递参数       
 注意事项：如果定义了`class`但是没有写`construcrtor`方法 那么编译器会自动加入`construcrtor` 并且在其中调用`super`方法 如果使用`extends`继承父类后写了`construcrtor`方法但是没有调用`super` 则子类拿不到`this`对象 并且会抛出异常     
 https://es6.ruanyifeng.com/#docs/class-extends    
 https://www.jianshu.com/p/2a5a7352f4e5   

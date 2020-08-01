@@ -219,8 +219,8 @@ https://www.jianshu.com/p/2a5a7352f4e5
 滚动距离：`document.documentElement.scrollTop`   
 元素距离页面顶部的距离：`e.offsetTop`   
 判断元素加载条件：**可视区域 + 滚动距离 > 元素距离页面顶部距离**    
-[[具体实现](https://github.com/Elderkly/Lazyload)]   
-![LazyLoad](https://picb.zhimg.com/80/v2-af1ab0c5f34e468e8647135c1f9f51e4_720w.jpg)   
+[[具体实现](https://github.com/Elderkly/Lazyload/blob/master/index.html)]   
+![Lazyload](https://picb.zhimg.com/80/v2-af1ab0c5f34e468e8647135c1f9f51e4_720w.jpg)   
 https://zhuanlan.zhihu.com/p/55311726
 
 ### 正则

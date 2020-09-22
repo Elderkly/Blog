@@ -224,4 +224,26 @@ https://www.jianshu.com/p/2a5a7352f4e5
 https://zhuanlan.zhihu.com/p/55311726
 
 ### 正则
-正则截取`id`后的内容
+```javascript
+/**
+    pattern：正则表达式
+    flags:标识(修饰符)
+        标识主要包括：
+        1. i 忽略大小写匹配
+        2. m 多行匹配，即在到达一行文本末尾时还会继续寻常下一行中是否与正则匹配的项
+        3. g 全局匹配 模式应用于所有字符串，而非在找到第一个匹配项时停止
+*/
+const reg = /pattern/flags                  //  字面量创建
+const reg2 = new RegExp(pattren, flags)     //  实例创建 可进行字符串拼接
+```
+正则截取`id`后的内容   
+
+
+### 浏览器缓存原理
+
+
+### 实现毛玻璃效果
+```css
+background: rgba(255,255,255,.2);
+backdrop-filter: saturate(180%) blur(20px);
+```

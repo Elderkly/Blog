@@ -1,10 +1,16 @@
-#### 输出
-`cout<<x<<endl;`   
-`cout<<"x+y="<<x+y<<endl;`
-#### 输入
-`cin>>a;`   
-`cin>>a>>b`  
-#### using namespace
+### 输入输出
+```c++
+#include <iostream>
+using namespace std;
+int main(int argc, const char * argv[]) {
+    int a;
+    cout<<"请输入一个数字，按回车结束"<<endl;
+    cin>>a;
+    cout<<a<<endl;
+    return 0;
+}
+```
+### using namespace
 `定义`:namespace是指标识符的各种可见范围。命名空间用关键字namespace 来定义。命名空间是C++的一种机制，用来把单个标识符下的大量有逻辑联系的程序实体组合到一起。此标识符作为此组群的名字。   
 不使用using namespace
 ```c++

@@ -7,6 +7,9 @@ int main(int argc, const char * argv[]) {
     cout<<"请输入一个数字，按回车结束"<<endl;
     cin>>a;
     cout<<a<<endl;
+    cout<<"8进制"<<oct<<a<<endl;     //  8进制
+    cout<<"10进制"<<dec<<a<<endl;     //  10进制
+    cout<<"16进制"<<hex<<a<<endl;     //  16进制
     return 0;
 }
 ```

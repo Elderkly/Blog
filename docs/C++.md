@@ -12,7 +12,7 @@ int main(int argc, const char * argv[]) {
 ```
 ### using namespace
 `定义`:namespace是指标识符的各种可见范围。命名空间用关键字namespace 来定义。命名空间是C++的一种机制，用来把单个标识符下的大量有逻辑联系的程序实体组合到一起。此标识符作为此组群的名字。   
-不使用using namespace
+**不使用using namespace**
 ```c++
 int main()
 {
@@ -20,7 +20,7 @@ int main()
     return 0;
 }
 ```
-使用using namespace
+**使用using namespace**
 ```c++
 using namespace std;//使用标准命名空间
 int main()

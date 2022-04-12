@@ -2,6 +2,7 @@
 做笔记和写总结的地方   
 
 [[C]](./docs/C.md)   
+[[C++]](./docs/C++.md)   
 [[JS笔记]](./docs/JavaScript.md)    
 [[React]](./docs/React.md)   
 [[React-Native]](./docs/ReactNative.md)  

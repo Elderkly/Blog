@@ -33,3 +33,8 @@
 * Map 里你可以拥有随意个 null 值但最多只能有一个 null 键。
 
 https://juejin.cn/post/6924472756046135304
+
+## SSM（Spring+Spring MVC+MyBatis）
+* Spring：Spring Framework是一个开源的Java／Java EE全功能栈的应用程序框架。
+* SpringMVC：Spring MVC属于Spring FrameWork的后续产品，已经融合在Spring Web Flow里面。SpringMVC把传统的模型层被拆分为了业务层(Service)和数据访问层（DAO,Data Access Object）。
+* MyBatis：MyBatis 是一款优秀的Java持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis是对JDBC的封装，它让数据库底层操作变的透明，属于半自动的ORM(对象关系映射)框架。mybatis的操作都是围绕一个sqlSessionFactory实例展开的。mybatis通过配置文件关联到各实体类的Mapper文件，Mapper文件中配置了每个类对数据库所需进行的sql语句映射。在每次与数据库交互时，通过sqlSessionFactory拿到一个sqlSession，再执行sql命令

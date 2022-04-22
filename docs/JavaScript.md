@@ -27,7 +27,10 @@ JS中有一个主线程和调用栈，所有的任务都会放入到调用栈里
 进入整体代码（宏任务）后，开始第一次循环，执行所有的微任务。接着再次从宏任务开始，找到其中一个宏任务队列执行完毕，再执行所有微任务。以此循环。
 
 **调用栈中的同步任务都执行完毕了，栈内就清空了，代表主线程空闲了，就会去任务队列按顺序读取一个任务放入栈中执行。每次栈内被清空，就会去读取任务队列还有没有任务，有就读取执行，一直循环读取-执行的操作，这就形成了事件循环。**
+   
+**对于setInterval(fn,ms)来说，不是每过ms秒会执行一次fn，而是每过ms秒，会有fn进入Event Queue。一旦setInterval的回调函数fn执行时间超过了延迟时间ms，那么就完全看不出来有时间间隔了。**
 
+![事件循环](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2017/11/21/15fdcea13361a1ec~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp)
 https://github.com/aooy/blog/issues/5   
 https://juejin.im/post/59e85eebf265da430d571f89   
 https://www.cnblogs.com/yqx0605xi/p/9267827.html

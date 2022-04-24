@@ -242,11 +242,49 @@ const reg2 = new RegExp(pattren, flags)     //  实例创建 可进行字符串�
 正则截取`id`后的内容   
 
 
-### 浏览器缓存原理
-
-
 ### 实现毛玻璃效果
 ```css
 background: rgba(255,255,255,.2);
 backdrop-filter: saturate(180%) blur(20px);
 ```
+
+## 浏览器缓存
+**Web缓存种类：** 数据库缓存，CDN缓存，代理服务器缓存，浏览器缓存。   
+**浏览器缓存过程：** 强缓存，协商缓存。   
+**浏览器缓存位置一般分为四类：** Service Worker-->Memory Cache-->Disk Cache-->Push Cache。
+### 浏览器缓存相关字段
+![字段](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0c82d0049c3f4f57bf66d8effcb25ed5~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp)
+### 缓存分类
+![缓存分类](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/70f599db34fa42068ccfa4e04748a078~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp)
+|名称|用途|
+|:-:|:-:|
+|Service Worker|是运行在浏览器背后的独立线程，一般可以用来实现缓存功能，只支持HTTPS|
+|Memory Cache|存放于内存中的缓存，大多用于存放样式、脚本文件，存放时间短，随着进程释放而释放|
+|Disk Cache|存放于硬盘中的缓存，大多用于存放图片、视频资源等，存放时间长，容量大|
+|prefetch cache|prefetch是预加载的一种方式，被标记为prefetch的资源，将会被浏览器在空闲时间加载|
+|Push Cache|HTTP2的内容，在其他缓存没命中的情况下使用，存放时间短，随着进程释放而释放|
+### 缓存过程
+#### 强缓存
+首次请求：如果响应头中`expires`、`pragma`或者`cache-control`字段，代表这是强缓存，浏览器就会把资源缓存在memory cache 或 disk cache中。    
+第二次请求：如果符合强缓存条件就直接返回状态码200，从本地缓存中拿数据。否则把响应参数存在request header请求头中，看是否符合协商缓存，符合则返回状态码304，不符合则服务器会返回全新资源。    
+![强缓存](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ca00bff3081e4cfd993a8f252f4fa23a~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp)
+
+#### 协商缓存
+协商缓存就是强缓存失效后，浏览器携带缓存标识向服务器发送请求，由服务器根据缓存标识来决定是否使用缓存的过程。   
+服务器资源未更新：返回304，读取缓存    
+服务器资源更新：重新请求，返回200    
+**实现协商缓存:**   
+* Last-Modified / If-Modified-Since：服务端返回Last-Modified即文件最后修改时间，客户端请求时将其写入请求头的If-Modified-Since字段，服务端对比文件修改时间，若服务端文件修改时间大于If-Modified-Since则重新返回资源和200状态码，否则返回304，代表资源无更新，可继续使用缓存文件。
+* Etag / If-None-Match：服务端返回Etag字段即服务器生成的文件唯一标识，客户端将其写入If-None-Match字段中，服务端收到后判断客户端的If-None-Match与服务端文件的唯一标识是否一致，一致则返回304，否则返回200.   
+    
+**Etag / If-None-Match优先级高于Last-Modified / If-Modified-Since，同时存在则只有Etag / If-None-Match生效。**
+
+### 强缓存与协商缓存的区别
+1. 强缓存不发请求到服务器，所以有时候资源更新了浏览器还不知道，但是协商缓存会发请求到服务器，所以资源是否更新，服务器肯定知道。   
+2. 大部分web服务器都默认开启协商缓存。   
+### 刷新对于强缓存和协商缓存的影响
+1. 当ctrl+f5强制刷新网页时，直接从服务器加载，跳过强缓存和协商缓存。   
+2. 当f5刷新网页时，跳过强缓存，但是会检查协商缓存。   
+3. 浏览器地址栏中写入URL，回车 浏览器发现缓存中有这个文件了，不用继续请求了，直接去缓存拿。（最快）
+
+

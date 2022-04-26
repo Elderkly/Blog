@@ -1,5 +1,5 @@
-# Raect
-### 说说react的虚拟dom
+## Raect
+### react的虚拟dom
 通过babel将JSX编译成`React.createElement`的形式，通过这个方法返回的对象记录了这个DOM节点的所有信息，这个记录信息的对象我们称之为**虚拟DOM**。
 
 ### react的diff算法
@@ -67,7 +67,69 @@ https://www.jianshu.com/p/799b8a14ef96
 shouldComponentUpdate:当props和state发生变化时，`shouldComponentUpdate`会在渲染前被调用，默认返回true，如果返回false则会拦截更新。   
 componentWillReceiveProps:父组件重新传递props时就会调用这个函数。   
 
-# Redux
+#### 挂载
+* constructor()：需调用super(props)，否则拿不到this.props，不要在这里使用setState()
+* static getDerivedStateFromProps()：在shouldComponentUpdate之前调用，返回一个对象来更新state，返回null则不更新，替代原来的componentWillReceiveProps，是个静态函数，无法使用this。
+* render()：必须实现的函数
+* componentDidMount()：组件挂载后调用，可在此进行订阅
+#### 更新
+* static getDerivedStateFromProps()
+* shouldComponentUpdate()：当 props 或 state 发生变化时，在渲染前调用，若返回false则不会触发更新
+* render()
+* getSnapshotBeforeUpdate()：更新视图之前调用，可在此访问到DOM，并将返回值返回给componentDidUpdate。
+* componentDidUpdate()：更新后调用，首次渲染不调用
+#### 卸载
+* componentWillUnmount()：卸载前调用，在此取消订阅
+#### 错误处理
+* static getDerivedStateFromError()：会在渲染阶段调用，因此不允许出现副作用
+* componentDidCatch()：会在“提交”阶段被调用，因此允许执行副作用
+
+#### render阶段与commit阶段
+可以理解为render阶段执行数据处理，筛选出需要更新的部分，commit阶段则是将render阶段处理得出的数据进行DOM修改。
+
+### ref
+绑定：元素添加属性`ref={this.textInput}`，在`constructor`中声明`this.textInput = React.createRef()`，之后便可通过`this.textInput`访问DOM。
+
+### 绑定事件
+```javascript
+export default class Test extends Component {
+  constructor(props) {
+    super(props)
+    this.handleClick1 = this.handleClick1.bind(this)
+  }
+
+
+  handleClick1() {
+    //...
+  }
+
+  handleClick2 = () => {
+    //...
+  }
+
+  handleClick3() {
+    //...
+  }
+
+  handleClick4() {
+    //...
+  }
+
+  render() {
+    return (
+      <div>
+        <div onClick={this.handleClick1}>方法1</div>
+        <div onClick={this.handleClick2}>方法2</div>
+        <div onClick={this.handleClick3.bind(this)}>方法3</div>
+        <div onClick={() => this.handleClick4())}>方法4</div>
+      </div>
+    )
+  }
+}
+```
+对于方法3和方法4，每次渲染这个组件的时候，都会创建不同的回调函数，更推荐方法1和方法2。   
+
+## Redux
 store：是一个对象，它保存整个应用的state。可以通过`getState()`访问state，通过`dispatch(action)`改变state。   
 action:是一个对象，描述已发生事件的普通对象，它们必须有一个`type`属性表明正在执行的 action 的类型。    
 reducer:是一个纯函数，接收先前的state和action，并且返回新的state。       

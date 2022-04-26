@@ -64,9 +64,6 @@ https://www.jianshu.com/p/799b8a14ef96
 ![React是怎样控制异步和同步的呢](https://upload-images.jianshu.io/upload_images/5256541-992ce78e70151b57.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/720/format/webp)   
 
 ### react生命周期
-shouldComponentUpdate:当props和state发生变化时，`shouldComponentUpdate`会在渲染前被调用，默认返回true，如果返回false则会拦截更新。   
-componentWillReceiveProps:父组件重新传递props时就会调用这个函数。   
-
 #### 挂载
 * constructor()：需调用super(props)，否则拿不到this.props，不要在这里使用setState()
 * static getDerivedStateFromProps()：在shouldComponentUpdate之前调用，返回一个对象来更新state，返回null则不更新，替代原来的componentWillReceiveProps，是个静态函数，无法使用this。

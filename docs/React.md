@@ -208,7 +208,9 @@ function Example() {
 ### React 何时清除 effect？
 React 会在组件卸载的时候执行清除操作。正如之前学到的，effect 在每次渲染的时候都会执行。这就是为什么 `React 会在执行当前 effect 之前对上一个 effect 进行清除`。    
 
-**effect中返回的清除函数获取的参数是上一次effect的参数**     
+**effect中返回的清除函数获取的参数是上一次effect的参数**
+
+**useEffect第二个参数传入`[]`相当于`componentDidMount`**     
 https://react.docschina.org/docs/hooks-overview.html
 
 

@@ -35,6 +35,60 @@ https://github.com/aooy/blog/issues/5
 https://juejin.im/post/59e85eebf265da430d571f89   
 https://www.cnblogs.com/yqx0605xi/p/9267827.html
 
+**async/await**   
+* async：只是一个语法糖，只是帮助我们返回一个Promise而已
+* await：使用await时，会从右往左执行，当遇到await时，会阻塞函数内部处于它后面的代码，去执行该函数外部的`同步代码`，当外部同步代码执行完毕，再回到该函数内部执行剩余的代码, 并且当await执行完毕之后，会先处理微任务队列的代码(可以理解为会将await后的内容塞到微任务队列中，若遇到await则一次只会塞入一个await)   
+```javascript
+console.log(1)
+
+async function fn() {
+    console.log(2)
+    await console.log(3)
+    console.log(4)
+} 
+fn()
+
+new Promise(resolve => {
+    console.log(5)
+    resolve()
+}).then(res => console.log(6))
+
+setTimeout(() => console.log(7),0)
+
+console.log(8)
+
+// 1 2 3 5 8 4 6 7 
+```
+```javascript
+console.log(1);
+
+async function fn(){
+    console.log(2)
+    await console.log(3)
+    await console.log(4)
+    await console.log(11)
+    await console.log(22)
+    await console.log(33)
+    await console.log(44)
+}
+setTimeout(()=>{
+    console.log(5)
+},0)
+fn();
+
+new Promise((resolve)=>{
+    console.log(6)
+    resolve();
+}).then(()=>{
+    console.log(7)
+})
+
+console.log(8)
+
+//  1 2 3 6 8 4 7 11 22 33 44 5
+```
+https://www.cnblogs.com/smile-fanyin/p/14622432.html
+
 ## 19.7.29
 ### 图层
 一般来说，可以把普通文本流看成一个图层，特定的属性可以生成一个新的图层。不同的图层渲染互不影响，所以对于某些频繁需要渲染的建议单独生成一个新图层，提高性能。但也不能生成过多的图层，会引起反作用。     
@@ -115,7 +169,30 @@ obj.__proto__ === Object.prototype
 **所以得出结论，不是所有函数都是`new Function()`产生的。**    
 有了`Function.prototype`后才有了`function Function(){}`，然后其他的构造函数都是`Function()`生成的。  
 由于其他构造函数都可以通过原型链找到`Function.prototype`，并且`function Function()`本质也是函数，为了不产生混乱就将`function Function()`的`__proto__`联系到`Function.prototype`上。  
-   
+
+```javascript
+function foo() {
+    foo.a = function() {
+        console.log(1)
+    }
+    this.a = function () {
+        console.log(2)
+    }
+}
+foo.prototype.a = function() {
+    console.log(3)
+}
+Function.prototype.a = function() {
+    console.log(4)
+}
+
+foo.a()     //  此时未实例化 函数也没执行 foo.a是在函数体内执行 此时找不到foo.a只能去原型链
+const obj = new foo()
+obj.a()
+foo.a()
+
+//  4 2 1
+```   
 https://github.com/KieSun/Dream/issues/2
 
 ## 19.8.5

@@ -132,6 +132,39 @@ https://yuchengkai.cn/docs/frontend/browser.html#%E8%B7%A8%E5%9F%9F
 3.绑定this   
 4.返回新对象   
 
+* 以构造器的prototype属性为原型，创建新对象；
+* 将this(也就是上一句中的新对象)和调用参数传给构造器，执行；
+* 如果构造器没有手动返回对象，则返回第一步创建的新对象，如果有，则舍弃掉第一步创建的新对象，返回手动return的对象。
+
+```javascript
+// 构造器函数
+let Parent = function (name, age) {
+    this.name = name;
+    this.age = age;
+};
+Parent.prototype.sayName = function () {
+    console.log(this.name);
+};
+//自己定义的new方法
+let newMethod = function (Parent, ...rest) {
+    // 1.以构造器的prototype属性为原型，创建新对象；
+    let child = Object.create(Parent.prototype);
+    // 2.将this和调用参数传给构造器执行
+    let result = Parent.apply(child, rest);
+    // 3.如果构造器没有手动返回对象，则返回第一步的对象
+    return typeof result  === 'object' ? result : child;
+};
+//创建实例，将构造函数Parent与形参作为参数传入
+const child = newMethod(Parent, 'echo', 26);
+child.sayName() //'echo';
+ 
+//最后检验，与使用new的效果相同
+child instanceof Parent//true
+child.hasOwnProperty('name')//true
+child.hasOwnProperty('age')//true
+child.hasOwnProperty('sayName')//false
+```
+
 ### 原型链
 ![原型链](https://camo.githubusercontent.com/8c32afe801835586c6ee59ef570fe2b322eadd6e/68747470733a2f2f79636b2d313235343236333432322e636f732e61702d7368616e676861692e6d7971636c6f75642e636f6d2f626c6f672f323031392d30362d30312d3033333932352e706e67)
 ```javascript
@@ -172,6 +205,7 @@ obj.__proto__ === Object.prototype
 
 ```javascript
 function foo() {
+    //  设置私有属性 此时将foo视为普通对象 通过foo.a()访问
     foo.a = function() {
         console.log(1)
     }
@@ -179,6 +213,7 @@ function foo() {
         console.log(2)
     }
 }
+//  通过prototype绑定的属性为公有属性 此时可将foo视为class 可通实例.a()进行访问
 foo.prototype.a = function() {
     console.log(3)
 }
@@ -186,9 +221,12 @@ Function.prototype.a = function() {
     console.log(4)
 }
 
-foo.a()     //  此时未实例化 函数也没执行 foo.a是在函数体内执行 此时找不到foo.a只能去原型链
-const obj = new foo()
+//  此时调用静态方法
+foo.a()     //  此时未实例化 函数也没执行 foo.a是在函数体内执行 此时找不到foo.a只能去原型链找
+const obj = new foo()   //  建立原型链
+//  此时有两个a方法 一个内部方法 一个外部公有方法 优先调用内部方法
 obj.a()
+//  此时foo函数内部属性已初始化 函数内部的静态方法覆盖原静态方法
 foo.a()
 
 //  4 2 1
@@ -389,3 +427,39 @@ https://juejin.cn/post/6947936223126093861
 
 https://blog.csdn.net/BBBBobo/article/details/121869585   
 https://blog.csdn.net/qq_38970408/article/details/121018660   
+
+## display
+|display|作用|
+|:-:|:-|
+|none|隐藏|
+|block|块状元素，默认继承父级宽度，独占一行，可设置宽高边距|
+|inline|行内元素，在同一行，不支持设置宽高边距|
+|inline-block|行内块状元素，在同一行由可以设置宽高边距|
+|inherit|继承父级display|
+
+## 文本超出处理
+```css
+/* 超出显示省略号 */
+.p1{
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* 超出两行显示省略号 */
+.p2{
+    width: 200px;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* 这里是超出几行省略 */
+    overflow: hidden;
+}
+```
+|属性|参数|作用|
+|:-:|:-:|:-|
+|text-overflow|clip/ellipsis/string/initial/inherit|剪切/用...代替/用特定文本代替/默认值/继承  (需配合white-space: nowrap;overflow: hidden;使用)|
+|white-space|normal/pre/nowrap/pre-wrap/pre-line/inherit|空白会被浏览器忽略/空白会被浏览器保留/文本不会换行/保留空白符序列，但是正常地进行换行/合并空白符序列，但是保留换行符/继承|
+
+

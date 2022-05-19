@@ -462,4 +462,7 @@ https://blog.csdn.net/qq_38970408/article/details/121018660
 |text-overflow|clip/ellipsis/string/initial/inherit|剪切/用...代替/用特定文本代替/默认值/继承  (需配合white-space: nowrap;overflow: hidden;使用)|
 |white-space|normal/pre/nowrap/pre-wrap/pre-line/inherit|空白会被浏览器忽略/空白会被浏览器保留/文本不会换行/保留空白符序列，但是正常地进行换行/合并空白符序列，但是保留换行符/继承|
 
+## flex
+在一个flex布局中，设置flex:1,min-width: 0 ，保证内容不超出外层容器   
+** 如果没有设置min-width，当内容大于剩余盒子宽度时会超出父盒子，设置min-width保证内容局限在父盒子内。**
    

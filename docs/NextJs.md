@@ -41,7 +41,7 @@ router.push({ pathname, query }, asPath, { locale: nextLocale });
 
 #### 2.根目录为语言的动态路由
 
-项目结构调整如下：
+项目结构调整如下：  
 ![结构](https://github.com/Elderkly/ImgRepository/blob/master/Blog/Nextjs-1.png)  
 所有页面都放在`[lang]`之下，当访问页面时，先进入到`[lang]`级路由，确认完语言后再进入到相应页面。
 

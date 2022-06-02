@@ -1,16 +1,16 @@
 # Next.js
 
-## 几种渲染方式
+### 几种渲染方式
 
-| \|名称 |     解释     |
-| :----: | :----------: | :--------------------------------------------------------------- |
-|  BSG   |  客户端渲染  | 类 Vue、React 去创建 HTML                                        |
-|  SSG   | 静态页面生成 | 将后端数据获取后，将页面打包成静态页面进行渲染，在编译时进行工作 |
-|  SSR   |  服务端渲染  | 页面运行时请求后端接口后，拼接完数据再进行展示，在页面运行时工作 |
+|     |     名称     | 解释                                                             |
+| :-: | :----------: | :--------------------------------------------------------------- |
+| BSG |  客户端渲染  | 类 Vue、React 去创建 HTML                                        |
+| SSG | 静态页面生成 | 将后端数据获取后，将页面打包成静态页面进行渲染，在编译时进行工作 |
+| SSR |  服务端渲染  | 页面运行时请求后端接口后，拼接完数据再进行展示，在页面运行时工作 |
 
-## 实现国际化的两种方案
+### 实现国际化的两种方案
 
-### 1.Next-i18next
+#### 1.Next-i18next
 
 在根目录的`next.config.js`配置后，在每个页面的`getStaticProps`函数都需要执行`...(await serverSideTranslations(locale, ['common', 'footer'])),`  
 动态路由需包含`loacle`属性:
@@ -34,15 +34,15 @@ export const getStaticPaths = ({ locales }) => {
 router.push({ pathname, query }, asPath, { locale: nextLocale });
 ```
 
-#### 缺点：无法使用`next export`，部署后需要`nodejs`支持
+##### 缺点：无法使用`next export`，部署后需要`nodejs`支持
 
 **https://github.com/isaachinman/next-i18next**
 **https://nextjs.org/docs/advanced-features/i18n-routing**
 
-### 2.根目录为语言的动态路由
+#### 2.根目录为语言的动态路由
 
 项目结构调整如下：
-![结构](https://github.com/Elderkly/ImgRepository/blob/master/Blog/Nextjs-1.png)
+![结构](https://github.com/Elderkly/ImgRepository/blob/master/Blog/Nextjs-1.png)  
 所有页面都放在`[lang]`之下，当访问页面时，先进入到`[lang]`级路由，确认完语言后再进入到相应页面。
 
 \_app.tsx
@@ -120,6 +120,6 @@ router.push({
 });
 ```
 
-### 此方案支持`next export`，打包后正常部署即可。
+##### 此方案支持`next export`，打包后正常部署即可。
 
 **https://github.com/Elderkly/nextjs-demo/tree/221c1ca5ab4f7b8775053fa65325794eb34811ca**

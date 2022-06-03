@@ -253,9 +253,82 @@ https://react.docschina.org/docs/hooks-overview.html
 # Hook 性能优化
 
 ### React.memo
-
+通过`React.memo`包装后的组件在相同props的情况下渲染相同的结果，可避免父组件更新导致子组件更新。
 ### useMemo
-
+`useMemo`用于缓存某个函数的返回值，只有当依赖项改变时才会去重新执行函数。可避免函数在每次渲染都进行不必要的计算。
 ### useCallback
+props在传递函数时传递的是函数的指针，`useCallback`可将函数缓存起来，并返回函数的指针，当依赖项没有发生改变时指针不会变化。用于避免子组件因接收父组件函数props而引起的不必要的刷新。   
+
+**https://juejin.cn/post/7010278471473594404**
+
 
 ### 如何封装全局弹窗
+主要用到`ReactDOM.createRoot`和`ReactDOM.render`，往`body`里插入一个`div`后，在这个`div`里渲染弹窗组件即可。入场动画通过`animate`实现。   
+```typescript
+class Tip {
+  private static text: string | JSX.Element;
+  private static icon: string | undefined;
+  private static msgBox: Element;
+  private static show: boolean = false;
+  
+  private static View() {
+    return (
+      <div
+        className={`min-w-50 p-5 max-w-80 bg-white mb-80 shadow-md shadow-dark-100 text-center rounded-lg opacity-0 animate-showUp <sm:mb-0  ${
+          this.icon ? 'animate-duration-1800' : 'animate-duration-1300'
+        } `}
+      >
+        {
+          // eslint-disable-next-line no-nested-ternary
+          this.icon === 'success' ? (
+            <Icon icon={confirmCircle} className={'text-8xl text-green-400'} />
+          ) : this.icon === 'warning' ? (
+            <AiOutlineWarning
+              className={'text-8xl text-red-500'}
+            ></AiOutlineWarning>
+          ) : null
+        }
+        <p className="text-dark text-lg">{this.text}</p>
+      </div>
+    );
+  }
+
+  private static create() {
+    this.msgBox = document.createElement('div');
+    this.msgBox.className =
+      'fixed top-0 w-full h-full left-0 flex items-center justify-center';
+    document.body.appendChild(this.msgBox);
+    createRoot(this.msgBox).render(this.View());
+  }
+
+  private static destruction() {
+    return new Promise<void>((resolve) => {
+      setTimeout(
+        () => {
+          this.show = false;
+          document.body.removeChild(Tip.msgBox);
+          resolve();
+        },
+        this.icon ? 1800 : 1300
+      );
+    });
+  }
+
+  public static open({ text, icon }: Props) {
+    return new Promise<void>((resolve) => {
+      if (this.show === true) return;
+      this.show = true;
+      this.text = text;
+      this.icon = icon;
+      this.create();
+      this.destruction().then(resolve);
+    });
+  }
+}
+
+const ToolTip = (props: Props) => {
+  return Tip.open(props);
+};
+
+export default ToolTip;
+```

@@ -34,7 +34,7 @@ export const getStaticPaths = ({ locales }) => {
 router.push({ pathname, query }, asPath, { locale: nextLocale });
 ```
 
-##### 缺点：无法使用`next export`，部署后需要`nodejs`支持
+**缺点：无法使用`next export`，部署后需要`nodejs`支持*
 
 **https://github.com/isaachinman/next-i18next**
 **https://nextjs.org/docs/advanced-features/i18n-routing**
@@ -65,7 +65,6 @@ const App = ({ Component, pageProps }: AppProps) => {
     language = langSlug;
   }
   if (asPath !== "/" && asPath !== "/404") {
-    // @ts-ignore
     i18next.changeLanguage(language);
   }
 

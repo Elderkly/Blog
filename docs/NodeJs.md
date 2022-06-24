@@ -40,3 +40,7 @@ package-lock.json 文件锁定所有模块的版本号，包括主模块和所�
 
 npx 可以运行使用 Node.js 构建并通过 npm 仓库发布的代码。无需先安装命令即可运行命令。  
 例：`npx create-react-app my-react-app`
+
+### `process.nextTick()`与`setImmediate()`
+
+`process.nextTick()`异步微任务，`setImmediate()`类似于`setTimeout(() => {},0)`

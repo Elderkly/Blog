@@ -483,7 +483,7 @@ https://blog.csdn.net/qq_38970408/article/details/121018660
 
 ## 截取一个数字的百位、十位、个位
 
-- 力扣 1281
+- 力扣 1281  
   `Array.from(String(n), Number)`
 
 **https://blog.csdn.net/yangaoyuan1999/article/details/119993661**

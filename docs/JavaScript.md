@@ -487,3 +487,14 @@ https://blog.csdn.net/qq_38970408/article/details/121018660
   `Array.from(String(n), Number)`
 
 **https://blog.csdn.net/yangaoyuan1999/article/details/119993661**
+
+## Set、Map、WeakSet 和 WeakMap 的区别？
+
+|    Api    | 特点                                                                                     | 属性               | 方法                                                                           |
+| :-------: | :--------------------------------------------------------------------------------------- | :----------------- | :----------------------------------------------------------------------------- |
+| Set(集合) | 成员唯一、有序不重复、可遍历，类似`Array`                                                | `size`类似`length` | `add`、`delete`、`has`、`clear`、`keys`、`values`、`entries`、`forEach`        |
+|  WeakSet  | 只能存放对象引用，不能存放值，不可遍历，存放的对象为弱引用，即不计入引用计数，会被回收掉 |                    | 同 Set 但没有遍历的 Api                                                        |
+| Map(字典) | 类似`Set`但以`[key,value]`来存储，有序不重复、可遍历                                     | `size`             | `get`、`set`、`has`、`delete`、`clear`、`keys`、`values`、`entries`、`forEach` |
+|  WeakMap  | 类似`WeakSet`但只接受对象作为键名，有序不重复、不可遍历                                  |                    | 同 Map 但没有遍历的 Api                                                        |
+
+**https://github.com/sisterAn/blog/issues/24**

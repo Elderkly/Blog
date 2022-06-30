@@ -46,6 +46,10 @@
 
 吸顶效果，需设置 top
 
+### 渐变背景色加入动画
+
+**https://stackoverflow.com/a/51362339**
+
 ## Windi CSS
 
 ### Tip

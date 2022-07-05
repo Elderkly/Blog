@@ -72,3 +72,7 @@ animation: 3s slidein;
 2.子组件设置 group-hover 需在父组件设置 group  
 3.镂空字体：`text-stroke-1 text-stroke-dark-500 text-transparent`  
 若字体有重叠设置属性`fontFamily: "'Inter', sans-serif" `
+
+### 文本首字母大写
+
+`capitalize`

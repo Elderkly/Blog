@@ -87,3 +87,101 @@ var frequencySort = function (s) {
   return sub.join("");
 };
 ```
+
+### [41] 找出缺失的第一个正数
+
+难度：困难  
+思路：将所有正数都放入新数组中后，找出第一个缺失的 index 即是最小缺失正整数  
+技巧：像这种找最小缺失的要善用数组动态赋值即`a[n] = 1`，则数组会产生 n-1 个空属性
+
+```javascript
+var firstMissingPositive = function (nums) {
+  if (nums.length === 0 || (nums[0] < 0 && nums.length === 1)) return 1;
+  const arr = [];
+  nums.map((x) => {
+    if (x > 0) arr[x] = 1;
+  });
+  if (!arr.length) return 1;
+
+  for (let i = 1; i < arr.length; i++) {
+    if (!arr[i]) return i;
+  }
+
+  return arr.length;
+};
+```
+
+### [1863] 找出所有子集的异或总和再求和
+
+难度：中等  
+方法 1：先求出所有子集后再遍历求和
+
+```javascript
+var subsetXORSum = function (nums) {
+  let a = [[]];
+  for (let i = 0; i < nums.length; i++) {
+    const temp = a.map((e) => {
+      const o = [...e];
+      o.push(nums[i]);
+      return o;
+    });
+    a = a.concat(temp);
+  }
+
+  let sum = 0;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i].length === 1) sum += a[i][0];
+    else {
+      let xsum = 0;
+      a[i].map((e) => (xsum ^= e));
+      sum += xsum;
+    }
+  }
+  return sum;
+};
+```
+
+方法 2： 回溯  
+注意：递归算法先看一行所有的递归结果出来后再看另一行 注意递归一定是先往下不断嵌套递归后 再从下往上跳出循环
+
+```javascript
+let res;
+const dfs = (val, idx, nums) => {
+  if (idx === nums.length) {
+    res += val;
+    return;
+  }
+  dfs(val ^ nums[idx], idx + 1, nums);
+  dfs(val, idx + 1, nums);
+};
+
+const subsetXORSum = (nums) => {
+  res = 0;
+  dfs(0, 0, nums);
+  return res;
+};
+```
+
+**https://leetcode.cn/problems/sum-of-all-subset-xor-totals/solution/sum-of-all-subset-xor-totals-by-leetcode-o5aa/**
+
+### 按位异或赋值 (^=)
+
+#### 获取数组所有子集
+
+思路：定义一个二维数组，对目标数组进行遍历，每次都往二维数组的每一项里 push 一个 item，遍历完成合并二维数组，以此类推  
+注意：push 会改变原数组 concat 不会改变原数组所以需要保存返回值
+
+```javascript
+const P = (nums) => {
+  let Arr = [[]];
+  for (let i = 0; i < nums.length; i++) {
+    const temp = Arr.map((e) => {
+      const o = [...e]; //  这里浅拷贝数组的原因是push操作会改变原数组
+      o.push(nums[i]);
+      return o;
+    });
+    Arr = Arr.concat(temp);
+  }
+  return Arr;
+};
+```

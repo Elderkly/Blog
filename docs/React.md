@@ -332,3 +332,6 @@ const ToolTip = (props: Props) => {
 
 export default ToolTip;
 ```
+
+### React-Router-Dom 全局拦截器
+**https://reactrouter.com/docs/en/v6/examples/auth**

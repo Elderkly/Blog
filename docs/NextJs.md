@@ -122,3 +122,7 @@ router.push({
 **此方案支持`next export`，打包后正常部署即可。**
 
 **https://github.com/Elderkly/nextjs-demo/tree/221c1ca5ab4f7b8775053fa65325794eb34811ca**
+
+### Nextjs12 配置 antd
+
+**https://github.com/elado/next-with-less**

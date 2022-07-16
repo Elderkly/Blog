@@ -440,8 +440,7 @@ backdrop-filter: saturate(180%) blur(20px);
 **实现协商缓存:**
 
 - Last-Modified / If-Modified-Since：服务端返回 Last-Modified 即文件最后修改时间，客户端请求时将其写入请求头的 If-Modified-Since 字段，服务端对比文件修改时间，若服务端文件修改时间大于 If-Modified-Since 则重新返回资源和 200 状态码，否则返回 304，代表资源无更新，可继续使用缓存文件。
-- Etag / If-None-Match：服务端返回 Etag 字段即服务器生成的文件唯一标识，客户端将其写入 If-None-Match 字段中，服务端收到后判断客户端的 If-None-Match 与服务端文件的唯一标识是否一致，一致则返回 304，否则返回 200.  
-
+- Etag / If-None-Match：服务端返回 Etag 字段即服务器生成的文件唯一标识，客户端将其写入 If-None-Match 字段中，服务端收到后判断客户端的 If-None-Match 与服务端文件的唯一标识是否一致，一致则返回 304，否则返回 200.
 
 **Etag / If-None-Match 优先级高于 Last-Modified / If-Modified-Since，同时存在则只有 Etag / If-None-Match 生效。**
 
@@ -454,8 +453,7 @@ backdrop-filter: saturate(180%) blur(20px);
 
 1. 当 ctrl+f5 强制刷新网页时，直接从服务器加载，跳过强缓存和协商缓存。
 2. 当 f5 刷新网页时，跳过强缓存，但是会检查协商缓存。
-3. 浏览器地址栏中写入 URL，回车 浏览器发现缓存中有这个文件了，不用继续请求了，直接去缓存拿。（最快）  
-
+3. 浏览器地址栏中写入 URL，回车 浏览器发现缓存中有这个文件了，不用继续请求了，直接去缓存拿。（最快）
 
 https://juejin.cn/post/6947936223126093861
 
@@ -483,48 +481,20 @@ https://juejin.cn/post/6947936223126093861
 https://blog.csdn.net/BBBBobo/article/details/121869585  
 https://blog.csdn.net/qq_38970408/article/details/121018660
 
-## display
+## 截取一个数字的百位、十位、个位
 
-|   display    | 作用                                                 |
-| :----------: | :--------------------------------------------------- |
-|     none     | 隐藏                                                 |
-|    block     | 块状元素，默认继承父级宽度，独占一行，可设置宽高边距 |
-|    inline    | 行内元素，在同一行，不支持设置宽高边距               |
-| inline-block | 行内块状元素，在同一行由可以设置宽高边距             |
-|   inherit    | 继承父级 display                                     |
+- 力扣 1281  
+  `Array.from(String(n), Number)`
 
-## 文本超出处理
+**https://blog.csdn.net/yangaoyuan1999/article/details/119993661**
 
-```css
-/* 超出显示省略号 */
-.p1 {
-  width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-/* 超出两行显示省略号 */
-.p2 {
-  width: 200px;
-  word-break: break-all;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* 这里是超出几行省略 */
-  overflow: hidden;
-}
-```
+## Set、Map、WeakSet 和 WeakMap 的区别？
 
-|     属性      |                    参数                     | 作用                                                                                                                      |
-| :-----------: | :-----------------------------------------: | :------------------------------------------------------------------------------------------------------------------------ |
-| text-overflow |    clip/ellipsis/string/initial/inherit     | 剪切/用...代替/用特定文本代替/默认值/继承 (需配合 white-space: nowrap;overflow: hidden;使用)                              |
-|  white-space  | normal/pre/nowrap/pre-wrap/pre-line/inherit | 空白会被浏览器忽略/空白会被浏览器保留/文本不会换行/保留空白符序列，但是正常地进行换行/合并空白符序列，但是保留换行符/继承 |
+|    Api    | 特点                                                                                     | 属性               | 方法                                                                           |
+| :-------: | :--------------------------------------------------------------------------------------- | :----------------- | :----------------------------------------------------------------------------- |
+| Set(集合) | 成员唯一、有序不重复、可遍历，类似`Array`                                                | `size`类似`length` | `add`、`delete`、`has`、`clear`、`keys`、`values`、`entries`、`forEach`        |
+|  WeakSet  | 只能存放对象引用，不能存放值，不可遍历，存放的对象为弱引用，即不计入引用计数，会被回收掉 |                    | 同 Set 但没有遍历的 Api                                                        |
+| Map(字典) | 类似`Set`但以`[key,value]`来存储，有序不重复、可遍历                                     | `size`             | `get`、`set`、`has`、`delete`、`clear`、`keys`、`values`、`entries`、`forEach` |
+|  WeakMap  | 类似`WeakSet`但只接受对象作为键名，有序不重复、不可遍历                                  |                    | 同 Map 但没有遍历的 Api                                                        |
 
-## flex
-
-在一个 flex 布局中，设置 flex:1,min-width: 0 ，保证内容不超出外层容器  
-** 如果没有设置 min-width，当内容大于剩余盒子宽度时会超出父盒子，设置 min-width 保证内容局限在父盒子内。**
-
-## position: sticky
-
-吸顶效果，需设置 top
+**https://github.com/sisterAn/blog/issues/24**

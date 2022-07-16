@@ -185,3 +185,35 @@ const P = (nums) => {
   return Arr;
 };
 ```
+
+
+### 面试题 16.01 不额外使用空间交换数组元素
+难度：中等   
+技巧：看到不使用额外空间就要想到异或操作   
+```javascript
+var swapNumbers = function(numbers) {
+    numbers[1] ^= numbers[0]
+    numbers[0] ^= numbers[1]
+    numbers[1] ^= numbers[0]
+    return numbers
+};
+```
+
+### 201. 数字范围按位与 给定区间找出区间内所有数字按位相与的结果
+难度：中等   
+思路：结果的规律为两个数的最大公共前缀后面补0。   
+    例如： 5 = 0101  6 = 0110 7 = 0111   
+    5 & 6 & 7 = 0100 = 4   
+    所以思路就是先将两个数不断左移一位找出最大公共前缀后，将结果再右移进行补零就是最后的结果   
+```javascript
+var rangeBitwiseAnd = function(left, right) {
+    let sum = 0
+    while(left < right) {
+        left >>= 1
+        right >>= 1
+        sum ++
+    }
+    return left << sum
+};
+```
+

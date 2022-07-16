@@ -255,7 +255,7 @@ https://react.docschina.org/docs/hooks-overview.html
 ### React.memo
 通过`React.memo`包装后的组件在相同props的情况下渲染相同的结果，可避免父组件更新导致子组件更新。
 ### useMemo
-`useMemo`用于缓存某个函数的返回值，只有当依赖项改变时才会去重新执行函数。可避免函数在每次渲染都进行不必要的计算。
+`useMemo`用于缓存某个函数的返回值，只有当依赖项改变时才会去重新执行函数。可避免函数每次渲染都进行不必要的计算。
 ### useCallback
 props在传递函数时传递的是函数的指针，`useCallback`可将函数缓存起来，并返回函数的指针，当依赖项没有发生改变时指针不会变化。用于避免子组件因接收父组件函数props而引起的不必要的刷新。   
 
@@ -270,7 +270,7 @@ class Tip {
   private static icon: string | undefined;
   private static msgBox: Element;
   private static show: boolean = false;
-  
+
   private static View() {
     return (
       <div

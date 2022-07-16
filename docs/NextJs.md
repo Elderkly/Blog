@@ -36,7 +36,7 @@ router.push({ pathname, query }, asPath, { locale: nextLocale });
 
 **缺点：无法使用`next export`，部署后需要`nodejs`支持*
 
-**https://github.com/isaachinman/next-i18next**
+**https://github.com/isaachinman/next-i18next**   
 **https://nextjs.org/docs/advanced-features/i18n-routing**
 
 #### 2.根目录为语言的动态路由
@@ -119,6 +119,6 @@ router.push({
 });
 ```
 
-##### 此方案支持`next export`，打包后正常部署即可。
+**此方案支持`next export`，打包后正常部署即可。**
 
 **https://github.com/Elderkly/nextjs-demo/tree/221c1ca5ab4f7b8775053fa65325794eb34811ca**

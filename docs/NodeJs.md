@@ -44,3 +44,7 @@ npx 可以运行使用 Node.js 构建并通过 npm 仓库发布的代码。无�
 ### `process.nextTick()`与`setImmediate()`
 
 `process.nextTick()`异步微任务，`setImmediate()`类似于`setTimeout(() => {},0)`
+
+### 清除 require 缓存
+
+**https://newsn.net/say/commonjs-require-cache.html**

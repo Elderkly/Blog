@@ -186,34 +186,57 @@ const P = (nums) => {
 };
 ```
 
-
 ### 面试题 16.01 不额外使用空间交换数组元素
-难度：中等   
-技巧：看到不使用额外空间就要想到异或操作   
+
+难度：中等  
+技巧：看到不使用额外空间就要想到异或操作
+
 ```javascript
-var swapNumbers = function(numbers) {
-    numbers[1] ^= numbers[0]
-    numbers[0] ^= numbers[1]
-    numbers[1] ^= numbers[0]
-    return numbers
+var swapNumbers = function (numbers) {
+  numbers[1] ^= numbers[0];
+  numbers[0] ^= numbers[1];
+  numbers[1] ^= numbers[0];
+  return numbers;
 };
 ```
 
 ### 201. 数字范围按位与 给定区间找出区间内所有数字按位相与的结果
-难度：中等   
-思路：结果的规律为两个数的最大公共前缀后面补0。   
-    例如： 5 = 0101  6 = 0110 7 = 0111   
-    5 & 6 & 7 = 0100 = 4   
-    所以思路就是先将两个数不断左移一位找出最大公共前缀后，将结果再右移进行补零就是最后的结果   
+
+难度：中等  
+思路：结果的规律为两个数的最大公共前缀后面补 0。  
+ 例如： 5 = 0101 6 = 0110 7 = 0111  
+ 5 & 6 & 7 = 0100 = 4  
+ 所以思路就是先将两个数不断右移一位找出最大公共前缀后，将结果再左移进行补零就是最后的结果
+
 ```javascript
-var rangeBitwiseAnd = function(left, right) {
-    let sum = 0
-    while(left < right) {
-        left >>= 1
-        right >>= 1
-        sum ++
-    }
-    return left << sum
+var rangeBitwiseAnd = function (left, right) {
+  let sum = 0;
+  while (left < right) {
+    left >>= 1;
+    right >>= 1;
+    sum++;
+  }
+  return left << sum;
 };
 ```
 
+### 537. 复数乘法
+
+难度：中等  
+思路：先分离出两个复数的实部和虚部后，采用公式`(a + bi)(c + di) = (ac − bd) + (ad + bc)i`计算
+
+```javascript
+const getNumber = (string) => {
+  const s = string.split("+");
+  return [s[0], s[1].replace("i", "")];
+};
+var complexNumberMultiply = function (num1, num2) {
+  const [a, b] = getNumber(num1),
+    [c, d] = getNumber(num2);
+  return `${a * c - b * d}+${a * d + b * c}i`;
+};
+```
+
+#### 复数
+
+**https://www.shuxuele.com/numbers/complex-numbers.html**

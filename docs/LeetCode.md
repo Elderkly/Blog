@@ -240,3 +240,50 @@ var complexNumberMultiply = function (num1, num2) {
 #### 复数
 
 **https://www.shuxuele.com/numbers/complex-numbers.html**
+
+### 1302. 层数最深叶子节点的和
+
+难度：中等  
+思路：dfs 算法求解 在判断最大层级的处理逻辑上 当结点层级比最大节点大时 直接调整 sum 即可
+
+```javascript
+let sum = 0;
+let maxLevel = -1;
+const deep = (level, root) => {
+  if (!root.val) return;
+  level++;
+  if (maxLevel < level) {
+    sum = root.val;
+    maxLevel = level;
+  } else if (maxLevel === level) {
+    sum += root.val;
+  }
+  root.left && deep(level, root.left);
+  root.right && deep(level, root.right);
+};
+var deepestLeavesSum = function (root) {
+  deep(0, root);
+  return sum;
+};
+```
+
+### 1331. 数组序号转换
+
+给你一个整数数组 arr ，请你将数组中的每个元素替换为它们排序后的序号。  
+难度：简单  
+思路：需要处理元素相同的情况，使用 Map 记录每个数字的位置后，再遍历一次输出即可。  
+**技巧：看到重复元素要第一时间想到 Set 和 Map**
+
+```javascript
+var arrayRankTransform = function (arr) {
+  const a = [...arr].sort((a, b) => a - b);
+  const newArr = [];
+  const MapArr = new Map();
+  let idx = 0;
+  a.forEach((e, index) => {
+    !MapArr.has(e) && MapArr.set(e, ++idx);
+  });
+  arr.forEach((e, index) => newArr.push(MapArr.get(e)));
+  return newArr;
+};
+```

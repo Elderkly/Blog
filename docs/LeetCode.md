@@ -287,3 +287,95 @@ var arrayRankTransform = function (arr) {
   return newArr;
 };
 ```
+
+### 1403. 非递增顺序的最小子序列
+
+> 给你一个数组 nums，请你从中抽取一个子序列，满足该子序列的元素之和 严格 大于未包含在该子序列中的各元素之和。  
+> 如果存在多个解决方案，只需返回 长度最小 的子序列。如果仍然有多个解决方案，则返回 元素之和最大 的子序列。  
+> 与子数组不同的地方在于，「数组的子序列」不强调元素在原数组中的连续性，也就是说，它可以通过从数组中分离一些（也可能不分离）元素得到。  
+> 注意，题目数据保证满足所有约束条件的解决方案是 唯一 的。同时，返回的答案应当按 非递增顺序 排列。
+
+难度： 简单  
+解题思路： 利用满足条件时`sum-total < total`进行解答
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+const getSum = (nums) => (nums[0] ? nums.reduce((s, p) => (s += p)) : 0);
+var minSubsequence = function (nums) {
+  const n = [];
+  nums = nums.sort((a, b) => b - a);
+  const sum = getSum(nums);
+  let total = 0;
+  for (let i of nums) {
+    n.push(i);
+    total += i;
+    if (sum - total < total) break;
+  }
+  return n;
+};
+```
+
+### 899. 有序队列
+
+> 给定一个字符串 s 和一个整数 k 。你可以从 s 的前 k 个字母中选择一个，并把它加到字符串的末尾。  
+> 返回 在应用上述步骤的任意数量的移动后，字典上最小的字符串  。
+> 难度：困难  
+> 思路：当 k = 1 时，遍历字符串，每次截取第一个字符插入到末尾，找出最小的一个；当 k != 1 时，直接返回升序结果。  
+> 技巧：js 中字符串可以直接用大于小于符号比较大小。
+
+```javascript
+var orderlyQueue = function (s, k) {
+  if (k === 1) {
+    let n = s;
+    for (let i = 0; i < s.length - 1; i++) {
+      s = s.substring(1) + s[0];
+      n = n < s ? n : s;
+    }
+    return n;
+  }
+  return [...s].sort().join("");
+};
+```
+
+**https://leetcode.cn/problems/orderly-queue/solution/you-xu-dui-lie-by-leetcode-solution-p6gv/**
+
+### 623. 在二叉树中增加一行
+
+> 给定一个二叉树的根  root  和两个整数 val 和  depth ，在给定的深度  depth  处添加一个值为 val 的节点行。  
+> 注意，根节点  root  位于深度  1。  
+> 难度： 中等  
+> 思路： DFS 遍历， 利用 depth 来做条件判断
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} val
+ * @param {number} depth
+ * @return {TreeNode}
+ */
+var addOneRow = function (root, val, depth) {
+  if (!root) return null;
+  if (depth === 1) {
+    return new TreeNode(val, root);
+  }
+  if (depth === 2) {
+    root.left = new TreeNode(val, root.left);
+    root.right = new TreeNode(val, undefined, root.right);
+  } else {
+    root.left = addOneRow(root.left, val, depth - 1);
+    root.right = addOneRow(root.right, val, depth - 1);
+  }
+  return root;
+};
+```

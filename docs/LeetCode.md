@@ -379,3 +379,8 @@ var addOneRow = function (root, val, depth) {
   return root;
 };
 ```
+
+### ! 952. 按公因数计算最大组件大小
+
+难度：困难
+**https://leetcode.cn/problems/largest-component-size-by-common-factor/solution/an-gong-yin-shu-ji-suan-zui-da-zu-jian-d-amdx/**

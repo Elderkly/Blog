@@ -384,3 +384,89 @@ var addOneRow = function (root, val, depth) {
 
 难度：困难
 **https://leetcode.cn/problems/largest-component-size-by-common-factor/solution/an-gong-yin-shu-ji-suan-zui-da-zu-jian-d-amdx/**
+
+### 636. 函数的独占时间
+
+> 给一个程序运行甘特图，求出每个进程执行时间
+
+难度： 中等  
+思路： 使用栈记录每次操作，根据类型进行分别处理，当元素为 end 时，此时栈顶一定为该进程的 start 操作，此时运行时间将其相减+1 即可；当元素为 start 时，若栈不为空，表示有元素在执行，此时将栈顶元素暂停，记录元素已执行时间，修改栈顶元素的时间为当前的 time 以备后序操作。  
+技巧： 注意此题与括号匹配类似。
+
+```javascript
+/**
+ * @param {number} n
+ * @param {string[]} logs
+ * @return {number[]}
+ */
+var exclusiveTime = function (n, logs) {
+  const stack = []; // {idx, 开始运行的时间}
+  const res = new Array(n).fill(0); //  程序总运行时间
+  for (let log of logs) {
+    const splitArr = log.split(":");
+    let [idx, type, time] = splitArr;
+    idx = Number(idx);
+    time = Number(time);
+    if (type === "start") {
+      if (stack.length) {
+        //  栈顶有元素，中断原程序执行
+        res[stack[stack.length - 1][0]] += time - stack[stack.length - 1][1]; //  记录栈顶元素运行时间
+        stack[stack.length - 1][1] = time; //  修改栈顶元素开始时间为当前时间
+      }
+      stack.push([idx, time]); //  新元素入栈
+    } else {
+      const t = stack.pop();
+      res[t[0]] += time - t[1] + 1; //  计算程序运行时间
+      if (stack.length) {
+        //  出栈后还有元素， 表示上一个程序被当前这个程序中断
+        stack[stack.length - 1][1] = time + 1; //  更新上一个程序的开始时间
+      }
+    }
+  }
+  return res;
+};
+```
+
+### 640. 求解方程
+
+> 求解一个给定的方程，将 x 以字符串 "x=#value"  的形式返回。该方程仅包含 '+' ， '-' 操作，变量  x  和其对应系数。  
+> 如果方程没有解，请返回  "No solution" 。如果方程有无限解，则返回 “Infinite solutions” 。  
+> 题目保证，如果方程中只有一个解，则 'x' 的值是一个整数。  
+> 难度：中等  
+> 思路：遍历字符串，根据符号切换操作符，遇到等号则将计算的 x 的系数与数值进行翻转，达到移项的效果。最终结果为数值/系数。
+
+```javascript
+function solveEquation(s: string): string {
+  let x = 0,
+    num = 0,
+    n = s.length;
+  for (let i = 0, op = 1; i < n; ) {
+    switch (s[i]) {
+      case "+":
+        op = 1;
+        i++;
+        break;
+      case "-":
+        op = -1;
+        i++;
+        break;
+      case "=":
+        x *= -1;
+        num *= -1;
+        op = 1;
+        i++;
+        break;
+      default:
+        let j = i;
+        while (j < n && s[j] !== "+" && s[j] !== "-" && s[j] !== "=") j++;
+        if (s[j - 1] === "x")
+          x += (i < j - 1 ? Number(s.substring(i, j - 1)) : 1) * op;
+        else num += Number(s.substring(i, j)) * op;
+        i = j;
+        break;
+    }
+  }
+  if (x === 0) return num === 0 ? "Infinite solutions" : "No solution";
+  return `x=${num / -x}`;
+}
+```

@@ -48,3 +48,23 @@ npx 可以运行使用 Node.js 构建并通过 npm 仓库发布的代码。无�
 ### 清除 require 缓存
 
 **https://newsn.net/say/commonjs-require-cache.html**
+
+### 双重认证算法(双因子认证)
+
+HOTP: 请求双方传递计数器 C 进行同步。  
+TOTP: 根据时间戳进行同步，双方需保证时间戳相等。
+
+#### TOTP 的刷新周期如何保证
+
+```javascript
+T = Math.floor(Date.now() / 1000 / 30);
+```
+
+得出的结果为当前时间戳等于多少个 30 秒的周期，时间戳每过 30 秒都会产生一个新的时间周期 T，以此实现双端的同步。
+
+#### TOTP 原理图
+
+![TOTP原理](https://bbs-img.huaweicloud.com/blogs/img/1604456601669089716.png)
+
+**https://www.rfc-editor.org/rfc/rfc4226**  
+**https://bbs.huaweicloud.com/blogs/205528**

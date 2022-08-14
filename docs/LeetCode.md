@@ -186,7 +186,6 @@ const P = (nums) => {
 };
 ```
 
-
 ### 面试题 16.01 不额外使用空间交换数组元素
 难度：中等   
 技巧：看到不使用额外空间就要想到异或操作   
@@ -217,3 +216,17 @@ var rangeBitwiseAnd = function(left, right) {
 };
 ```
 
+### 190. 颠倒二进制位 0100 => 0010
+难度：简单
+注意：js中形参接收二进制数后会自动转换为10进制数，此时需要遍历求原二进制数，无法使用toString转换    
+```javascript
+var reverseBits = function(n) {
+    const arr = []
+    while(n > 0) {
+        arr.push(n % 2)
+        n = parseInt(n/2) 
+    }
+    while(arr.length < 32) arr.push(0)
+    return parseInt(arr.join(''), 2)
+};
+```

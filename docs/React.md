@@ -253,17 +253,23 @@ https://react.docschina.org/docs/hooks-overview.html
 # Hook 性能优化
 
 ### React.memo
-通过`React.memo`包装后的组件在相同props的情况下渲染相同的结果，可避免父组件更新导致子组件更新。
+
+通过`React.memo`包装后的组件在相同 props 的情况下渲染相同的结果，可避免父组件更新导致子组件更新。
+
 ### useMemo
+
 `useMemo`用于缓存某个函数的返回值，只有当依赖项改变时才会去重新执行函数。可避免函数每次渲染都进行不必要的计算。
+
 ### useCallback
-props在传递函数时传递的是函数的指针，`useCallback`可将函数缓存起来，并返回函数的指针，当依赖项没有发生改变时指针不会变化。用于避免子组件因接收父组件函数props而引起的不必要的刷新。   
+
+props 在传递函数时传递的是函数的指针，`useCallback`可将函数缓存起来，并返回函数的指针，当依赖项没有发生改变时指针不会变化。用于避免子组件因接收父组件函数 props 而引起的不必要的刷新。
 
 **https://juejin.cn/post/7010278471473594404**
 
-
 ### 如何封装全局弹窗
-主要用到`ReactDOM.createRoot`和`ReactDOM.render`，往`body`里插入一个`div`后，在这个`div`里渲染弹窗组件即可。入场动画通过`animate`实现。   
+
+主要用到`ReactDOM.createRoot`和`ReactDOM.render`，往`body`里插入一个`div`后，在这个`div`里渲染弹窗组件即可。入场动画通过`animate`实现。
+
 ```typescript
 class Tip {
   private static text: string | JSX.Element;
@@ -275,16 +281,16 @@ class Tip {
     return (
       <div
         className={`min-w-50 p-5 max-w-80 bg-white mb-80 shadow-md shadow-dark-100 text-center rounded-lg opacity-0 animate-showUp <sm:mb-0  ${
-          this.icon ? 'animate-duration-1800' : 'animate-duration-1300'
+          this.icon ? "animate-duration-1800" : "animate-duration-1300"
         } `}
       >
         {
           // eslint-disable-next-line no-nested-ternary
-          this.icon === 'success' ? (
-            <Icon icon={confirmCircle} className={'text-8xl text-green-400'} />
-          ) : this.icon === 'warning' ? (
+          this.icon === "success" ? (
+            <Icon icon={confirmCircle} className={"text-8xl text-green-400"} />
+          ) : this.icon === "warning" ? (
             <AiOutlineWarning
-              className={'text-8xl text-red-500'}
+              className={"text-8xl text-red-500"}
             ></AiOutlineWarning>
           ) : null
         }
@@ -294,9 +300,9 @@ class Tip {
   }
 
   private static create() {
-    this.msgBox = document.createElement('div');
+    this.msgBox = document.createElement("div");
     this.msgBox.className =
-      'fixed top-0 w-full h-full left-0 flex items-center justify-center';
+      "fixed top-0 w-full h-full left-0 flex items-center justify-center";
     document.body.appendChild(this.msgBox);
     createRoot(this.msgBox).render(this.View());
   }
@@ -334,4 +340,213 @@ export default ToolTip;
 ```
 
 ### React-Router-Dom 全局拦截器
+
 **https://reactrouter.com/docs/en/v6/examples/auth**
+
+### Redux 一次触发多个 action
+
+用 redux-thunk
+
+```javascript
+/**store/index.ts***/
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import promiseMiddleware from "redux-promise";
+import thunk from "redux-thunk";
+
+import storeData from "./reducers";
+
+const reducers = combineReducers({
+  storeData,
+});
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const myPersistReducer = persistReducer(persistConfig, reducers);
+const store: any = createStore(
+  myPersistReducer,
+  applyMiddleware(promiseMiddleware, thunk)
+);
+const persistor = persistStore(store);
+
+export { persistor, store };
+
+/***store/actions/index.ts***/
+import initState from "../state";
+import actionTypes from "./types";
+
+export const setStoreData = (type: string, payload: any): object => {
+  // @ts-ignore
+  if (!actionTypes[type]) throw new Error("请传入修改的数据类型和值");
+  return { type, payload };
+};
+
+export const logout =
+  () => (dispatch: any, getState: any, extraArgument: any) => {
+    dispatch({ type: "SET_LOGIN", payload: {} });
+    dispatch({ type: "SET_CONTEXT", payload: {} });
+    dispatch({ type: "SET_TOKEN", payload: null });
+    dispatch({ type: "SET_BALANCE", payload: null });
+    dispatch({
+      type: "SET_ROUTER_HISTORY",
+      payload: initState.routerHistory,
+    });
+    // console.log('清空完成', getState());
+  };
+```
+
+### react-router-dom v6 实现面包屑
+
+需配合`history`库
+
+````javascript
+/** index.tsx配置history ***/
+import { createBrowserHistory } from 'history';
+import { BrowserRouter, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+//...
+
+export const history = createBrowserHistory({ window });
+
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement,
+);
+
+root.render(
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <HistoryRouter history={history}>
+        <App />
+      </HistoryRouter>
+    </PersistGate>
+  </Provider>,
+);
+
+
+/*** Breadcrumb组件监听路由变化 ****/
+import { history } from '@/index';
+import RouterHistory from '@/utils/routerHistory';
+
+const Breadcrumb:FC<BaseProps> = ({ storeData: { routerHistory } }) => {
+  const location = useLocation();
+  const n = useNavigate();
+  const { entries, index } = routerHistory;
+
+  const navigate = (type: string) => {
+    // @ts-ignore
+    const { url } = RouterHistory[type]();
+    url && n(url, { state: { breadcrumb: true } });
+  };
+
+  useEffect(() => {
+    RouterHistory.init();
+  }, []);
+
+  useEffect(() => {
+    RouterHistory.change(location, history.action);
+  }, [location.pathname]);
+
+  // console.log('Breadcrumb', entries, index);
+
+  return (
+    <div className="flex text-3xl">
+      {
+        ['back', 'next'].map((e, xIndex) => (
+          <BiChevronDown key={xIndex} className={`transform cursor-pointer ${xIndex === 0 ? 'rotate-90' : '-rotate-90'} ${(xIndex === 0 && index === 0) || (xIndex === 1 && index === entries.length - 1) ? 'text-gray-300 pointer-events-none' : ''}`} onClick={() => navigate(e)} />
+        ))
+      }
+    </div>
+  );
+};
+export default Breadcrumb;
+
+
+/** routerHistory类 用于记录路由变化 **/
+import { store } from '@/store';
+import initState from '@/store/state';
+
+/**
+ * 路由记录类
+ * 记录路由变化 用于实现面包屑
+*/
+export default class RouterHistory {
+  //  深拷贝initState 防止造成污染
+  private static routerHistory = JSON.parse(JSON.stringify(initState.routerHistory));
+
+  private static update(entries: any, index: number) {
+    try {
+      this.routerHistory = { entries, index };
+      store.dispatch({
+        type: 'SET_ROUTER_HISTORY',
+        payload: { entries, index },
+      });
+      return 1;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  public static init() {
+    const { storeData: { routerHistory } } = store.getState();
+    this.routerHistory = routerHistory;
+  }
+
+  public static reset() {
+    this.routerHistory = JSON.parse(JSON.stringify(initState.routerHistory));
+  }
+
+  public static next() {
+    const { entries, index } = this.routerHistory;
+    if (index !== entries.length - 1) {
+      this.update(entries, index + 1);
+      return entries[index + 1];
+    }
+    return null;
+  }
+
+  public static back() {
+    const { entries, index } = this.routerHistory;
+    if (entries.length !== 1 && index !== 0) {
+      this.update(entries, index - 1);
+      return entries[index - 1];
+    }
+    return null;
+  }
+
+  /**
+   * @location: 当前路由信息
+   * @action: 动作 PUSH/REPLACE等
+   * 传入路由跳转信息 根据路由动作计算新的路由历史
+  */
+  public static change(location: any, action: string) {
+    let { entries, index } = this.routerHistory;
+    const { pathname, state } = location;
+    const breadcrumb = state?.breadcrumb || false;
+    const rIndex = entries.findIndex((x: any) => x.url === pathname);
+    //  来源于面包屑
+    if (breadcrumb) {
+      return this.update(entries, index);
+    //  用于页面权限拦截的场景 此时路由先push后检验权限非法 重定向到目标路由 所以需要pop掉权限不符的路由
+    } if (action === 'REPLACE' && rIndex !== -1) {
+      entries.pop();
+      index = rIndex;
+    //  正常replace => 覆盖当前index指向的路由信息即可
+    } else if (action === 'REPLACE') {
+      entries[index] = { url: pathname, location };
+    //  路由栈中已存在目标路由 => 只需改变index
+    } else if (rIndex !== -1) {
+      index = rIndex;
+    //  新路由 => 入栈 改变index
+    } else {
+      index = entries.length;
+      entries.push({ url: pathname, location });
+    }
+    return this.update(entries, index);
+  }
+}
+
+```
+````

@@ -394,7 +394,10 @@ const reg = /pattern/flags                  //  字面量创建
 const reg2 = new RegExp(pattren, flags)     //  实例创建 可进行字符串拼接
 ```
 
-正则截取`id`后的内容
+正则截取`id`后的内容     
+`'id:123123'.match(/id(\W*)/)[1]`或`new RegExp('id(\\S*)').exec('id:123123')[1]`    
+
+
 
 ### 实现毛玻璃效果
 

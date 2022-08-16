@@ -426,15 +426,18 @@ var exclusiveTime = function (n, logs) {
   return res;
 };
 ```
+
 ### 190. 颠倒二进制位 0100 => 0010
+
 难度：简单
-注意：js中形参接收二进制数后会自动转换为10进制数，此时需要遍历求原二进制数，无法使用toString转换    
-```javascript
+注意：js 中形参接收二进制数后会自动转换为 10 进制数，此时需要遍历求原二进制数，无法使用 toString 转换
+
+````javascript
 var reverseBits = function(n) {
     const arr = []
     while(n > 0) {
         arr.push(n % 2)
-        n = parseInt(n/2) 
+        n = parseInt(n/2)
     }
     while(arr.length < 32) arr.push(0)
     return parseInt(arr.join(''), 2)
@@ -442,10 +445,10 @@ var reverseBits = function(n) {
 
 ### 640. 求解方程
 
-> 求解一个给定的方程，将 x 以字符串 "x=#value"  的形式返回。该方程仅包含 '+' ， '-' 操作，变量  x  和其对应系数。  
-> 如果方程没有解，请返回  "No solution" 。如果方程有无限解，则返回 “Infinite solutions” 。  
-> 题目保证，如果方程中只有一个解，则 'x' 的值是一个整数。  
-> 难度：中等  
+> 求解一个给定的方程，将 x 以字符串 "x=#value"  的形式返回。该方程仅包含 '+' ， '-' 操作，变量  x  和其对应系数。
+> 如果方程没有解，请返回  "No solution" 。如果方程有无限解，则返回 “Infinite solutions” 。
+> 题目保证，如果方程中只有一个解，则 'x' 的值是一个整数。
+> 难度：中等
 > 思路：遍历字符串，根据符号切换操作符，遇到等号则将计算的 x 的系数与数值进行翻转，达到移项的效果。最终结果为数值/系数。
 
 ```javascript
@@ -482,65 +485,101 @@ function solveEquation(s: string): string {
   if (x === 0) return num === 0 ? "Infinite solutions" : "No solution";
   return `x=${num / -x}`;
 }
-```
+````
 
 ### 768. 最多能完成排序的块 II
-> 这个问题和“最多能完成排序的块”相似，但给定数组中的元素可以重复，输入数组最大长度为2000，其中的元素最大为10**8。   
-> arr是一个可能包含重复元素的整数数组，我们将这个数组分割成几个“块”，并将这些块分别进行排序。之后再连接起来，使得连接的结果和按升序排序后的原数组相同。   
-> 我们最多能将数组分成多少块？   
-难度： 困难    
-**https://leetcode.cn/problems/max-chunks-to-make-sorted-ii/solution/zui-duo-neng-wan-cheng-pai-xu-de-kuai-ii-w5c6/**
+
+> 这个问题和“最多能完成排序的块”相似，但给定数组中的元素可以重复，输入数组最大长度为 2000，其中的元素最大为 10**8。  
+> arr 是一个可能包含重复元素的整数数组，我们将这个数组分割成几个“块”，并将这些块分别进行排序。之后再连接起来，使得连接的结果和按升序排序后的原数组相同。  
+> 我们最多能将数组分成多少块？  
+> 难度： 困难  
+> **https://leetcode.cn/problems/max-chunks-to-make-sorted-ii/solution/zui-duo-neng-wan-cheng-pai-xu-de-kuai-ii-w5c6/**
+
 ```javascript
 function maxChunksToSorted(arr: number[]): number {
-    let res = 0
-    const sortArr = [...arr].sort((a,b) => a - b)
-    const map = new Map()
-    for (let i = 0; i < arr.length; i++) {
-        const x = arr[i], y = sortArr[i]
-        map.set(x, (map.get(x) || 0 ) + 1)
-        if (map.get(x) === 0) map.delete(x)
-        map.set(y, (map.get(y) || 0) - 1)
-        if (map.get(y) === 0) map.delete(y)
-        if (map.size === 0) res++
-    }
-    return res
-};
+  let res = 0;
+  const sortArr = [...arr].sort((a, b) => a - b);
+  const map = new Map();
+  for (let i = 0; i < arr.length; i++) {
+    const x = arr[i],
+      y = sortArr[i];
+    map.set(x, (map.get(x) || 0) + 1);
+    if (map.get(x) === 0) map.delete(x);
+    map.set(y, (map.get(y) || 0) - 1);
+    if (map.get(y) === 0) map.delete(y);
+    if (map.size === 0) res++;
+  }
+  return res;
+}
 ```
 
-### * 5. 最长回文子串
+### \* 5. 最长回文子串
+
 > 给你一个字符串 s，找到 s 中最长的回文子串。
-难度： 中等
-思路：   
-**https://leetcode.cn/problems/longest-palindromic-substring/solution/zui-chang-hui-wen-zi-chuan-by-leetcode-solution/**
+> 难度： 中等
+> 思路：  
+> **https://leetcode.cn/problems/longest-palindromic-substring/solution/zui-chang-hui-wen-zi-chuan-by-leetcode-solution/**
 
 ```javascript
 function longestPalindrome(s) {
-    const length = s.length
-    let  maxLen = 1, begin = 0
-    if (length < 2) return s
-    const charArr = Array.from(new Array(length), () => new Array(length).fill(false))
+  const length = s.length;
+  let maxLen = 1,
+    begin = 0;
+  if (length < 2) return s;
+  const charArr = Array.from(new Array(length), () =>
+    new Array(length).fill(false)
+  );
+  for (let i = 0; i < length; i++) {
+    charArr[i][i] = true;
+  }
+  for (let Len = 2; Len <= length; Len++) {
     for (let i = 0; i < length; i++) {
-        charArr[i][i] = true
-    }
-    for(let Len = 2; Len <= length; Len ++) {
-        for (let i = 0; i < length; i ++) {
-            const j = Len + i - 1
-            if (j >= length) break
-            if (s[i] !== s[j]) charArr[i][j] = false
-            else {
-                if (j - i < 3) {
-                    charArr[i][j] = true
-                } else {
-                    //  charArr[i][j]表示更大一圈的string charArr[i + 1][j - 1]表示往里缩小一位
-                    charArr[i][j] = charArr[i + 1][j - 1]
-                }
-            }
-            if (charArr[i][j] && j - i + 1 > maxLen) {
-                maxLen = j - i + 1
-                begin = i
-            }
+      const j = Len + i - 1;
+      if (j >= length) break;
+      if (s[i] !== s[j]) charArr[i][j] = false;
+      else {
+        if (j - i < 3) {
+          charArr[i][j] = true;
+        } else {
+          //  charArr[i][j]表示更大一圈的string charArr[i + 1][j - 1]表示往里缩小一位
+          charArr[i][j] = charArr[i + 1][j - 1];
         }
+      }
+      if (charArr[i][j] && j - i + 1 > maxLen) {
+        maxLen = j - i + 1;
+        begin = i;
+      }
     }
-    return s.substring(begin, begin + maxLen)
+  }
+  return s.substring(begin, begin + maxLen);
+}
+```
+
+### 6. Z 字形变换
+
+> 将一个给定字符串 s 根据给定的行数 numRows ，以从上往下、从左到右进行 Z 字形排列。
+
+难度：中等  
+思路：根据 numRows 创建相应个数的数组，遍历字符依次往数组内插入字符后最后将其输出就是结果。
+
+```javascript
+/**
+ * @param {string} s
+ * @param {number} numRows
+ * @return {string}
+ */
+var convert = function (s, numRows) {
+  if (numRows < 2 || s.length < 2) return s;
+  const sa = new Array(numRows).fill("");
+  let j = 0,
+    flag = -1;
+  for (let i = 0; i < s.length; i++) {
+    sa[j] += s[i];
+    if (j === 0 || j === sa.length - 1) flag = -flag;
+    j += flag;
+  }
+  return sa.join("");
 };
 ```
+
+**https://leetcode.cn/problems/zigzag-conversion/solution/zzi-xing-bian-huan-by-jyd/**

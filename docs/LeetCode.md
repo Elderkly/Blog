@@ -583,3 +583,69 @@ var convert = function (s, numRows) {
 ```
 
 **https://leetcode.cn/problems/zigzag-conversion/solution/zzi-xing-bian-huan-by-jyd/**
+
+### 12. 整数转罗马数字
+
+难度： 中等
+
+```javascript
+var intToRoman = function (num) {
+  const valueSymbols = [
+    [1000, "M"],
+    [900, "CM"],
+    [500, "D"],
+    [400, "CD"],
+    [100, "C"],
+    [90, "XC"],
+    [50, "L"],
+    [40, "XL"],
+    [10, "X"],
+    [9, "IX"],
+    [5, "V"],
+    [4, "IV"],
+    [1, "I"],
+  ];
+  const roman = [];
+  for (const [value, symbol] of valueSymbols) {
+    while (num >= value) {
+      num -= value;
+      roman.push(symbol);
+    }
+    if (num == 0) {
+      break;
+    }
+  }
+  return roman.join("");
+};
+```
+
+### 13. 罗马数字转整数
+
+难度： 简单
+
+```javascript
+var romanToInt = function (s) {
+  const Obj = {
+    I: 1,
+    IV: 4,
+    V: 5,
+    IX: 9,
+    X: 10,
+    XL: 40,
+    L: 50,
+    XC: 90,
+    C: 100,
+    CD: 400,
+    D: 500,
+    CM: 900,
+    M: 1000,
+  };
+  let n = 0;
+  for (let i = 0; i < s.length; i++) {
+    const value = Obj[s[i]];
+    if (i < s.length - 1 && value < Obj[s[i + 1]]) n -= value;
+    else n += value;
+  }
+  return n;
+};
+```

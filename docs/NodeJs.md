@@ -68,3 +68,13 @@ T = Math.floor(Date.now() / 1000 / 30);
 
 **https://www.rfc-editor.org/rfc/rfc4226**  
 **https://bbs.huaweicloud.com/blogs/205528**
+
+#### 上传图片
+
+```javascript
+   @Post('test')
+    public async test(@UploadedFile('file') files: any) {
+        console.log(files)
+        return files
+    }
+```

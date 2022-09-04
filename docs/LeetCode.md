@@ -649,3 +649,73 @@ var romanToInt = function (s) {
   return n;
 };
 ```
+
+
+### 658. 找到 K 个最接近的元素
+> 给定一个 排序好 的数组 arr ，两个整数 k 和 x ，从数组中找到最靠近 x（两数之差最小）的 k 个数。返回的结果必须要是按升序排好的。
+难度：中等
+思路1：先将数组按距离从小到大排序好后截取前k个元素后在进行sort。
+```javascript
+/**
+ * @param {number[]} arr
+ * @param {number} k
+ * @param {number} x
+ * @return {number[]}
+ */
+var findClosestElements = function(arr, k, x) {
+    return arr.sort((a,b) => {
+        const p = Math.abs(a - x), n = Math.abs(b - x)
+        //  p为后一项的距离 n为前一项的距离 后一项距离近则返回-1 表示将a排在b前面 即后一项排在前面
+        if (p < n || (p === n && a < b)) return b - a
+        else return a - b
+    }).filter((n,index) => index < k).sort((a,b) => a - b)
+};
+```
+
+思路2：先用二分查找将数组切割为两部分[0,left]都小于x和[right, length-1]都大于等于x后，再从中间往两边扩散选择k个元素。   
+注意：此处二分查找做了改动，当查找不到元素时，有限返回较大的结果。    
+
+```javascript
+/**
+ * @param {number[]} arr
+ * @param {number} k
+ * @param {number} x
+ * @return {number[]}
+ */
+
+
+//  原二分查找
+// [1,5,7] 4 => 0
+// const BinarySearch = (arr, x) => {
+//     let low = 0, high = arr.length - 1
+//     while(low < high) {
+//         const mid = Math.floor((low + high) / 2)
+//         if (arr[mid] === x) return mid
+//         if (arr[mid] > x) high = mid - 1
+//         else low = mid + 1
+//     }
+//     return low
+// }
+
+// [1,5,7] 4 => 1
+const BinarySearch = (arr, x) => {
+    let low = 0, high = arr.length - 1
+    while(low < high) {
+        const mid = Math.floor((low + high) / 2)
+        if (arr[mid] >= x) high = mid
+        else low = mid + 1
+    }
+    return low
+}
+
+var findClosestElements = function(arr, k, x) {
+    let high = BinarySearch(arr, x), low = high - 1
+    while(k-- > 0) {
+        if (low < 0) high ++
+        else if (high >= arr.length) low --
+        else if (x - arr[low] <= arr[high] - x) low --
+        else high ++
+    }
+    return arr.slice(low + 1, high)
+};
+```

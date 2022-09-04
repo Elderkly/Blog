@@ -504,3 +504,18 @@ https://blog.csdn.net/qq_38970408/article/details/121018660
 
 传了 formData 就不用制定 Content-Type 了。  
 **https://zhuanlan.zhihu.com/p/34291688**
+
+
+## sort
+> 如果 compareFunction(a, b) 小于 0 ，那么 a 会被排列到 b 之前；    
+> 如果 compareFunction(a, b) 等于 0 ， a 和 b 的相对位置不变。备注： ECMAScript 标准并不保证这一行为，而且也不是所有浏览器都会遵守（例如 Mozilla 在 2003 年之前的版本）；     
+> 如果 compareFunction(a, b) 大于 0 ， b 会被排列到 a 之前。    
+> compareFunction(a, b) 必须总是对相同的输入返回相同的比较结果，否则排序的结果将是不确定的。
+
+```JavaScript
+[-1,-2,-3,1,2,4].sort() // [-1,-2,-3,1,2,4]
+[-1,-2,-3,1,2,4].sort((a,b) => a- b)  //  [-3,-2,-1,1,2,4]
+```
+
+**注意a一般指向数组后一项并不是前一项**
+**https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/sort** 

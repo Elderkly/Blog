@@ -719,3 +719,6 @@ var findClosestElements = function(arr, k, x) {
     return arr.slice(low + 1, high)
 };
 ```
+
+### ! 667. 优美的排列 II
+**https://leetcode.cn/problems/beautiful-arrangement-ii/solution/you-mei-de-pai-lie-ii-by-leetcode-soluti-qkrs/**

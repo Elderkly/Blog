@@ -397,13 +397,6 @@ const reg2 = new RegExp(pattren, flags)     //  实例创建 可进行字符串�
 正则截取`id`后的内容  
 `'id:123123'.match(/id(\W*)/)[1]`或`new RegExp('id(\\S*)').exec('id:123123')[1]`
 
-### 实现毛玻璃效果
-
-```css
-background: rgba(255, 255, 255, 0.2);
-backdrop-filter: saturate(180%) blur(20px);
-```
-
 ## 浏览器缓存
 
 **Web 缓存种类：** 数据库缓存，CDN 缓存，代理服务器缓存，浏览器缓存。  
@@ -504,3 +497,36 @@ https://blog.csdn.net/qq_38970408/article/details/121018660
 
 传了 formData 就不用制定 Content-Type 了。  
 **https://zhuanlan.zhihu.com/p/34291688**
+
+## 创建二维数组
+```javascript
+Array.from(new Array(length), () =>
+  new Array(length).fill(false)
+);
+```
+
+
+## react图片上传
+```javascript
+ <div className="border-2 h-12 border-dotted cursor-pointer flex justify-center items-center text-white border-[#8692AF] text-base" onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDragOver={onDragOver} onDrop={onDrop}></div>
+
+  const onDragEnter = (e: any) => {
+    console.log('onDragEnter');
+    e.preventDefault();
+  };
+
+  const onDragOver = (e: any) => e.preventDefault();
+
+  const onDragLeave = (e: any) => {
+    console.log('onDragLeave');
+    e.preventDefault();
+  };
+  const onDrop = (e: any) => {
+    e.preventDefault();
+    console.log(e.dataTransfer?.files?.[0])
+  };
+```
+
+
+## 性能优化
+**https://juejin.cn/post/6949896020788690958**

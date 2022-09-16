@@ -76,3 +76,17 @@ animation: 3s slidein;
 ### 文本首字母大写
 
 `capitalize`
+
+### 背景图
+```css
+  background: url('/static/bg.png');
+  background-size: 100% 100%;
+  background-attachment: fixed;
+```
+
+### 实现毛玻璃效果
+
+```css
+background: rgba(255, 255, 255, 0.2);
+backdrop-filter: saturate(180%) blur(20px);
+```

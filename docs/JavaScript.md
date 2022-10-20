@@ -545,3 +545,9 @@ Array.from(new Array(length), () =>
 
 ## 性能优化
 **https://juejin.cn/post/6949896020788690958**
+
+## Date
+```JavaScript
+//  获取某一天的23.59.59
+new Date(time).setHours(23,59,59)
+```

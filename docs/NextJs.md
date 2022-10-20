@@ -126,3 +126,7 @@ router.push({
 ### Nextjs12 配置 antd
 
 **https://github.com/elado/next-with-less**
+
+### Nextjs12 配置环境变量
+**https://nextjs.org/docs/basic-features/environment-variables**     
+**https://segmentfault.com/a/1190000038279352**

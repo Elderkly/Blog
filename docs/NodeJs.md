@@ -78,3 +78,9 @@ T = Math.floor(Date.now() / 1000 / 30);
         return files
     }
 ```
+
+#### 发送模板邮件
+
+**http://automattic.github.io/juice/**
+**https://juejin.cn/post/6903138530370715656**
+**https://www.zhuimengzhu.com/details/149.html**

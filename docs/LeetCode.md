@@ -650,11 +650,12 @@ var romanToInt = function (s) {
 };
 ```
 
-
 ### 658. 找到 K 个最接近的元素
+
 > 给定一个 排序好 的数组 arr ，两个整数 k 和 x ，从数组中找到最靠近 x（两数之差最小）的 k 个数。返回的结果必须要是按升序排好的。
-难度：中等
-思路1：先将数组按距离从小到大排序好后截取前k个元素后在进行sort。
+> 难度：中等
+> 思路 1：先将数组按距离从小到大排序好后截取前 k 个元素后在进行 sort。
+
 ```javascript
 /**
  * @param {number[]} arr
@@ -662,18 +663,22 @@ var romanToInt = function (s) {
  * @param {number} x
  * @return {number[]}
  */
-var findClosestElements = function(arr, k, x) {
-    return arr.sort((a,b) => {
-        const p = Math.abs(a - x), n = Math.abs(b - x)
-        //  p为后一项的距离 n为前一项的距离 后一项距离近则返回-1 表示将a排在b前面 即后一项排在前面
-        if (p < n || (p === n && a < b)) return b - a
-        else return a - b
-    }).filter((n,index) => index < k).sort((a,b) => a - b)
+var findClosestElements = function (arr, k, x) {
+  return arr
+    .sort((a, b) => {
+      const p = Math.abs(a - x),
+        n = Math.abs(b - x);
+      //  p为后一项的距离 n为前一项的距离 后一项距离近则返回-1 表示将a排在b前面 即后一项排在前面
+      if (p < n || (p === n && a < b)) return b - a;
+      else return a - b;
+    })
+    .filter((n, index) => index < k)
+    .sort((a, b) => a - b);
 };
 ```
 
-思路2：先用二分查找将数组切割为两部分[0,left]都小于x和[right, length-1]都大于等于x后，再从中间往两边扩散选择k个元素。   
-注意：此处二分查找做了改动，当查找不到元素时，有限返回较大的结果。    
+思路 2：先用二分查找将数组切割为两部分[0,left]都小于 x 和[right, length-1]都大于等于 x 后，再从中间往两边扩散选择 k 个元素。  
+注意：此处二分查找做了改动，当查找不到元素时，有限返回较大的结果。
 
 ```javascript
 /**
@@ -682,7 +687,6 @@ var findClosestElements = function(arr, k, x) {
  * @param {number} x
  * @return {number[]}
  */
-
 
 //  原二分查找
 // [1,5,7] 4 => 0
@@ -699,26 +703,155 @@ var findClosestElements = function(arr, k, x) {
 
 // [1,5,7] 4 => 1
 const BinarySearch = (arr, x) => {
-    let low = 0, high = arr.length - 1
-    while(low < high) {
-        const mid = Math.floor((low + high) / 2)
-        if (arr[mid] >= x) high = mid
-        else low = mid + 1
-    }
-    return low
-}
+  let low = 0,
+    high = arr.length - 1;
+  while (low < high) {
+    const mid = Math.floor((low + high) / 2);
+    if (arr[mid] >= x) high = mid;
+    else low = mid + 1;
+  }
+  return low;
+};
 
-var findClosestElements = function(arr, k, x) {
-    let high = BinarySearch(arr, x), low = high - 1
-    while(k-- > 0) {
-        if (low < 0) high ++
-        else if (high >= arr.length) low --
-        else if (x - arr[low] <= arr[high] - x) low --
-        else high ++
-    }
-    return arr.slice(low + 1, high)
+var findClosestElements = function (arr, k, x) {
+  let high = BinarySearch(arr, x),
+    low = high - 1;
+  while (k-- > 0) {
+    if (low < 0) high++;
+    else if (high >= arr.length) low--;
+    else if (x - arr[low] <= arr[high] - x) low--;
+    else high++;
+  }
+  return arr.slice(low + 1, high);
 };
 ```
 
 ### ! 667. 优美的排列 II
+
 **https://leetcode.cn/problems/beautiful-arrangement-ii/solution/you-mei-de-pai-lie-ii-by-leetcode-soluti-qkrs/**
+
+### **\*** 46. 全排列 重点
+
+思路：重点在于理解递归的顺序 在纸上画一遍就大概知道了
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+
+var permute = function (nums) {
+  const res = [],
+    used = [],
+    n = nums.length;
+  const backtrack = (list, deep) => {
+    if (n === deep) {
+      res.push([...list]);
+      return;
+    }
+    for (let i = 0; i < n; i++) {
+      if (!used[i]) {
+        list.push(nums[i]);
+        used[i] = true;
+        backtrack(list, deep + 1);
+        used[i] = false;
+        list.pop();
+      }
+    }
+  };
+  backtrack([], 0);
+  return res;
+};
+```
+
+**https://leetcode.cn/problems/permutations/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liweiw/**
+
+### 870. 优势洗牌
+
+> 给定两个大小相等的数组  nums1  和  nums2，nums1  相对于 nums2 的优势可以用满足  nums1[i] > nums2[i]  的索引 i  的数目来描述。
+> 返回 nums1  的任意排列，使其相对于 nums2  的优势最大化。
+> 难度：中等
+> 思路 1：暴力解 先求全排列再遍历求出最大优势的数组
+
+```javascript
+const backtrack = (list, used, res, deep, length, realList) => {
+  if (deep === length) {
+    res.push([...list]);
+    return;
+  }
+  for (let i = 0; i < length; i++) {
+    if (!used[i]) {
+      list.push(realList[i]);
+      used[i] = true;
+      backtrack(list, used, res, deep + 1, length, realList);
+      used[i] = false;
+      list.pop();
+    }
+  }
+};
+const getAllList = (list) => {
+  const res = [],
+    used = [],
+    length = list.length;
+  backtrack([], used, res, 0, length, list);
+  return res;
+};
+const getLevel = (list1, list2) => {
+  let num = 0;
+  list1.forEach((e, index) => (e > list2[index] ? num++ : null));
+  return num;
+};
+var advantageCount = function (nums1, nums2) {
+  let maxN = 0,
+    maxNum = nums1;
+  const allList = getAllList(nums1);
+  allList.forEach((e, index) => {
+    const level = getLevel(e, nums2);
+    if (level > maxN) {
+      maxN = level;
+      maxNum = e;
+    }
+  });
+  return maxNum;
+};
+```
+
+### 93. 复原 IP 地址
+
+> 有效 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。  
+> 例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，但是 "0.011.255.245"、"192.168.1.312" 和 "192.168@1.1" 是 无效 IP 地址。  
+> 给定一个只包含数字的字符串 s ，用以表示一个 IP 地址，返回所有可能的有效 IP 地址，这些地址可以通过在 s 中插入 '.' 来形成。你 不能 重新排序或删除 s 中的任何数字。你可以按 任何 顺序返回答案。
+
+难度：中等  
+思路：思路还是 dfs，先在图中画出递归层级和过程，从哪里递归进去，从哪里出来。写代码的时候先写出遍历所有情况的代码，之后再根据画的图来剪枝。  
+**技巧：在常规的回溯题中，对于后面的数可以用到前面的数这种情况多半用 used，若不能出现重复元素多半用 begin。**
+
+```javascript
+const isInvalid = (str, length) =>
+  length > 3 ||
+  (length > 1 && str[0] === "0") ||
+  isNaN(Number(str)) ||
+  Number(str) > 255;
+var restoreIpAddresses = function (s) {
+  const res = [],
+    n = s.length;
+  const dfs = (list, begin) => {
+    if (list.length === 4) {
+      res.push(list.join("."));
+      return;
+    }
+    for (let i = begin; i < n; i++) {
+      //  确保最后一个数组合后不会有残留的数
+      if (list.length === 3 && i + 1 !== n) continue;
+      const item = s.substring(begin, i + 1);
+      //  无效数字 => 剪枝
+      if (isInvalid(item, item.length)) continue;
+      list.push(item);
+      dfs(list, i + 1);
+      list.pop();
+    }
+  };
+  dfs([], 0);
+  return res;
+};
+```

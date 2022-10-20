@@ -547,6 +547,10 @@ export default class RouterHistory {
     return this.update(entries, index);
   }
 }
-
-```
 ````
+
+### React 配置环境变量
+**https://www.html.cn/create-react-app/docs/adding-custom-environment-variables/**
+
+### React 空标签带key
+**https://www.jianshu.com/p/ceae16cae6b3**

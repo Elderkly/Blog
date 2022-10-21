@@ -855,3 +855,5 @@ var restoreIpAddresses = function (s) {
   return res;
 };
 ```
+
+**回溯其实就是横向遍历，纵向递归的组合。**

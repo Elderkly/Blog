@@ -84,3 +84,47 @@ T = Math.floor(Date.now() / 1000 / 30);
 **http://automattic.github.io/juice/**
 **https://juejin.cn/post/6903138530370715656**
 **https://www.zhuimengzhu.com/details/149.html**
+
+#### 接口限流
+
+##### 全局
+
+**https://github.com/nfriedly/express-rate-limit**
+
+##### 局部
+
+使用中间件  
+**局部中间件要传参就在中间件中返回函数 调用时加括号 否则调用时不用加括号**
+
+```javascript
+//  /middleware/RequestLimitMiddleware.ts
+import { Request, Response} from 'express'
+import { redisClient } from '../../utils/redis'
+interface LimitProps {
+    max?: number        //  一段时间内最大请求次数
+    minutes?: number    //  间隔时长
+    message?: string    //  错误提醒
+    redisKey?: string   //  与其它接口共享限额还是单独限额
+}
+export function RequestLimitMiddleware(options?: LimitProps) {
+    return async function(request: Request, response: Response, next: (err?: any) => any) {
+        const { minutes = 5, max = 10, message = 'Too many requests from this IP, please try again later.', redisKey = 'all'} = options ?? {}
+        const ip = request.get("X-Real-IP") || request.get("X-Forwarded-For") || request.ip
+        const num = Number(await redisClient.get(`rl_${ip}_${redisKey}`))
+        if (!ip || ip === '::1') next()
+        else if (!num || num < max) {
+            await redisClient.setex(`rl_${ip}_${redisKey}`, 60 * minutes, num + 1)
+            next()
+        } else next(new Error(message))
+    }
+}
+
+//  /controllers/indexController.ts
+@Get('test')
+@UseBefore(RequestLimitMiddleware())
+public async test() {
+    return 123
+}
+```
+
+**https://github.com/typestack/routing-controllers/blob/develop/docs/lang/chinese/README.md#%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%97%B4%E4%BB%B6**

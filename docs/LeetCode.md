@@ -432,16 +432,17 @@ var exclusiveTime = function (n, logs) {
 难度：简单
 注意：js 中形参接收二进制数后会自动转换为 10 进制数，此时需要遍历求原二进制数，无法使用 toString 转换
 
-````javascript
-var reverseBits = function(n) {
-    const arr = []
-    while(n > 0) {
-        arr.push(n % 2)
-        n = parseInt(n/2)
-    }
-    while(arr.length < 32) arr.push(0)
-    return parseInt(arr.join(''), 2)
+```javascript
+var reverseBits = function (n) {
+  const arr = [];
+  while (n > 0) {
+    arr.push(n % 2);
+    n = parseInt(n / 2);
+  }
+  while (arr.length < 32) arr.push(0);
+  return parseInt(arr.join(""), 2);
 };
+```
 
 ### 640. 求解方程
 
@@ -485,7 +486,7 @@ function solveEquation(s: string): string {
   if (x === 0) return num === 0 ? "Infinite solutions" : "No solution";
   return `x=${num / -x}`;
 }
-````
+```
 
 ### 768. 最多能完成排序的块 II
 

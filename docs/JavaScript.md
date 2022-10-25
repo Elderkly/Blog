@@ -498,14 +498,15 @@ https://blog.csdn.net/qq_38970408/article/details/121018660
 传了 formData 就不用制定 Content-Type 了。  
 **https://zhuanlan.zhihu.com/p/34291688**
 
-
 ## sort
-> 如果 compareFunction(a, b) 小于 0 ，那么 a 会被排列到 b 之前；    
-> 如果 compareFunction(a, b) 等于 0 ， a 和 b 的相对位置不变。备注： ECMAScript 标准并不保证这一行为，而且也不是所有浏览器都会遵守（例如 Mozilla 在 2003 年之前的版本）；     
-> 如果 compareFunction(a, b) 大于 0 ， b 会被排列到 a 之前。    
+
+> 如果 compareFunction(a, b) 小于 0 ，那么 a 会被排列到 b 之前；  
+> 如果 compareFunction(a, b) 等于 0 ， a 和 b 的相对位置不变。备注： ECMAScript 标准并不保证这一行为，而且也不是所有浏览器都会遵守（例如 Mozilla 在 2003 年之前的版本）；  
+> 如果 compareFunction(a, b) 大于 0 ， b 会被排列到 a 之前。  
 > compareFunction(a, b) 必须总是对相同的输入返回相同的比较结果，否则排序的结果将是不确定的。
 
-**!!!!!sort若不传参数则默认按首位进行排序，若想得到升序最好传入函数!!!!!!!**
+**!!!!!sort 若不传参数则默认按首位进行排序，若想得到升序最好传入函数!!!!!!!**
+
 ```JavaScript
 // eg.(1)
 [-1,-2,-3,1,2,4].sort() // [-1,-2,-3,1,2,4]
@@ -516,44 +517,117 @@ https://blog.csdn.net/qq_38970408/article/details/121018660
 [10,1,2,7,6,1,5].sort((a,b) => a - b) // [1,1,2,5,6,7,10]
 ```
 
-**注意a一般指向数组后一项并不是前一项**
-**https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/sort** 
+**注意 a 一般指向数组后一项并不是前一项**
+**https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/sort**
 
 ## 创建二维数组
+
 ```javascript
-Array.from(new Array(length), () =>
-  new Array(length).fill(false)
-);
+Array.from(new Array(length), () => new Array(length).fill(false));
 ```
 
+## react 图片上传
 
-## react图片上传
 ```javascript
- <div className="border-2 h-12 border-dotted cursor-pointer flex justify-center items-center text-white border-[#8692AF] text-base" onDragEnter={onDragEnter} onDragLeave={onDragLeave} onDragOver={onDragOver} onDrop={onDrop}></div>
+<div
+  className="border-2 h-12 border-dotted cursor-pointer flex justify-center items-center text-white border-[#8692AF] text-base"
+  onDragEnter={onDragEnter}
+  onDragLeave={onDragLeave}
+  onDragOver={onDragOver}
+  onDrop={onDrop}
+></div>;
 
-  const onDragEnter = (e: any) => {
-    console.log('onDragEnter');
-    e.preventDefault();
-  };
+const onDragEnter = (e: any) => {
+  console.log("onDragEnter");
+  e.preventDefault();
+};
 
-  const onDragOver = (e: any) => e.preventDefault();
+const onDragOver = (e: any) => e.preventDefault();
 
-  const onDragLeave = (e: any) => {
-    console.log('onDragLeave');
-    e.preventDefault();
-  };
-  const onDrop = (e: any) => {
-    e.preventDefault();
-    console.log(e.dataTransfer?.files?.[0])
-  };
+const onDragLeave = (e: any) => {
+  console.log("onDragLeave");
+  e.preventDefault();
+};
+const onDrop = (e: any) => {
+  e.preventDefault();
+  console.log(e.dataTransfer?.files?.[0]);
+};
 ```
-
 
 ## 性能优化
+
 **https://juejin.cn/post/6949896020788690958**
 
 ## Date
+
 ```JavaScript
 //  获取某一天的23.59.59
 new Date(time).setHours(23,59,59)
 ```
+
+## Array.from
+
+对一个类似数组或可迭代对象创建一个新的，浅拷贝的数组实例。
+
+```javascript
+console.log(Array.from("foo"));
+// expected output: Array ["f", "o", "o"]
+
+console.log(Array.from([1, 2, 3], (x) => x + x));
+// expected output: Array [2, 4, 6]
+
+console.log(Array.from(new Array(3), (x) => new Array(2)));
+//  Array 3 x 2
+```
+
+## js 生成二维数组
+
+```javascript
+Array.from(new Array(3), (x) => new Array(2));
+
+new Array(3).fill().map((x) => new Array(2));
+```
+
+## js 赋值顺序
+
+一开始`从左往右`寻找未声明的变量或者报错信息，若没有这个变量则赋值 undefined，之后`从右往左`进行赋值。
+
+```javascript
+var a = { x: 1, y: { z: 2 } };
+var b = a;
+a.n.e = a.x = { n: 1 }; // => 报错 一开始从左往右a.n被赋值为undefined，而undefined没有e属性所以报错
+
+var a = { x: 1, y: { z: 2 } };
+var b = a;
+c = a.y.zz = a.d = { n: 2 };
+c; // {n:2}
+a; // {x:1,y:{z:2,zz:{n:2}},d:{n:2}}
+
+var a = { x: 1, y: { z: 2 } };
+var b = a;
+b.n = 3;
+b; // { x: 1, y: { z: 2 }, n: 3 }
+a; // { x: 1, y: { z: 2 }, n: 3 }
+
+var a = { x: 1, y: { z: 2 } };
+var b = a;
+a.y.xxxx = a.y.zz = a.y = a.d = { n: 2 };
+a; // {x: 1, d: { n: 2 }, y: { n: 2 }}
+```
+
+**若一行赋值语句中，同时出现父级和子级，则子级赋值默认无效。如`a.y = a.y.zz`，此时无论`a.y`在左边还是右边，赋值`a.y`的时候都会覆盖掉子级的赋值**
+
+**对于共用一条赋值语句的情况，若需要用到前置变量，则尽量将当前语句放到右边**
+
+```javascript
+const used = new Array(y).fill().map((z) => new Array(x).fill(0)),
+  x = 2,
+  y = 3; //  报错: y is not defined
+
+//  正确用法
+const x = 2,
+  y = 3,
+  used = new Array(y).fill().map((z) => new Array(x).fill(0));
+```
+
+**https://www.csdn.net/tags/MtTaggwsNjI1NzUtYmxvZwO0O0OO0O0O.html**

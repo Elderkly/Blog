@@ -403,7 +403,7 @@ export const logout =
 
 需配合`history`库
 
-````javascript
+```javascript
 /** index.tsx配置history ***/
 import { createBrowserHistory } from 'history';
 import { BrowserRouter, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
@@ -547,10 +547,17 @@ export default class RouterHistory {
     return this.update(entries, index);
   }
 }
-````
+```
 
 ### React 配置环境变量
+
 **https://www.html.cn/create-react-app/docs/adding-custom-environment-variables/**
 
-### React 空标签带key
+### React 空标签带 key
+
 **https://www.jianshu.com/p/ceae16cae6b3**
+
+### 谷歌人机验证
+
+**https://www.cnblogs.com/echolun/p/12436226.html**  
+**https://github.com/dozoisch/react-google-recaptcha**

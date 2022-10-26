@@ -865,7 +865,7 @@ var restoreIpAddresses = function (s) {
 
 方法 1：遍历求出所有 O 区域的坐标，判断是否与边界想通，如果在边界则赋值 O 否则赋值 X。
 
-```javascript
+```typescript
 const inValid = (board: string[][], i: number, j: number) =>
   i < 0 || j < 0 || i >= board.length || j >= board[0].length;
 const gainPosition = (
@@ -873,8 +873,8 @@ const gainPosition = (
   i: number,
   j: number,
   postion: {
-    item: { x: number, y: number }[],
-    po: { minX: number, minY: number, maxX: number, maxY: number },
+    item: { x: number; y: number }[];
+    po: { minX: number; minY: number; maxX: number; maxY: number };
   }
 ) => {
   if (inValid(board, i, j) || board[i][j] !== "O") return;
@@ -929,7 +929,7 @@ function solve(board: string[][]): void {
 
 方法 2：从边缘开始遍历找 O，找到的都是与边缘相连接的 O，将其设为 2，递归完成后将所有 2 改为 O 其他都改为 X
 
-```javascript
+```typescript
 const inValid = (board: string[][], i: number, j: number) =>
   i < 0 || j < 0 || i >= board.length || j >= board[0].length;
 const isEdge = (board: string[][], i: number, j: number) =>

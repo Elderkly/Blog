@@ -858,3 +858,106 @@ var restoreIpAddresses = function (s) {
 ```
 
 **回溯其实就是横向遍历，纵向递归的组合。**
+
+### 130. 被围绕的区域
+
+> 给你一个 m x n 的矩阵 board ，由若干字符 'X' 和 'O' ，找到所有被 'X' 围绕的区域，并将这些区域里所有的 'O' 用 'X' 填充。
+
+方法 1：遍历求出所有 O 区域的坐标，判断是否与边界想通，如果在边界则赋值 O 否则赋值 X。
+
+```javascript
+const inValid = (board: string[][], i: number, j: number) =>
+  i < 0 || j < 0 || i >= board.length || j >= board[0].length;
+const gainPosition = (
+  board: string[][],
+  i: number,
+  j: number,
+  postion: {
+    item: { x: number, y: number }[],
+    po: { minX: number, minY: number, maxX: number, maxY: number },
+  }
+) => {
+  if (inValid(board, i, j) || board[i][j] !== "O") return;
+  board[i][j] = "2";
+  const { item, po } = postion;
+  item.push({ x: i, y: j });
+  po.maxX = Math.max(po.maxX, i);
+  po.maxY = Math.max(po.maxY, j);
+  po.minX = Math.min(po.minX, i);
+  po.minY = Math.min(po.minY, j);
+  gainPosition(board, i - 1, j, postion);
+  gainPosition(board, i + 1, j, postion);
+  gainPosition(board, i, j - 1, postion);
+  gainPosition(board, i, j + 1, postion);
+};
+/**
+ Do not return anything, modify board in-place instead.
+ */
+function solve(board: string[][]): void {
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[0].length; j++) {
+      if (board[i][j] === "O") {
+        const po = {
+          item: [],
+          po: {
+            minX: Number.MAX_VALUE,
+            minY: Number.MAX_VALUE,
+            maxX: null,
+            maxY: null,
+          },
+        };
+        gainPosition(board, i, j, po);
+        const {
+          item,
+          po: { minX, minY, maxX, maxY },
+        } = po;
+        item.forEach(
+          ({ x, y }) =>
+            (board[x][y] =
+              minX === 0 ||
+              minY === 0 ||
+              maxX === board.length - 1 ||
+              maxY === board[0].length - 1
+                ? "O"
+                : "X")
+        );
+      }
+    }
+  }
+}
+```
+
+方法 2：从边缘开始遍历找 O，找到的都是与边缘相连接的 O，将其设为 2，递归完成后将所有 2 改为 O 其他都改为 X
+
+```javascript
+const inValid = (board: string[][], i: number, j: number) =>
+  i < 0 || j < 0 || i >= board.length || j >= board[0].length;
+const isEdge = (board: string[][], i: number, j: number) =>
+  i === 0 || j === 0 || i === board.length - 1 || j === board[0].length - 1;
+const dfs = (board: string[][], i: number, j: number) => {
+  if (inValid(board, i, j) || board[i][j] !== "O") return;
+  board[i][j] = "2";
+  dfs(board, i - 1, j);
+  dfs(board, i + 1, j);
+  dfs(board, i, j - 1);
+  dfs(board, i, j + 1);
+};
+/**
+ Do not return anything, modify board in-place instead.
+ */
+function solve(board: string[][]): void {
+  const m = board.length,
+    n = board[0].length;
+  if (m === 0) return;
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (board[i][j] === "O" && isEdge(board, i, j)) dfs(board, i, j);
+    }
+  }
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      board[i][j] = board[i][j] === "2" ? "O" : "X";
+    }
+  }
+}
+```

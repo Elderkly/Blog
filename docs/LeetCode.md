@@ -961,3 +961,62 @@ function solve(board: string[][]): void {
   }
 }
 ```
+
+### 79. 单词搜索
+
+> 给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false。  
+> 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+思路：记录遍历到的单词坐标，dfs 递归查找。
+
+```typescript
+const direction = [
+  [-1, 0],
+  [1, 0],
+  [0, -1],
+  [0, 1],
+];
+const dfs = (
+  word: string,
+  board: string[][],
+  i: number,
+  j: number,
+  used: number[][],
+  p: number
+) => {
+  if (word[p] !== board[i][j]) return false;
+  if (p === word.length - 1) return true;
+  used[i][j] = 1;
+  for (let [dx, dy] of direction) {
+    const nx = i + dx,
+      ny = j + dy;
+    if (
+      nx >= 0 &&
+      ny >= 0 &&
+      nx < board.length &&
+      ny < board[0].length &&
+      !used[nx][ny]
+    ) {
+      if (dfs(word, board, nx, ny, used, p + 1)) return true;
+    }
+  }
+  used[i][j] = 0;
+  return false;
+};
+function exist(board: string[][], word: string): boolean {
+  const m = board.length,
+    n = board[0].length,
+    visied = Array.from(new Array(m), (x) => new Array(n).fill(0));
+  if (m === 0 || m * n < word.length) return false;
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (board[i][j] === word[0]) {
+        if (dfs(word, board, i, j, visied, 0)) return true;
+      }
+    }
+  }
+  return false;
+}
+```
+
+**注意：回溯算法不是只有一种在递归开头做临界值判断然后无脑递归的写法，像这种可以在开头判断结束条件，在函数体中做临界值判断，留意递归函数返回结果的办法，不是所有递归都只能传入参数作为返回结果。**

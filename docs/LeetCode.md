@@ -1020,3 +1020,63 @@ function exist(board: string[][], word: string): boolean {
 ```
 
 **注意：回溯算法不是只有一种在递归开头做临界值判断然后无脑递归的写法，像这种可以在开头判断结束条件，在函数体中做临界值判断，留意递归函数返回结果的办法，不是所有递归都只能传入参数作为返回结果。**
+
+### 22.括号生成
+>数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。   
+
+方法1: 先生成括号数组包含n个左括号和n个右括号，然后使用dfs进行递归遍历，当产生的新数组长度为2n时结束循环，使用sum对产生的括号对进行校验。
+```javascript
+/**
+ * @param {number} n
+ * @return {string[]}
+ */
+const generateParenthesis = (n) => {
+    const res = [], arrowList = [...new Array(n).fill('('), ...new Array(n).fill(')')], len = 2 * n, used = new Array(len).fill(0)
+    const dfs = (list, begin, sum) => {
+      if (list.length === len) {
+        res.push(list.join(''))
+        return    
+      }
+      for (let i = 0; i < len; i++) {
+        if (used[i]) continue
+        if (i > 0 && arrowList[i] === arrowList[i - 1] && used[i - 1]) continue
+        if (list.length === len - 1 && arrowList[i] === '(') continue
+        sum += arrowList[i] === '(' ? -1 : 1
+        if (sum > 0) continue
+        list.push(arrowList[i])
+        used[i] = 1
+        dfs(list, i + 1, sum)
+        used[i] = 0
+        sum -= arrowList[i] === '(' ? -1 : 1
+        list.pop()
+      }
+    }
+    dfs([], 0, 0)
+    return res
+}
+```
+该方法在n=8时会超时。    
+
+方法2:使用left和right两个参数进行判断，递归过程对left和right做减法，当left>right时表示右括号可使用数目小于左括号，此时产生的结果无效，进行剪枝。当left和right都为0时表示递归结束，记录结果。    
+```javascript
+/**
+ * @param {number} n
+ * @return {string[]}
+ */
+ const generateParenthesis = (n) => {
+    const res = []
+    if (n === 0) return res
+    const dfs = (left, right, str) => {
+      if (left === 0 && right === 0) {
+        res.push(str)
+        return    
+      }
+      if (left > right) return
+      if (left > 0) dfs(left - 1, right, str + '(')
+      if (right > 0) dfs(left, right - 1, str + ')')       
+      
+    }
+    dfs(n, n, '')
+    return res
+}
+```

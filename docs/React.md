@@ -561,3 +561,7 @@ export default class RouterHistory {
 
 **https://www.cnblogs.com/echolun/p/12436226.html**  
 **https://github.com/dozoisch/react-google-recaptcha**
+
+### 打包关闭源码显示
+
+**https://segmentfault.com/a/1190000023053666**

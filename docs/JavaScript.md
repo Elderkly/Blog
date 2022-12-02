@@ -631,3 +631,23 @@ const x = 2,
 ```
 
 **https://www.csdn.net/tags/MtTaggwsNjI1NzUtYmxvZwO0O0OO0O0O.html**
+
+## Object.assign 会改变第一个对象
+
+将后面的对象合并到第一个对象中，如果要创建新数组则第一个参数传一个空对象。
+
+```javascript
+var a = { a: 1 },
+  b = { b: 2 };
+var c = Object.assign(a, b);
+
+console.log(c); // {a:1,b:2}
+console.log(a); // {a:1,b:2}
+
+var d = { d: 1 },
+  e = { e: 2 };
+var f = Object.assign({}, d, e);
+
+console.log(f); // {d:1, e:2}
+console.log(d); // {d:1}
+```

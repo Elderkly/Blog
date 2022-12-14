@@ -651,3 +651,13 @@ var f = Object.assign({}, d, e);
 console.log(f); // {d:1, e:2}
 console.log(d); // {d:1}
 ```
+
+## Input 相关
+
+### Input 加入前缀后缀
+
+用 div 包裹，前缀和后缀用 div 显示，input 在中间。
+
+### Input 宽度随输入内容变化
+
+**https://daotin.netlify.app/winm4g.html#%E6%96%B9%E6%B3%95**

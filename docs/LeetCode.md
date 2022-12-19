@@ -81,11 +81,12 @@
 | 组合问题（不强调顺序） | 外`物品`升序 内`背包`升序 |
 | 排列问题 (强调顺序) | 外`背包`升序 内`物品`升序 |
 
-|类型|递推公式|题目|
-|问能否能装满背包（或者最多装多少）|dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])|416,1049|
-|问装满背包有几种方法|dp[j] += dp[j - nums[i]]|494,518,377|
-|问背包装满最大(最小)价值|dp[j] = max(dp[j], dp[j - weight[i]] + value[i])|474|
-|问装满背包所有物品的最小个数|dp[j] = min(dp[j - coins[i]] + 1, dp[j])|322,279|
+|                类型                | 递推公式                                         | 题目        |
+| :--------------------------------: | :----------------------------------------------- | :---------- |
+| 问能否能装满背包（或者最多装多少） | dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])    | 416,1049    |
+|        问装满背包有几种方法        | dp[j] += dp[j - nums[i]]                         | 494,518,377 |
+|      问背包装满最大(最小)价值      | dp[j] = max(dp[j], dp[j - weight[i]] + value[i]) | 474         |
+|    问装满背包所有物品的最小个数    | dp[j] = min(dp[j - coins[i]] + 1, dp[j])         | 322,279     |
 
 **https://programmercarl.com/%E8%83%8C%E5%8C%85%E6%80%BB%E7%BB%93%E7%AF%87.html#%E8%83%8C%E5%8C%85%E9%80%92%E6%8E%A8%E5%85%AC%E5%BC%8F**  
 **https://leetcode.cn/problems/combination-sum-iv/solutions/124393/xi-wang-yong-yi-chong-gui-lu-gao-ding-bei-bao-wen-/**

@@ -565,3 +565,7 @@ export default class RouterHistory {
 ### 打包关闭源码显示
 
 **https://segmentfault.com/a/1190000023053666**
+
+### useMemo 使用 async
+
+useMemo 无法使用 async 函数，会阻塞渲染，可改用 useState 和 useEffect。

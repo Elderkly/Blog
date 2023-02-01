@@ -675,6 +675,8 @@ const FetchFn = async <T>({
   const p = new Promise<T>((resolve, reject) => {
     const requestUrl = isExtraUrl ? url : `${APIURL}${url}`;
     fetch(requestUrl, {
+      //  给fetch绑定signal
+      signal: fetchController.signal,
       ...
   });
   //  给Promise绑定controller属性

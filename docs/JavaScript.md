@@ -661,3 +661,36 @@ console.log(d); // {d:1}
 ### Input 宽度随输入内容变化
 
 **https://daotin.netlify.app/winm4g.html#%E6%96%B9%E6%B3%95**
+
+### Fetch 中断请求
+
+**https://github.com/cheungseol/cheungseol.github.io/issues/22**
+
+```javascript
+//  在被Promise包围着的Fetch函数中
+const FetchFn = async <T>({
+  type = 'GET', url, body, isExtraUrl, headers = null, compileBody = true, demandToken,
+}: Props) => {
+  const fetchController = new AbortController();
+  const p = new Promise<T>((resolve, reject) => {
+    const requestUrl = isExtraUrl ? url : `${APIURL}${url}`;
+    fetch(requestUrl, {
+      ...
+  });
+  //  给Promise绑定controller属性
+  Object.setPrototypeOf(p, Object.assign(Object.getPrototypeOf(p), { controller: fetchController }));
+  return p;
+};
+
+//  使用
+useEffect(() => {
+    const f:any = Fetch({url: `/ln/invoices/${id}`})
+    .then(res => {
+        console.log(res)
+    })
+    .catch(e => {
+        console.log(e)
+    })
+    return () => f.controller.abort()
+}, [id])
+```

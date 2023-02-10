@@ -696,3 +696,14 @@ useEffect(() => {
     return () => f.controller.abort()
 }, [id])
 ```
+
+## js 中 map()方法是否改变原数组
+
+当数组元素是基本数据类型时，map()方法不会改变原数组；当数组元素是引用类型时，map()方法会改变原数组。  
+**https://www.jianshu.com/p/d709fe2be814**
+
+## 解决 js 中小数点太多显示科学计数法的问题
+
+```javascript
+new BigNumber(e.fixedSats).div(Math.pow(10, 8)).toFixed();
+```

@@ -707,3 +707,9 @@ useEffect(() => {
 ```javascript
 new BigNumber(e.fixedSats).div(Math.pow(10, 8)).toFixed();
 ```
+
+## 字符串比较的BUG 
+```javascript
+99>100  // false
+'99'>'100' // true
+```

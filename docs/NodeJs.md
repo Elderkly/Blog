@@ -132,3 +132,22 @@ public async test() {
 #### findOne 的 BUG
 
 findOne 当查询条件不匹配时默认会返回表中第一条数据，所以需要加入判断，当查询条件为空时直接返回空。
+
+#### SQL 异或写入
+
+主要应对写后写的问题。
+
+```sql
+UPDATE incentive SET status=status^1 WHERE userId='ebf9262c'
+```
+
+```javascript
+this.incentiveRepository
+  .createQueryBuilder()
+  .update(Incentive)
+  .set({
+    status: () => `status^${payTo === "inviter" ? 1 : 2}`,
+  })
+  .where("id = :id", { id })
+  .execute();
+```

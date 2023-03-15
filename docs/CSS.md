@@ -125,3 +125,7 @@ backdrop-filter: saturate(180%) blur(20px);
 ### Flex 主轴居中的情况下 单独改变某个元素的排列
 
 **https://blog.csdn.net/qq846294282/article/details/113698456**
+
+### 无法对同一个元素分别指定不同的 overflow-x 和 overflow-y
+
+**https://blog.csdn.net/wuyou1336/article/details/78965920**

@@ -708,8 +708,13 @@ useEffect(() => {
 new BigNumber(e.fixedSats).div(Math.pow(10, 8)).toFixed();
 ```
 
-## 字符串比较的BUG 
+## 字符串比较的 BUG
+
 ```javascript
-99>100  // false
-'99'>'100' // true
+99 > 100; // false
+"99" > "100"; // true
 ```
+
+## Git 删除 commit
+
+**https://blog.csdn.net/qq_34977392/article/details/110817621**

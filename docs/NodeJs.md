@@ -151,3 +151,22 @@ this.incentiveRepository
   .where("id = :id", { id })
   .execute();
 ```
+
+#### SQL 筛选同一天或者同一月/周/季度/年
+
+```sql
+SELECT * FROM log WHERE TIMESTAMPDIFF(DAY, created, CURRENT_TIMESTAMP) = 0 ORDER BY created DESC
+```
+
+```javascript
+this.logRepository
+  .createQueryBuilder("log")
+  .select()
+  .where(
+    `TIMESTAMPDIFF(${unit}, created, CURRENT_TIMESTAMP) = 0 AND userId = :userId AND method = :method AND path = :path ORDER BY created DESC`,
+    { userId, method, path }
+  )
+  .getOne();
+```
+
+**https://www.w3resource.com/mysql/date-and-time-functions/mysql-timestampdiff-function.php**

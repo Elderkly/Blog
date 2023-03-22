@@ -155,7 +155,8 @@ this.incentiveRepository
 #### SQL 筛选同一天或者同一月/周/季度/年
 
 ```sql
-SELECT * FROM log WHERE TIMESTAMPDIFF(DAY, created, CURRENT_TIMESTAMP) = 0 ORDER BY created DESC
+# CURRENT_TIMESTAMP要加()
+SELECT * FROM log WHERE TIMESTAMPDIFF(DAY, created, CURRENT_TIMESTAMP()) = 0 ORDER BY created DESC
 ```
 
 ```javascript

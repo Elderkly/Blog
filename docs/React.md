@@ -569,3 +569,28 @@ export default class RouterHistory {
 ### useMemo 使用 async
 
 useMemo 无法使用 async 函数，会阻塞渲染，可改用 useState 和 useEffect。
+
+### 实现防抖 Hook
+
+```javascript
+import { useCallback, useEffect, useRef } from "react";
+
+const useDebounce = (callback: Function, delay: number) => {
+  const { current } = useRef < any > { callback, timer: null };
+  useEffect(() => {
+    current.callback = callback;
+  }, [callback]);
+
+  return useCallback(
+    (...args: any) => {
+      if (current.timer) clearTimeout(current.timer);
+      current.timer = setTimeout(() => current.callback(...args), delay);
+    },
+    [delay]
+  );
+};
+
+export default useDebounce;
+```
+
+**https://juejin.cn/post/6854573217349107725**

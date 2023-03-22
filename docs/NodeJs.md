@@ -154,9 +154,10 @@ this.incentiveRepository
 
 #### SQL 筛选同一天或者同一月/周/季度/年
 
+CURRENT_TIMESTAMP 有 BUG，对于`2023-03-21 11:04:19.670547`和`2023-03-22`的 day 比较会返回 0，所以比较前可以先将原数据格式化。
+
 ```sql
-# CURRENT_TIMESTAMP要加()
-SELECT * FROM log WHERE TIMESTAMPDIFF(DAY, created, CURRENT_TIMESTAMP()) = 0 ORDER BY created DESC
+SELECT * FROM log WHERE TIMESTAMPDIFF(day, DATE_FORMAT(created, '%Y-%m-%d'), CURRENT_DATE()) = 0
 ```
 
 ```javascript

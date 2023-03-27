@@ -718,3 +718,7 @@ new BigNumber(e.fixedSats).div(Math.pow(10, 8)).toFixed();
 ## Git 删除 commit
 
 **https://blog.csdn.net/qq_34977392/article/details/110817621**
+
+## Git 添加远程仓库
+
+**https://segmentfault.com/a/1190000011294144**

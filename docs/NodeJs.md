@@ -172,3 +172,58 @@ this.logRepository
 ```
 
 **https://www.w3resource.com/mysql/date-and-time-functions/mysql-timestampdiff-function.php**
+
+## NodeJs 生成表格
+
+```javascript
+import ExcelJS from "exceljs";
+//  创建表格
+const workbook = new ExcelJS.Workbook();
+const sheet = workbook.addWorksheet("history");
+//  写入数据
+sheet.addRow([
+  "utcData",
+  "type",
+  "currency",
+  "amount",
+  "fees",
+  "address",
+  "description",
+]);
+txs
+  .concat(invoice, btcInvoice)
+  .sort((a, b) => (b.time || b.timestamp) - (a.time || a.timestamp))
+  .filter((e) => !!(e.amt || e.value))
+  .forEach((e) => {
+    sheet.addRow([
+      new Date((e.time || e.timestamp) * 1000).toISOString(),
+      e.type === "user_invoice" ? "CREDIT" : "DEBIT",
+      "LIGHTNING",
+      new BigNumber(e.amt || e.value).div(1e8).toNumber(),
+      e.fee || 0,
+      e.pay_req,
+      e.memo || e.description,
+    ]);
+  });
+//  设置样式
+const amountCol = sheet.getColumn(4),
+  addressCol = sheet.getColumn(6),
+  descriptionCol = sheet.getColumn(7);
+addressCol.alignment = amountCol.alignment = { horizontal: "right" };
+descriptionCol.alignment = { horizontal: "fill" };
+addressCol.width = 100;
+descriptionCol.width = 80;
+amountCol.width = 50;
+const header = sheet.getRow(1);
+header.alignment = { horizontal: "center" };
+//  上传
+const name = `lifpay_history_${id}_${Date.now()}`;
+const buffer = await workbook.xlsx.writeBuffer();
+const upload = await this.commonService.uploadFile({
+  buffer,
+  path: `${name}.xlsx`,
+  originalname: `${name}.xlsx`,
+});
+```
+
+**注意：csv 格式的表格无法设置样式**

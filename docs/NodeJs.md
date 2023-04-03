@@ -245,3 +245,18 @@ return res;
 ```
 
 **https://www.cnblogs.com/taohuaya/p/14310307.html**
+
+## NodeJs 生成表格存放在本地，返回下载链接
+
+```javascript
+const name = `lifpay_history_${id}_${Date.now()}.xlsx`;
+const buffer = await workbook.xlsx.writeBuffer();
+const file = path.join(process.cwd(), "public", "temp");
+if (!fs.existsSync(file)) fs.mkdirSync(file);
+fs.writeFileSync(`${file}/${name}`, buffer);
+
+return {
+  name,
+  url: `${env.app.path}/temp/${name}`,
+};
+```

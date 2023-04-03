@@ -227,3 +227,21 @@ const upload = await this.commonService.uploadFile({
 ```
 
 **注意：csv 格式的表格无法设置样式**
+
+## NodeJs 生成文件直接返回 buffer 文件流
+
+```javascript
+//  导出
+const name = `lifpay_history_${id}_${Date.now()}.xlsx`;
+const buffer = await workbook.xlsx.writeBuffer();
+
+res.setHeader("Content-Disposition", `attachment;filename=${name}`);
+res.setHeader(
+  "Content-Type",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+);
+res.end(buffer);
+return res;
+```
+
+**https://www.cnblogs.com/taohuaya/p/14310307.html**

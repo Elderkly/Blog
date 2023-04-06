@@ -260,3 +260,25 @@ return {
   url: `${env.app.path}/temp/${name}`,
 };
 ```
+
+## Service 之间交叉引用会导致找不到对应的 Service
+
+```javascript
+@Service()
+export class UserService {
+  constructor(
+    private commonService: CommonService,
+  ) {}
+  //......
+}
+
+@Service()
+export class CommonService {
+  constructor(
+    private userService: UserService,
+  ) {}
+  //......
+}
+```
+
+此时会导致 CommonService 找不到 UserService, 解决办法就是把公用代码写到一个起 Bus 作用的 Service 里，再从 CommonService 和 UserService 引用 BusService。

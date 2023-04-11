@@ -287,3 +287,8 @@ export class CommonService {
 
 **https://www.cnblogs.com/xdyixia/p/11610102.html**  
 **https://blog.csdn.net/u013052238/article/details/81234898**
+
+## 撤销最近的 commit
+
+git reset --soft HEAD^
+**https://www.cnblogs.com/lfxiao/p/9378763.html**

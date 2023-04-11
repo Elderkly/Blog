@@ -282,3 +282,8 @@ export class CommonService {
 ```
 
 此时会导致 CommonService 找不到 UserService, 解决办法就是把公用代码写到一个起 Bus 作用的 Service 里，再从 CommonService 和 UserService 引用 BusService。
+
+## 证书加密
+
+**https://www.cnblogs.com/xdyixia/p/11610102.html**  
+**https://blog.csdn.net/u013052238/article/details/81234898**

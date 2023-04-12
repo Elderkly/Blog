@@ -292,3 +292,7 @@ export class CommonService {
 
 git reset --soft HEAD^
 **https://www.cnblogs.com/lfxiao/p/9378763.html**
+
+## Websocket 优化与封装 心跳
+
+**https://juejin.cn/post/6945057379834675230**

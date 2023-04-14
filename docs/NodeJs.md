@@ -296,3 +296,9 @@ git reset --soft HEAD^
 ## Websocket 优化与封装 心跳
 
 **https://juejin.cn/post/6945057379834675230**
+
+## MQ 队列模式
+
+区分生产者/消费者模式和发布/订阅模式。  
+**https://juejin.cn/post/7111741311920635912**  
+**https://zeromq.org/languages/nodejs/**

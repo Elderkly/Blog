@@ -302,3 +302,7 @@ git reset --soft HEAD^
 区分生产者/消费者模式和发布/订阅模式。  
 **https://juejin.cn/post/7111741311920635912**  
 **https://zeromq.org/languages/nodejs/**
+
+## 外键约束与唯一性约束
+
+当你在主表中给 hash 字段添加了唯一性约束后，如果你将该字段用作外键在子表中建立关联，这个唯一性约束也会自动应用于子表中的 hash 字段，使得子表中的 hash 字段也不允许重复值。

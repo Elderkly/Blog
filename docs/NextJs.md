@@ -34,9 +34,9 @@ export const getStaticPaths = ({ locales }) => {
 router.push({ pathname, query }, asPath, { locale: nextLocale });
 ```
 
-**缺点：无法使用`next export`，部署后需要`nodejs`支持*
+\*_缺点：无法使用`next export`，部署后需要`nodejs`支持_
 
-**https://github.com/isaachinman/next-i18next**   
+**https://github.com/isaachinman/next-i18next**  
 **https://nextjs.org/docs/advanced-features/i18n-routing**
 
 #### 2.根目录为语言的动态路由
@@ -128,5 +128,10 @@ router.push({
 **https://github.com/elado/next-with-less**
 
 ### Nextjs12 配置环境变量
-**https://nextjs.org/docs/basic-features/environment-variables**     
+
+**https://nextjs.org/docs/basic-features/environment-variables**  
 **https://segmentfault.com/a/1190000038279352**
+
+### 使用 SSR 后无法动态生成 meta
+
+删除 redux 后解决

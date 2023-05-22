@@ -151,3 +151,7 @@ trailingSlash 会默认在链接后加/符号，在 nginx 中会指向某一文�
 ### NextJS 配置请求资源前缀
 
 assetPrefix
+
+### 测试 metadata
+
+**https://developers.facebook.com/tools/debug/**

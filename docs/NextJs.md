@@ -143,3 +143,11 @@ router.push({
 ### SSR 模式下无法获取 document
 
 **https://stackoverflow.com/questions/60629258/next-js-document-is-not-defined**
+
+### NextJS 如果 nginx 做了反向代理 需关闭 basePath 配置
+
+basePath 会默认在链接后加/符号，在 nginx 中会指向某一文件夹，可能造成 404
+
+### NextJS 配置请求资源前缀
+
+assetPrefix

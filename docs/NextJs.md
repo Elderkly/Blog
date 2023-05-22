@@ -135,3 +135,11 @@ router.push({
 ### 使用 SSR 后无法动态生成 meta
 
 删除 redux 后解决
+
+### redux-persist 会影响 meta 标签生成
+
+**https://stackoverflow.com/questions/72966026/issue-with-meta-tags-when-using-redux-persist-in-next-js**
+
+### SSR 模式下无法获取 document
+
+**https://stackoverflow.com/questions/60629258/next-js-document-is-not-defined**

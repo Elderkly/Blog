@@ -715,10 +715,6 @@ new BigNumber(e.fixedSats).div(Math.pow(10, 8)).toFixed();
 "99" > "100"; // true
 ```
 
-## Git 删除 commit
+## 箭头函数不绑定 Arguments 对象
 
-**https://blog.csdn.net/qq_34977392/article/details/110817621**
-
-## Git 添加远程仓库
-
-**https://segmentfault.com/a/1190000011294144**
+**https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions**

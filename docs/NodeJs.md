@@ -318,3 +318,79 @@ git reset --soft HEAD^
 @Params() 装饰器用于获取路径参数（Path Parameters），即从路径中提取的参数。例如，如果您的路由定义为 /users/:id，那么可以使用 @Params() 装饰器来获取 id 参数的值。
 
 @QueryParams() 装饰器用于获取查询参数（Query Parameters），即请求链接中的参数。这些参数通常以 ? 开头，并以 key=value 的形式出现在 URL 中。例如，?userId=123&name=John。
+
+## 内联查询可能影响分页 leftJoinAndSelect
+
+内联查询可能会导致查询结果的行数发生变化，从而影响到分页的计算。在进行内联查询时，可能会涉及多个表格，这可能导致结果集中的行数与实际查询的行数不一致。
+
+如果你需要进行内联查询，并且希望在结果中包含内联查询的字段，你可以尝试使用子查询来代替内联查询。子查询可以将内联查询的结果作为独立的查询，并在主查询中引用它们。
+
+通过将内联查询转换为子查询，你可以单独执行内联查询，并将其结果映射到主查询的结果中。这样可以避免内联查询对分页功能的影响。
+
+## SQL 中 LIMIT 语句要在 ORDER BY 之后
+
+## 复杂查询
+
+```typescript
+public async queryTransactionEntity(findOptions: queryTransactionEntityParams) {
+  console.log(findOptions)
+  const { userId, startDate, endDate, minAmount, maxAmount, page, pageSize = 15, inner } = findOptions
+
+  const optionsQuery: string[] = []
+  // userId筛选
+  !!userId && (optionsQuery.push(`transaction_entity.entityId = '${userId}'`))
+
+  // 时间筛选
+  !!startDate && optionsQuery.push(`transaction_entity.created >= '${startDate}'`);
+  !!endDate && optionsQuery.push(`transaction_entity.created < DATE_ADD('${endDate}', INTERVAL 1 DAY)`);
+
+  // amount字段的查询条件
+  !!minAmount && optionsQuery.push(`transaction_entity.amount >= ${minAmount}`)
+  !!maxAmount && optionsQuery.push(`transaction_entity.amount <= ${maxAmount}`)
+
+  //  内部数据
+  inner !== undefined && inner !== '' && optionsQuery.push(`inner_query.hash IS ${inner === '1' ? 'NOT' : ''} NULL`)
+
+  const getQuery = (SELECT: string, LIMIT: string = '') => `
+    SELECT
+      ${SELECT}
+    FROM
+      transaction_entity
+    LEFT JOIN
+      transaction ON transaction.hash = transaction_entity.hash
+    LEFT JOIN
+    (
+        SELECT
+            inner_entity.hash,
+            COUNT(*) AS isinner
+        FROM
+            transaction_entity AS inner_entity
+        GROUP BY
+            inner_entity.hash
+        HAVING
+            COUNT(*) > 1
+    ) AS inner_query ON inner_query.hash = transaction_entity.hash
+    ${optionsQuery.length > 0 ? 'WHERE' : ''}
+      ${optionsQuery.join(' AND ')}
+    ORDER BY
+      transaction_entity.created DESC
+    ${LIMIT}
+  `;
+
+  const recordQuery = getQuery(`
+    transaction_entity.*,
+    transaction.fee,
+    transaction.network,
+    transaction.remark,
+    CASE WHEN inner_query.isinner IS NOT NULL THEN 1 ELSE 0 END AS isinner
+  `, page ? `LIMIT ${(page - 1) * pageSize}, ${pageSize}` : '')
+  console.log(recordQuery)
+  const countQuery = getQuery(`COUNT(*) as totalCount`)
+  console.log(countQuery)
+
+  return {
+    totalCount: (await this.transactionEntityRepository.query(countQuery))?.[0]?.totalCount || 0,
+    data: await this.transactionEntityRepository.query(recordQuery)
+  }
+}
+```

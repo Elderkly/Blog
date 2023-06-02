@@ -310,3 +310,11 @@ git reset --soft HEAD^
 ## ZeroMQ
 
 发布者的订阅地址必须是本机的内/外/环网地址，订阅者的订阅地址没有限制。
+
+## Params 和 QueryParams 的区别
+
+@Params() 装饰器和 @QueryParams() 装饰器在使用上有以下区别：
+
+@Params() 装饰器用于获取路径参数（Path Parameters），即从路径中提取的参数。例如，如果您的路由定义为 /users/:id，那么可以使用 @Params() 装饰器来获取 id 参数的值。
+
+@QueryParams() 装饰器用于获取查询参数（Query Parameters），即请求链接中的参数。这些参数通常以 ? 开头，并以 key=value 的形式出现在 URL 中。例如，?userId=123&name=John。

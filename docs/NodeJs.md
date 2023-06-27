@@ -470,7 +470,8 @@ INTERVAL 常与时间计算函数结合使用
 
 #### 作为关键字使用
 
-直接计算时间间隔
+直接计算时间间隔  
+`INTERVAL expr unit`
 
 ```sql
 SELECT NOW()-INTERVAL '2' HOUR;
@@ -480,7 +481,6 @@ SELECT INTERVAL help_topic_id DAY;
 #### 作为函数使用
 
 用于在日期和时间值上执行加法运算
-INTERVAL expr unit
 
 ```sql
 SELECT INTERVAL (CAST(help_topic_id AS signed integer) + 0) DAY
@@ -511,7 +511,7 @@ SELECT INTERVAL (CAST(help_topic_id AS signed integer) + 0) DAY
 
 ### DATE_ADD
 
-将时间间隔添加到起始时间,常结合 INTERVAL 使用
+将时间间隔添加到起始时间,常结合 INTERVAL 使用  
 `DATE_ADD(date,INTERVAL expr type)`
 
 ```sql

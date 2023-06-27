@@ -394,3 +394,132 @@ public async queryTransactionEntity(findOptions: queryTransactionEntityParams) {
   }
 }
 ```
+
+## routing-controllers 定义可选接口
+
+```typescript
+  @Get('/stat/user/:year/:month?')
+  public async statisticalUserDataByDate(@Params() params: {year: string, month?: string}) {
+        const { year, month } = params
+        return await this.systemServices.analyzeUserData(year, month)
+    }
+```
+
+## 复杂 sql 分析
+
+```sql
+SELECT
+  months.month,
+  IFNULL(counts.count, 0) AS count,
+  IFNULL(daily_counts.active, 0) AS active
+FROM
+  (
+    SELECT 1 AS month
+    UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6
+    UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION SELECT 11
+    UNION SELECT 12
+  ) AS months
+LEFT JOIN
+  (
+    SELECT YEAR(created) AS year, MONTH(created) AS month, COUNT(*) AS count
+    FROM user
+    WHERE YEAR(created) = ${year}
+    GROUP BY YEAR(created), MONTH(created)
+  ) AS counts ON months.month = counts.month
+LEFT JOIN
+  (
+    SELECT YEAR(created) AS year, MONTH(created) AS month, COUNT(*) AS active
+    FROM log
+    WHERE YEAR(created) = ${year} AND path = '/api/context'
+    GROUP BY YEAR(created), MONTH(created)
+  ) AS daily_counts ON months.month = daily_counts.month
+ORDER BY months.month;
+```
+
+### IFNULL(a,b)
+
+如果 a 为 null 则为 b
+
+### UNION
+
+UNION 是用于合并两个或多个 SELECT 语句的结果集的运算符。它会将多个 SELECT 语句的结果按照列的顺序进行合并，形成一个包含所有结果的新结果集。  
+在这个例子中，SELECT 1 AS month 表示第一个 SELECT 语句，它会返回一个结果集，其中只包含一个列 month，并将其值设为 1。然后，使用 UNION 运算符将后续的 SELECT 语句依次合并在一起。每个额外的 SELECT 语句都会返回一个结果集，其中只包含一个列 month，并分别将其值设为 2、3、4、...、12。最终，通过使用 UNION 运算符将所有结果集合并在一起，形成包含 1 到 12 月份的结果集。
+
+### LEFT JOIN
+
+LEFT JOIN 是一种连接操作，用于将左边的表与右边的表进行连接。在这个查询中，months 表是左边的表，而 counts 表和 daily_counts 表是右边的表。LEFT JOIN 会返回左边表中的所有行，并根据连接条件将右边表中匹配的行合并在一起。如果右边表中没有匹配的行，对应的列将包含 NULL 值。在这个查询中，通过 LEFT JOIN 将月份数据和对应的统计数据连接在一起，确保即使某个月份的数据不存在，仍然能够在结果中显示该月份，并将对应的统计数据设为 0。
+
+**https://blog.csdn.net/u011047968/article/details/107744901**  
+**https://blog.csdn.net/weixin_39220472/article/details/81193617**
+
+```sql
+SELECT DATE_FORMAT(DATE_ADD('${year}-${month}-01', INTERVAL(CAST(help_topic_id AS signed integer)+ 0) day),'%Y-%m-%d') date
+  FROM mysql.help_topic
+  WHERE help_topic_id < DAY(LAST_DAY('${year}-${month}-01'))
+  ORDER BY help_topic_id;
+-- 简化版
+SELECT DATE_FORMAT(DATE_ADD('${year}-${month}-01', INTERVAL help_topic_id DAY),'%Y-%m-%d') date
+  FROM mysql.help_topic
+  WHERE help_topic_id < DAY(LAST_DAY('${year}-${month}-01'))
+  ORDER BY help_topic_id;
+```
+
+### INTERVAL 和 INTERVAL()
+
+INTERVAL 常与时间计算函数结合使用
+
+#### 作为关键字使用
+
+直接计算时间间隔
+
+```sql
+SELECT NOW()-INTERVAL '2' HOUR;
+SELECT INTERVAL help_topic_id DAY;
+```
+
+#### 作为函数使用
+
+用于在日期和时间值上执行加法运算
+INTERVAL expr unit
+
+```sql
+SELECT INTERVAL (CAST(help_topic_id AS signed integer) + 0) DAY
+```
+
+### CAST
+
+类型转换  
+`CAST(expression AS TYPE);`
+
+| 目标类型         | 示例                                            | 说明                                              |
+| ---------------- | ----------------------------------------------- | ------------------------------------------------- |
+| SIGNED INTEGER   | `CAST(expression AS SIGNED INTEGER)`            | 转换为有符号整数类型                              |
+| UNSIGNED INTEGER | `CAST(expression AS UNSIGNED INTEGER)`          | 转换为无符号整数类型                              |
+| DECIMAL          | `CAST(expression AS DECIMAL(p, s))`             | 转换为定点小数类型，其中 p 是总位数，s 是小数位数 |
+| FLOAT            | `CAST(expression AS FLOAT)`                     | 转换为浮点数类型                                  |
+| CHAR             | `CAST(expression AS CHAR(n))`                   | 转换为定长字符串类型，n 是指定的长度              |
+| VARCHAR          | `CAST(expression AS VARCHAR(n))`                | 转换为可变长度字符串类型，n 是指定的长度          |
+| DATE             | `CAST(expression AS DATE)`                      | 转换为日期类型                                    |
+| TIME             | `CAST(expression AS TIME)`                      | 转换为时间类型                                    |
+| DATETIME         | `CAST(expression AS DATETIME)`                  | 转换为日期时间类型                                |
+| BOOLEAN          | `CAST(expression AS BOOLEAN)`                   | 转换为布尔类型                                    |
+| BINARY           | `CAST(expression AS BINARY(n))`                 | 转换为二进制类型，n 是指定的长度                  |
+| VARBINARY        | `CAST(expression AS VARBINARY(n))`              | 转换为可变长度二进制类型，n 是指定的长度          |
+| JSON             | `CAST(expression AS JSON)`                      | 转换为 JSON 类型                                  |
+| ENUM             | `CAST(expression AS ENUM('value1', 'value2'))`  | 转换为枚举类型，允许的值在列表中选择              |
+| SET              | `CAST(expression AS SET('option1', 'option2'))` | 转换为集合类型，允许的选项在列表中选择            |
+
+### DATE_ADD
+
+将时间间隔添加到起始时间,常结合 INTERVAL 使用
+`DATE_ADD(date,INTERVAL expr type)`
+
+```sql
+DATE_ADD('2023-02-01', INTERVAL help_topic_id DAY)
+DATE_ADD('2023-02-01', INTERVAL(CAST(help_topic_id AS signed integer)+ 0) DAY)
+```
+
+### DAY(LAST_DAY('${year}-${month}-01'))
+
+DAY 获取日期的天数  
+LAST_DAY 获取某一月份的最后一天

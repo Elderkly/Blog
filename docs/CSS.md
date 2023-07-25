@@ -129,3 +129,7 @@ backdrop-filter: saturate(180%) blur(20px);
 ### 无法对同一个元素分别指定不同的 overflow-x 和 overflow-y
 
 **https://blog.csdn.net/wuyou1336/article/details/78965920**
+
+### 英文换行
+
+**https://tailwindcss.com/docs/word-break**

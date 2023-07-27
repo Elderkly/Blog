@@ -718,3 +718,74 @@ new BigNumber(e.fixedSats).div(Math.pow(10, 8)).toFixed();
 ## 箭头函数不绑定 Arguments 对象
 
 **https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions**
+
+## 临时死区
+
+JavaScript 中的“临时死区”（Temporal Dead Zone，简称 TDZ）是指在代码块中使用 let 或 const 声明变量时，从该声明语句开始直到变量实际被赋值之前的这段时间内，该变量是无法被访问的。
+
+```typescript
+//  原代码
+const { content }: any =
+  (await Fetch({
+    url: "/invoices/sendcoins",
+    type: "POST",
+    body: {
+      addr: address,
+      memo: address,
+      amount,
+    },
+  })
+  (await check2FA(codeFA, content))) &&
+  sendCoinByLightning(sendAddress, content, amount, memo); // 报错:Block-scoped variable 'content' used before its declaration.
+
+//  修复
+const { content }: any =
+  (await Fetch({
+    url: "/invoices/sendcoins",
+    type: "POST",
+    body: {
+      addr: address,
+      memo: address,
+      amount,
+    },
+  });
+  (await check2FA(codeFA, content))) &&
+  sendCoinByLightning(sendAddress, content, amount, memo);
+```
+
+### 解读
+
+因为 `await Fetch()` 是异步操作，在声明 `content` 变量时，`Fetch` 操作还未完成。
+
+不加入 `;` 会报错是因为 JavaScript 解析器会认为内容还在继续，导致找不到 `content` 变量。
+
+加入 `;` 后，JavaScript 解析器会断定声明结束，`content` 变量等异步操作完成后再使用。
+
+详细解释：
+
+不加入 `;`：
+
+```typescript
+const { content }: any = await Fetch({...})
+(await check2FA(codeFA, content)) && sendCoinByLightning(...)
+```
+
+这时，JavaScript 解析器会把这两个语句认为是一个语句块，认为 `content` 已经声明好了。
+
+但实际上，`await Fetch()` 是异步操作，等异步操作完成后 `content` 才有值，所以会报错找不到 `content`。
+
+加入 `;` 后：
+
+```typescript
+const { content }: any = await Fetch({...});
+(await check2FA(codeFA, content)) && sendCoinByLightning(...)
+```
+
+这时，JavaScript 解析器会把这两个视为两个独立的语句：
+
+1. 声明 `content` 变量
+2. 执行 `check2FA` 和 `sendCoinByLightning`
+
+由于 `;` 表示声明结束，所以解析器知道 `content` 还未有值，等异步操作完成后才使用，这样就不会报错。
+
+总的来说，加入 `;` 可以告知解析器 `content` 声明已结束，等异步操作完成后再使用。不加入 `;` 会导致解析器认为 `content` 已有值，进而报错。

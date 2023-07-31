@@ -631,3 +631,13 @@ SHOW VARIABLES LIKE 'character_set%';
 ci 代表 case-insensitive，即不区分大小写。
 
 **https://apps.timwhitlock.info/emoji/tables/unicode**
+
+## typeorm innerJoin 和 innerJoinAndSelect
+
+```javascript
+.innerJoinAndSelect()
+// 相当于
+.innerJoin()
+.select(...) // select 所有需要的字段
+.getMany()
+```

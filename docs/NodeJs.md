@@ -641,3 +641,7 @@ ci 代表 case-insensitive，即不区分大小写。
 .select(...) // select 所有需要的字段
 .getMany()
 ```
+
+- 使用 innerJoinAndSelect 简单,但性能略低
+- 使用 innerJoin 性能较高,但代码略复杂  
+  **但无论使用哪种方法,都需要调用 `.getMany()` 来真正获取结果。**

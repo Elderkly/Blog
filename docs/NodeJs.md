@@ -635,10 +635,13 @@ ci 代表 case-insensitive，即不区分大小写。
 ## typeorm innerJoin 和 innerJoinAndSelect
 
 ```javascript
+// 使用 innerJoinAndSelect
 .innerJoinAndSelect()
-// 相当于
+.getMany()
+
+// 或者使用 innerJoin
 .innerJoin()
-.select(...) // select 所有需要的字段
+.select()
 .getMany()
 ```
 

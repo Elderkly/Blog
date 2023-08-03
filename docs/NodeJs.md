@@ -648,3 +648,72 @@ ci 代表 case-insensitive，即不区分大小写。
 - 使用 innerJoinAndSelect 简单,但性能略低
 - 使用 innerJoin 性能较高,但代码略复杂  
   **但无论使用哪种方法,都需要调用 `.getMany()` 来真正获取结果。**
+
+## typeorm 防止 sql 注入攻击
+
+typeorm 通过.query 的第二个参数传递参数的形式可以有效防止 SQL 注入攻击。
+
+示例:
+
+```ts
+await createQueryBuilder()
+  .where("status = :status", { status: "pending" })
+  .getMany();
+```
+
+这里`:status`是参数,typeorm 会妥善处理它,防止 SQL 注入。
+
+- 使用 ? 号参数化:
+
+```ts
+await createQueryBuilder().where("status = ?", ["pending"]).getMany();
+```
+
+这里使用`?`号参数,typeorm 会在执行查询时替换为真实的值。
+
+这两种方式都可以有效地防止 SQL 注入。
+
+所以 typeorm 通过.query 的第二个参数传递参数的方式可以规避 SQL 注入攻击。
+
+### SQL 注入攻击
+
+SQL 注入攻击是一种常见的 Web 安全漏洞。
+
+它的工作原理是:黑客通过网站的输入框等方式,插入特制的 SQL 代码,使网站数据库收到不正当的操作。
+
+比如一个网站有如下查询操作:
+
+```sql
+SELECT * FROM users WHERE name = '{username}'
+```
+
+这里`{username}`由用户输入。
+
+如果用户输入`' or 1=1 --`,则最终形成的 SQL 语句为:
+
+```sql
+SELECT * FROM users WHERE name = '' or 1=1 --'
+```
+
+由于`1=1`永远为 true,最终会返回所有用户的数据。
+
+这就是 SQL 注入攻击。
+
+为了防止 SQL 注入,我们需要对用户输入作过滤和转义。
+
+TypeORM 中通过两种方法防止 SQL 注入:
+
+1. 使用命名参数`:name`
+
+2. 使用?号作为位置参数
+
+TypeORM 在替换参数时会对其转义,避免注入攻击。
+
+使用参数化查询可以有效避免 SQL 注入。
+
+所以你要做的就是:
+
+1. 使用 TypeORM 的命名参数或?号参数
+2. 不要直接将用户输入拼接到 SQL 中
+
+以上两点可以防止 SQL 注入攻击。

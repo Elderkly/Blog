@@ -14,3 +14,7 @@
 ## 环境变量
 
 **https://www.webpackjs.com/guides/environment-variables/**
+
+## 安全策略
+
+**https://www.webpackjs.com/guides/csp/**

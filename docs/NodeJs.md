@@ -717,3 +717,37 @@ TypeORM 在替换参数时会对其转义,避免注入攻击。
 2. 不要直接将用户输入拼接到 SQL 中
 
 以上两点可以防止 SQL 注入攻击。
+
+## 执行脚本
+```script
+node --require .pnp.js -e '
+   // 被执行脚本
+' -- '[参数1]', '[参数2]'
+
+node --require .pnp.js -e '
+  const init = require("react-scripts/scripts/init.js");
+  init.apply(null, JSON.parse(process.argv[1]));
+' -- '["/path/to/project","my-app",true,"/","null"]'
+```
+
+对于执行脚本： 
+
+process.argv[0]: 'node' 
+
+process.argv[1]: '--require' 
+
+process.argv[2]: '.pnp.js' 
+
+process.argv[3]: '-e' 
+
+对于被执行脚本: 
+
+process.argv[0]: 'node' 
+
+process.argv[1]: '-e' 
+
+process.argv[2]: '["/path/to/project","my-app",true,"/","null"]' 
+
+**但是当在被执行脚本中访问process.argv[1]时访问的是'-e'但实际取到的是process.argv[2]**   
+**这一参数位置映射关系是spawn在启动脚本进程时内部完成的,而不是Node.js或者脚本本身做的。我们可以直接从process.argv[2]获取参数,是因为spaw在脚本执行前帮我们完成了对应关系的定义。**
+

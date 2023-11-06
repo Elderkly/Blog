@@ -789,3 +789,13 @@ const { content }: any = await Fetch({...});
 由于 `;` 表示声明结束，所以解析器知道 `content` 还未有值，等异步操作完成后才使用，这样就不会报错。
 
 总的来说，加入 `;` 可以告知解析器 `content` 声明已结束，等异步操作完成后再使用。不加入 `;` 会导致解析器认为 `content` 已有值，进而报错。
+
+## ??与||
+
+```javascript
+var a = "" || "error"; // ===> "error"
+var b = "" ?? "error"; // ===> ""
+```
+
+`??` 检查的是`null/undefined`,""不是这两个值所以返回""。  
+`||` 检查的是`truthy/falsy`,""属于 falsy 所以检查下一个值。

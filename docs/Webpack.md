@@ -21,3 +21,11 @@
 ## 安全策略
 
 **https://www.webpackjs.com/guides/csp/**
+
+## Source Mapping
+
+避免在生产中使用 `inline-***` 和 `eval-***`，因为它们会增加 bundle 体积大小，并降低整体性能。
+
+## 懒加载
+
+**https://www.webpackjs.com/guides/lazy-loading/**

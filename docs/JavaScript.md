@@ -98,6 +98,31 @@ console.log(8);
 
 https://www.cnblogs.com/smile-fanyin/p/14622432.html
 
+```javascript
+console.log(1);
+
+async function fn() {
+  console.log(2);
+  await console.log(3);
+  await console.log(4);
+  console.log(5);
+}
+fn();
+
+new Promise((res, rej) => {
+  console.log(6);
+  res(7);
+  console.log(8);
+  rej(9);
+}).then((n) => console.log(n))
+.catch((e) => console.log(e));
+
+setTimeout(() => console.log(10), 0);
+
+console.log(11);
+
+//  1 2 3 6 8 11 4 7 5 10
+```
 ## 19.7.29
 
 ### 图层
@@ -254,6 +279,14 @@ foo.a();
 //  4 2 1
 ```
 
+#### 箭头函数没有原型链
+```javascript
+const A = () => ({})
+console.log(new A())  // Uncaught TypeError: A is not a constructor
+
+const B = function() { return {}}
+console.log(new B())  //  {}
+```
 https://github.com/KieSun/Dream/issues/2
 
 ## 19.8.5
@@ -396,60 +429,6 @@ const reg2 = new RegExp(pattren, flags)     //  实例创建 可进行字符串�
 
 正则截取`id`后的内容  
 `'id:123123'.match(/id(\W*)/)[1]`或`new RegExp('id(\\S*)').exec('id:123123')[1]`
-
-## 浏览器缓存
-
-**Web 缓存种类：** 数据库缓存，CDN 缓存，代理服务器缓存，浏览器缓存。  
-**浏览器缓存过程：** 强缓存，协商缓存。  
-**浏览器缓存位置一般分为四类：** Service Worker-->Memory Cache-->Disk Cache-->Push Cache。
-
-### 浏览器缓存相关字段
-
-![字段](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0c82d0049c3f4f57bf66d8effcb25ed5~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp)
-
-### 缓存分类
-
-![缓存分类](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/70f599db34fa42068ccfa4e04748a078~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp)
-|名称|用途|
-|:-:|:-:|
-|Service Worker|是运行在浏览器背后的独立线程，一般可以用来实现缓存功能，只支持 HTTPS|
-|Memory Cache|存放于内存中的缓存，大多用于存放样式、脚本文件，存放时间短，随着进程释放而释放|
-|Disk Cache|存放于硬盘中的缓存，大多用于存放图片、视频资源等，存放时间长，容量大|
-|prefetch cache|prefetch 是预加载的一种方式，被标记为 prefetch 的资源，将会被浏览器在空闲时间加载|
-|Push Cache|HTTP2 的内容，在其他缓存没命中的情况下使用，存放时间短，随着进程释放而释放|
-
-### 缓存过程
-
-#### 强缓存
-
-首次请求：如果响应头中`expires`、`pragma`或者`cache-control`字段，代表这是强缓存，浏览器就会把资源缓存在 memory cache 或 disk cache 中。  
-第二次请求：如果符合强缓存条件就直接返回状态码 200，从本地缓存中拿数据。否则把响应参数存在 request header 请求头中，看是否符合协商缓存，符合则返回状态码 304，不符合则服务器会返回全新资源。  
-![强缓存](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ca00bff3081e4cfd993a8f252f4fa23a~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp)
-
-#### 协商缓存
-
-协商缓存就是强缓存失效后，浏览器携带缓存标识向服务器发送请求，由服务器根据缓存标识来决定是否使用缓存的过程。  
-服务器资源未更新：返回 304，读取缓存  
-服务器资源更新：重新请求，返回 200  
-**实现协商缓存:**
-
-- Last-Modified / If-Modified-Since：服务端返回 Last-Modified 即文件最后修改时间，客户端请求时将其写入请求头的 If-Modified-Since 字段，服务端对比文件修改时间，若服务端文件修改时间大于 If-Modified-Since 则重新返回资源和 200 状态码，否则返回 304，代表资源无更新，可继续使用缓存文件。
-- Etag / If-None-Match：服务端返回 Etag 字段即服务器生成的文件唯一标识，客户端将其写入 If-None-Match 字段中，服务端收到后判断客户端的 If-None-Match 与服务端文件的唯一标识是否一致，一致则返回 304，否则返回 200.
-
-**Etag / If-None-Match 优先级高于 Last-Modified / If-Modified-Since，同时存在则只有 Etag / If-None-Match 生效。**
-
-### 强缓存与协商缓存的区别
-
-1. 强缓存不发请求到服务器，所以有时候资源更新了浏览器还不知道，但是协商缓存会发请求到服务器，所以资源是否更新，服务器肯定知道。
-2. 大部分 web 服务器都默认开启协商缓存。
-
-### 刷新对于强缓存和协商缓存的影响
-
-1. 当 ctrl+f5 强制刷新网页时，直接从服务器加载，跳过强缓存和协商缓存。
-2. 当 f5 刷新网页时，跳过强缓存，但是会检查协商缓存。
-3. 浏览器地址栏中写入 URL，回车 浏览器发现缓存中有这个文件了，不用继续请求了，直接去缓存拿。（最快）
-
-https://juejin.cn/post/6947936223126093861
 
 ## 常用数组操作 API
 

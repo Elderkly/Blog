@@ -133,3 +133,32 @@ backdrop-filter: saturate(180%) blur(20px);
 ### 英文换行
 
 **https://tailwindcss.com/docs/word-break**
+
+
+### CSS样式优先级
+!important > 内联样式 > ID选择器 > 类选择器、属性选择器和伪类选择器 > 元素选择器和伪元素选择器 > 通配选择器、子选择器、相邻选择器   
+
+### 块级元素与行内元素
+#### 块级元素
+1.占据一整行   
+2.可以设置宽度、高度、内外边距等属性，并且可以通过CSS控制其布局行为   
+3.<div>、<p>、<h1>到<h6>、<ul>、<li>     
+
+#### 行内元素
+1.通常不会独占一行，而是根据内容自动换行   
+2.宽度由内容决定，无法设置固定的宽度    
+3.<span>、<a>、<strong>、<em>、<b>、<i>  
+
+### 父元素宽高不定 却对居中
+```css
+/* flex */
+display: flex;
+justify-content: center; /* 水平居中 */
+align-items: center; /* 垂直居中 */
+
+/* 绝对定位 */
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+```

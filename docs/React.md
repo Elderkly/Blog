@@ -594,3 +594,12 @@ export default useDebounce;
 ```
 
 **https://juejin.cn/post/6854573217349107725**
+
+
+## useEffect和useLayoutEffect
+1. 执行时机：
+     - useEffect：异步执行，在浏览器完成绘制之后执行。
+     - useLayoutEffect：同步执行，在React完成DOM更新后但在浏览器绘制之前执行。
+2. 用途：
+     - useEffect：适用于不影响布局的副作用，例如数据获取、事件监听等。
+     - useLayoutEffect：适用于需要同步执行的副作用，例如测量DOM节点大小、强制同步布局等。

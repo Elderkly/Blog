@@ -1,5 +1,64 @@
 ## CSS
 
+### flex布局
+容器属性：
+- flex-direction: 主轴方向
+  - row：主轴为水平方向，子项从左到右排列。
+  - row-reverse：主轴为水平方向，子项从右到左排列。
+  - column：主轴为垂直方向，子项从上到下排列。
+  - column-reverse：主轴为垂直方向，子项从下到上排列。
+
+- flex-wrap: 如何换行
+  - nowrap：不换行（默认值）。
+  - wrap：换行，第一行在上方。
+  - wrap-reverse：换行，第一行在下方。
+
+- flex-flow: flex-direction和flex-wrap的简写形式
+  - 默认：row wrap
+
+- justify-content: 主轴上的对齐方式
+  - flex-start：左对齐（默认值）。
+  - flex-end：右对齐。
+  - center：居中对齐。
+  - space-between：两端对齐，子项之间的间隔相等。
+  - space-around：每个子项两侧的间隔相等。
+
+- align-items: 副轴对齐方式
+  - stretch：拉伸以适应容器（默认值）。
+  - flex-start：交叉轴的起点对齐。
+  - flex-end：交叉轴的终点对齐。
+  - center：交叉轴的中点对齐。
+  - baseline：第一行文字的基线对齐。
+
+- align-content: 用来定义多根轴线的对齐方式。如果只有一根轴线，该属性不起作用
+  - flex-start：与交叉轴的起点对齐。
+  - flex-end：与交叉轴的终点对齐。
+  - center：与交叉轴的中点对齐。
+  - space-between：与交叉轴两端对齐，轴线之间的间隔平均分布。
+  - space-around：每根轴线两侧的间隔都相等。
+  - stretch：轴线将占满整个交叉轴。
+
+项目属性:
+- order: 用来定义子项的排列顺序。默认值为0，值越小，排列越靠前。
+  
+- flex-grow: 用来定义子项的放大比例。默认为0，即如果存在剩余空间，也不放大。
+
+- flex-shrink:  用来定义子项的缩小比例。默认为1，即如果空间不足，该项目将缩小。
+
+- flex-basis: 用来定义子项在主轴上的初始大小。可以为具体的长度值（如20%或100px）或auto。    
+  
+- align-self: 用来允许单个子项有与其他子项不一样的对齐方式，可覆盖align-items属性。
+  - auto：继承父元素的align-items属性（默认值）。
+  - flex-start：交叉轴起点对齐。
+  - flex-end：交叉轴终点对齐。
+  - center：交叉轴中点对齐。
+  - baseline：第一行文字的基线对齐。
+  - stretch：拉伸以适应容器。 
+
+- flex: flex-grow和flex-shrink和flex-basis的缩写。
+
+当设置了flex-basis的值，并设置了flex-shrink:0，则width失效
+
 ### display
 
 |   display    | 作用                                                 |

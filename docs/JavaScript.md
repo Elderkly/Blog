@@ -19,6 +19,13 @@ head 内的 js 脚本会阻塞 body 标签的渲染，把 js 脚本放在 head �
 
 https://yuchengkai.cn/docs/frontend/browser.html#%E6%B8%B2%E6%9F%93%E6%9C%BA%E5%88%B6
 
+### link标签下的css文件和js文件是同步/异步进行下载/执行的
+- css文件: 同步下载、同步执行，所以会阻塞渲染
+- js文件: 默认情况下同步下载、同步执行，也会阻塞渲染
+- js异步下载：
+  - async: 异步下载后立即执行
+  - defer: 异步下载后等html解析完成再执行
+
 ## 19.7.26
 
 ### 浏览器事件循环

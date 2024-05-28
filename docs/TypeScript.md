@@ -1,3 +1,47 @@
+# 接口和type的区别
+1. 扩展性：
+    - interface可以通过extends关键字扩展其他接口。
+    - type可以通过交叉类型（&）实现类似扩展的效果，但不能直接使用extends。
+  
+2. 声明合并：
+    - interface支持声明合并，多个同名接口会合并成一个。
+    - type不支持声明合并，同名类型别名会导致编译错误。
+
+3. 灵活性：
+    - type更灵活，可以定义复杂的类型，包括联合类型、交叉类型、元组等。
+    - interface主要用于定义对象的形状。
+
+# 将interface所有属性改为可选
+
+```typescript
+interface MyInterface {
+    prop1: string;
+    prop2: number;
+    prop3: boolean;
+}
+
+type OptionalMyInterface = Partial<MyInterface>;
+
+type OptionalMyInterface = {
+    [K in keyof MyInterface]?: MyInterface[K];
+};
+
+// 可选化后的接口
+/*
+interface OptionalMyInterface {
+    prop1?: string | undefined;
+    prop2?: number | undefined;
+    prop3?: boolean | undefined;
+}
+*/
+*/
+```
+
+# any、unknow、void区别
+- any 类型用于关闭类型检查，可以接受任意类型的值；
+- unknown 类型表示未知类型，需要进行类型检查后才能使用；
+- void 类型表示空类型，通常用于没有返回值的函数。
+
 # interface 接口
 
 ```typescript
@@ -260,6 +304,7 @@ export type exportTransactionEntityParmas = {
   entityId?: string;
 };
 
+//  交叉类型
 export type queryTransactionEntityParams = exportTransactionEntityParmas & {
   page?: number;
   pageSize?: number;
@@ -272,4 +317,12 @@ export type queryUserTransactionEntityParams = { walletId?: string } & Omit<
 
 type TransactionRecord = { isinner: string } & TransactionEntity &
   Omit<Transaction, keyof TransactionEntity>;
+
+//  联合类型
+type Status = 'success' | 'error' | 'loading';
+
+//  元组类型
+type Point = [number, number];
+const point: Point = [10, 20];
+
 ```

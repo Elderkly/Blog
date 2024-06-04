@@ -279,6 +279,60 @@ class Component<P, S> {
 }
 ```
 
+react的Function Component加入泛型约束
+```typescript
+import React from "react";
+
+// 定义一个接口来描述组件的属性类型
+interface Item {
+  id: number;
+  name: string;
+}
+
+// 定义一个泛型接口，描述组件的 props 类型
+interface GenericListProps<T> {
+  items: T[]; // 泛型数组
+  renderItem: (item: T) => React.ReactNode; // 泛型函数
+}
+
+// 定义一个泛型组件，它接受一个泛型参数 T，并使用泛型接口 GenericListProps<T>
+function GenericList<T>({ items, renderItem }: GenericListProps<T>) {
+  return (
+    <div>
+      <h2>List</h2>
+      <ul>
+        {items.map((item, index) => (
+          <li key={index}>{renderItem(item)}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// 使用泛型组件，并传入具体类型参数
+const App = () => {
+  const items: Item[] = [
+    { id: 1, name: "Item 1" },
+    { id: 2, name: "Item 2" },
+    { id: 3, name: "Item 3" },
+  ];
+
+  const renderListItem = (item: Item) => {
+    return <div>{item.name}</div>;
+  };
+
+  return (
+    <div>
+      <h1>App</h1>
+      {/* 使用 GenericList 组件，并传入具体类型参数 */}
+      <GenericList items={items} renderItem={renderListItem} />
+    </div>
+  );
+};
+
+export default App;
+```
+
 # Pick/Omit
 
 ```typescript

@@ -785,3 +785,57 @@ var b = "" ?? "error"; // ===> ""
 
 `??` 检查的是`null/undefined`,""不是这两个值所以返回""。  
 `||` 检查的是`truthy/falsy`,""属于 falsy 所以检查下一个值。
+
+
+## JavaScript编译原理
+
+### 1.解析
+JavaScript引擎会对源代码进行解析，将其转换为抽象语法树（Abstract Syntax Tree, AST）。
+- 词法分析: 将源代码转换为一系列的标记（Tokens）。标记是语言的最小单位，如关键字、变量名、操作符等。
+- 语法分析: 使用标记生成抽象语法树（AST）
+
+#### AST示例
+```javascript
+function add(a, b) {
+  return a + b;
+}
+
+let result = add(2, 3);
+console.log(result);
+```
+对应的AST树
+```scss
+Program
+ ├── FunctionDeclaration (add)
+ │   ├── Identifier (a)
+ │   ├── Identifier (b)
+ │   └── BlockStatement
+ │       └── ReturnStatement
+ │           └── BinaryExpression (+)
+ │               ├── Identifier (a)
+ │               └── Identifier (b)
+ ├── VariableDeclaration (result)
+ │   └── VariableDeclarator
+ │       ├── Identifier (result)
+ │       └── CallExpression (add(2, 3))
+ │           ├── Identifier (add)
+ │           ├── Literal (2)
+ │           └── Literal (3)
+ └── ExpressionStatement (console.log(result))
+     └── CallExpression
+         ├── MemberExpression (console.log)
+         │   ├── Identifier (console)
+         │   └── Identifier (log)
+         └── Identifier (result)
+```
+
+### 2.编译
+JavaScript引擎会对AST进行编译，生成中间代码或字节码。
+- 字节码生成: 将AST转换为中间表示，然后进一步转换为字节码(字节码是一种低级别的、与机器无关的代码，可以被虚拟机执行)。
+- 优化: 在生成字节码的过程中，JavaScript引擎会对代码进行各种优化，以提高执行效率。这些优化可能包括内联函数、消除死代码、常量折叠等。
+
+### 3.执行
+最终的字节码由JavaScript引擎的解释器或即时编译器（JIT Compiler）执行。
+- 解释器: 直接执行字节码，每次执行都需要重新解释字节码。这种方式启动快，但运行速度较慢。
+- 即时编译器（JIT Compiler）: 在运行时将热点代码（Hot Code，即执行频率高的代码）编译为机器码，这种方式启动较慢，但运行速度快。JIT编译器会在执行过程中不断收集代码的运行信息，进行动态优化。
+

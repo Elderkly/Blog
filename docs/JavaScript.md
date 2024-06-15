@@ -862,3 +862,87 @@ var c = foo( 2 );
 当一个块或函数嵌套在另一个块或函数中时，就发生了作用域的嵌套。因此，在当前作用域中无法找到某个变量时，引擎就会在外层嵌套的作用域中继续查找，直到找到该变量，抵达最外层的作用域(也就是`全局作用域`)为止。
 
 
+## 实现类似Vue的MVVM模式
+```javascript
+/**
+ * Implement a response model similar to MVVM (Model-View-ViewModel) pattern.
+ * Model: reactive
+ * ViewModel: computed
+ * View: console.log
+*/
+
+//  确保value初始化时能拿到正确的value以及确保deps不会重复写入副作用函数
+let currentEffect = null;
+
+//  计算属性
+function computed(getter) {
+    let value;
+    let needsUpdate = true;
+
+    const effect = () => {
+        value = getter();
+        needsUpdate = false;
+    };
+
+    return {
+        get value() {
+            if (needsUpdate) {
+                currentEffect = effect;
+                effect();
+                currentEffect = null;
+            }
+            return value;
+        }
+    };
+}
+
+//  Model
+function reactive(target) {
+    //  存放每个计算属性出现变更时需要执行的副作用函数
+    const deps = {};
+
+    const getDep = (prop) => {
+        if (!deps[prop]) {
+            deps[prop] = [];
+        }
+        return deps[prop];
+    };
+
+    return new Proxy(target, {
+        get(obj, prop) {
+            //  只有计算属性初始化时才需要绑定副作用函数
+            if (currentEffect) {
+                getDep(prop).push(currentEffect);
+            }
+            return obj[prop];
+        },
+        set(obj, prop, value) {
+            obj[prop] = value;
+            //  计算属性出现变更 执行所有绑定的副作用函数
+            getDep(prop).forEach(effect => effect());
+            return true;
+        }
+    });
+}
+
+const node = reactive({ leftChildren: 1 });
+console.log(node.leftChildren, node.rightChildren); // 1 undefined
+
+const children = computed(() => node.leftChildren + (parseInt(node.rightChildren) || 0));
+console.log(children.value); // 1
+
+node.leftChildren = 10;
+console.log(children.value); // 10
+
+node.rightChildren = 2;
+console.log(children.value); // 12
+
+const children2 = computed(() => node.leftChildren * 2);
+console.log(children2.value)    // 20
+
+node.leftChildren = 15;
+console.log(children.value, children2.value)        //  17 30
+
+node.rightChildren = 5;
+console.log(children.value, children2.value)    //  20 30
+```

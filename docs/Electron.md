@@ -64,7 +64,7 @@
 #### 2.排查
 首先是怀疑Electron对于打包后的应用可能存在内存限制，但是翻阅官方文档将与性能相关的配置都尝试了一遍无果。       
 
-怀疑可能是硬件加速没开，但是对比调用关闭性能加速的API后前后两次信息发现结果无异。   
+怀疑可能是硬件加速没开，但是对比调用关闭硬件加速的API后前后两次信息发现结果无异。   
 ```javascript
 const { app } = require('electron');
 
@@ -83,7 +83,7 @@ const completeGPUInfo = await app.getGPUInfo('complete');
 console.log('Complete GPU Info:', completeGPUInfo);
 ```
 
-可以通过访问chrome://gpu查看硬件加速状态：   
+可以通过访问chrome://gpu查看内核的硬件加速状态：   
 ```javascript
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -95,11 +95,11 @@ console.log('Complete GPU Info:', completeGPUInfo);
 
   mainWindow.loadURL('chrome://gpu');
 ```
-对比浏览器的gpu信息发现，webGL都显示硬件加速状态，唯一的区别就是内核版本不同，考虑是内核差异引起。    
+对比内核的gpu信息发现，webGL都显示硬件加速(hardware acceleration)状态，唯一的区别就是内核版本不同，考虑是内核差异引起。    
 拉了最新版的Electron跑之前的项目发现并没有这个问题，所以这个时候断定是内核引起的。   
-但是查看Electron-EGG相关的源码发现，是框架本身将硬件加速关闭了：
+但是查看Electron-egg相关的源码发现，是框架本身将硬件加速关闭了：
 ```javascript
-// /ee-core/blob/main/ee-core/electron/app/index.js
+// /node_modules/ee-core/blob/main/ee-core/electron/app/index.js
 const { app } = require('electron');
 ...
 
@@ -133,7 +133,7 @@ const CoreElectronApp = {
 
 module.exports = CoreElectronApp;
 ```
-**可以看到当`CoreApp.config.hardGpu.enable`这个配置为`false`时默认是禁用硬件加速的，而这个属性在初始化时默认就为`false`，随意也就导致了这个问题，关于`hardGpu`的配置在文档中也没有体现，这是比较坑的地方。**
+**可以看到当`CoreApp.config.hardGpu.enable`这个配置为`false`时默认是禁用硬件加速的，而这个属性在初始化时默认就为`false`，所以也就导致了这个问题，关于`hardGpu`的配置在文档中也没有体现，这是比较坑的地方。**
 
 #### 3.修复
 ```javascript
@@ -148,4 +148,4 @@ module.exports = (appInfo) => {
 ```
 
 #### 4.总结
-这个问题时Elctron-EGG这个框架一些初始化配置引起的，通过配置`hardGpu`选项可修复该问题
+这个问题时Elctron-egg这个框架一些初始化配置引起的，通过配置`hardGpu`选项可修复该问题

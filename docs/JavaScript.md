@@ -993,3 +993,80 @@ function test () {...}
 //  IIFE3
 void function() { ... }();
 ```
+
+### 提升
+只有`声明`本身会被提升，而赋值或其他运行逻辑会留在原地。**(所以这里需要区分函数声明和函数表达式)**    
+也就是说函数声明会被提升，但是函数表达式并不会被提升。    
+```javascript
+foo()
+
+function foo() {
+  console.log( a ); // undefined 
+  var a = 2;
+}
+
+/**   实际的执行顺序  */
+function foo() { 
+  var a;
+  console.log( a ); // undefined
+  a = 2; 
+}
+
+foo();
+```
+```javascript
+foo(); // TypeError
+bar(); // ReferenceError
+var foo = function bar() { 
+  // ...
+};
+
+/**   实际的执行顺序  */
+var foo;
+foo(); // TypeError
+bar(); // ReferenceError
+foo = function() {
+  var bar = ...self... 
+  // ...
+}
+```
+函数声明和变量声明都会被提升，但是函数会`首先`被提升，然后才是变量。
+```javascript
+foo() // 1
+
+var foo;
+
+function foo() {
+  console.log(1)
+}
+
+foo = function() {
+  console.log(2)
+}
+
+/**   实际的执行顺序  */
+function foo() {
+  console.log(1)
+}
+
+foo() // 1
+
+foo = function () {
+  console.log(2)
+}
+```
+出现在后面的函数声明可以`覆盖`前面的。
+```javascript
+foo() // 3
+function foo() {
+  console.log(1)
+}
+
+var foo = function () {
+  console.log(2)
+}
+
+function foo () {
+  console.log(3)
+}
+```

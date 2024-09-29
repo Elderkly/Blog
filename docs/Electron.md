@@ -173,3 +173,30 @@ module.exports = (appInfo) => {
 - **优化代码**: 尽量优化代码，减少CPU密集型操作的次数，或者将这些操作放在异步任务中处理。
 - **升级硬件**: 如果条件允许，升级硬件配置，尤其是CPU和GPU的性能。
 
+
+### Electron-Egg实现多开以及命令行打开应用时携带参数
+egg内部限制死了只能单开
+```javascript
+//  node_modules/ee-core/electron/app/index.js
+const CoreElectronApp = {
+
+  /**
+   * 创建electron应用
+   */
+  async create() {
+    const { CoreApp } = EE;
+
+    const gotTheLock = app.requestSingleInstanceLock();
+    if (!gotTheLock) {
+      app.quit();
+    }
+    ...
+```
+这里把`gotTheLock`这一块注释掉就可以了。   
+
+如果外部通过命令行启动exe文件，可以直接在后面拼接参数后，通过`process.argv`获取到
+```javascript
+//  外部通过    demo.exe  --params1=value1  --params2=value2
+
+console.log(process.argv)   //  ['--params1=value1', '--params2=value2']
+```

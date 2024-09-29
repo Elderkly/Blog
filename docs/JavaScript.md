@@ -786,82 +786,6 @@ var b = "" ?? "error"; // ===> ""
 `??` 检查的是`null/undefined`,""不是这两个值所以返回""。  
 `||` 检查的是`truthy/falsy`,""属于 falsy 所以检查下一个值。
 
-
-## JavaScript编译原理
-
-### 1.解析
-JavaScript引擎会对源代码进行解析，将其转换为抽象语法树（Abstract Syntax Tree, AST）。
-- 词法分析: 将源代码转换为一系列的标记（Tokens）。标记是语言的最小单位，如关键字、变量名、操作符等。
-- 语法分析: 使用标记生成抽象语法树（AST）
-
-#### AST示例
-```javascript
-function add(a, b) {
-  return a + b;
-}
-
-let result = add(2, 3);
-console.log(result);
-```
-对应的AST树
-```scss
-Program
- ├── FunctionDeclaration (add)
- │   ├── Identifier (a)
- │   ├── Identifier (b)
- │   └── BlockStatement
- │       └── ReturnStatement
- │           └── BinaryExpression (+)
- │               ├── Identifier (a)
- │               └── Identifier (b)
- ├── VariableDeclaration (result)
- │   └── VariableDeclarator
- │       ├── Identifier (result)
- │       └── CallExpression (add(2, 3))
- │           ├── Identifier (add)
- │           ├── Literal (2)
- │           └── Literal (3)
- └── ExpressionStatement (console.log(result))
-     └── CallExpression
-         ├── MemberExpression (console.log)
-         │   ├── Identifier (console)
-         │   └── Identifier (log)
-         └── Identifier (result)
-```
-
-### 2.编译
-JavaScript引擎会对AST进行编译，生成中间代码或字节码。
-- 字节码生成: 将AST转换为中间表示，然后进一步转换为字节码(字节码是一种低级别的、与机器无关的代码，可以被虚拟机执行)。
-- 优化: 在生成字节码的过程中，JavaScript引擎会对代码进行各种优化，以提高执行效率。这些优化可能包括内联函数、消除死代码、常量折叠等。
-
-### 3.执行
-最终的字节码由JavaScript引擎的解释器或即时编译器（JIT Compiler）执行。
-- 解释器: 直接执行字节码，每次执行都需要重新解释字节码。这种方式启动快，但运行速度较慢。
-- 即时编译器（JIT Compiler）: 在运行时将热点代码（Hot Code，即执行频率高的代码）编译为机器码，这种方式启动较慢，但运行速度快。JIT编译器会在执行过程中不断收集代码的运行信息，进行动态优化。
-
-
-## 作用域
-### 查找操作
-- LHS: 目的是找到变量容器本身，以便可以对其赋值。例如，在赋值操作的左侧，或作为函数参数传递的变量名。
-  - 查找失败：自动隐式 地创建一个全局变量(非严格模式下)，或者抛出 `ReferenceError` 异常(严格模式下)
-- RHS: 目的是找到变量的值，即访问或使用变量。例如，在赋值操作的右侧，或在表达式中使用变量时。
-  - 不成功的 RHS 引用会导致抛出 `ReferenceError` 异常 
-
-```javascript
-function foo(a) { 
-  var b = a;
-  return a + b; 
-}
-var c = foo( 2 );
-
-//  LHS: var c、a = 2、 var b
-//  RHS: foo(2)、b = a、return a + b(两次、一次找a一次找b)
-```
-
-### 作用域嵌套
-当一个块或函数嵌套在另一个块或函数中时，就发生了作用域的嵌套。因此，在当前作用域中无法找到某个变量时，引擎就会在外层嵌套的作用域中继续查找，直到找到该变量，抵达最外层的作用域(也就是`全局作用域`)为止。
-
-
 ## 实现类似Vue的MVVM模式
 ```javascript
 /**
@@ -945,4 +869,204 @@ console.log(children.value, children2.value)        //  17 30
 
 node.rightChildren = 5;
 console.log(children.value, children2.value)    //  20 30
+```
+
+
+## JavaScript编译原理
+
+### 1.解析
+JavaScript引擎会对源代码进行解析，将其转换为抽象语法树（Abstract Syntax Tree, AST）。
+- 词法分析: 将源代码转换为一系列的标记（Tokens）。标记是语言的最小单位，如关键字、变量名、操作符等。
+- 语法分析: 使用标记生成抽象语法树（AST）
+
+#### AST示例
+```javascript
+function add(a, b) {
+  return a + b;
+}
+
+let result = add(2, 3);
+console.log(result);
+```
+对应的AST树
+```scss
+Program
+ ├── FunctionDeclaration (add)
+ │   ├── Identifier (a)
+ │   ├── Identifier (b)
+ │   └── BlockStatement
+ │       └── ReturnStatement
+ │           └── BinaryExpression (+)
+ │               ├── Identifier (a)
+ │               └── Identifier (b)
+ ├── VariableDeclaration (result)
+ │   └── VariableDeclarator
+ │       ├── Identifier (result)
+ │       └── CallExpression (add(2, 3))
+ │           ├── Identifier (add)
+ │           ├── Literal (2)
+ │           └── Literal (3)
+ └── ExpressionStatement (console.log(result))
+     └── CallExpression
+         ├── MemberExpression (console.log)
+         │   ├── Identifier (console)
+         │   └── Identifier (log)
+         └── Identifier (result)
+```
+
+### 2.编译
+JavaScript引擎会对AST进行编译，生成中间代码或字节码。
+- 字节码生成: 将AST转换为中间表示，然后进一步转换为字节码(字节码是一种低级别的、与机器无关的代码，可以被虚拟机执行)。
+- 优化: 在生成字节码的过程中，JavaScript引擎会对代码进行各种优化，以提高执行效率。这些优化可能包括内联函数、消除死代码、常量折叠等。
+
+### 3.执行
+最终的字节码由JavaScript引擎的解释器或即时编译器（JIT Compiler）执行。
+- 解释器: 直接执行字节码，每次执行都需要重新解释字节码。这种方式启动快，但运行速度较慢。
+- 即时编译器（JIT Compiler）: 在运行时将热点代码（Hot Code，即执行频率高的代码）编译为机器码，这种方式启动较慢，但运行速度快。JIT编译器会在执行过程中不断收集代码的运行信息，进行动态优化。
+
+
+## 作用域
+### 查找操作
+- LHS: 目的是找到变量容器本身，以便可以对其赋值。例如，在赋值操作的左侧，或作为函数参数传递的变量名。
+  - 查找失败：自动隐式 地创建一个全局变量(非严格模式下)，或者抛出 `ReferenceError` 异常(严格模式下)
+- RHS: 目的是找到变量的值，即访问或使用变量。例如，在赋值操作的右侧，或在表达式中使用变量时。
+  - 不成功的 RHS 引用会导致抛出 `ReferenceError` 异常 
+
+```javascript
+function foo(a) { 
+  var b = a;
+  return a + b; 
+}
+var c = foo( 2 );
+
+//  LHS: var c、a = 2、 var b
+//  RHS: foo(2)、b = a、return a + b(两次、一次找a一次找b)
+```
+
+### 作用域嵌套
+当一个块或函数嵌套在另一个块或函数中时，就发生了作用域的嵌套。因此，在当前作用域中无法找到某个变量时，引擎就会在外层嵌套的作用域中继续查找，直到找到该变量，抵达最外层的作用域(也就是`全局作用域`)为止。
+
+### 欺骗词法作用域
+主要用到`eval`和`with`这两个关键词，但是这两个关键词在严格模式和后续的ECMA版本中都被禁用和废除了。
+```javascript
+function foo(str, a) { 
+  eval( str ); // 欺骗! 
+  console.log( a, b );
+}
+var b = 2;
+foo( "var b = 3;", 1 ); // 1, 3
+```
+
+```javascript
+function foo(obj) { 
+  with (obj) {
+    a = 2; 
+  }
+}
+var o1 = { 
+  a: 3
+};
+var o2 = { 
+  b: 3
+};
+foo( o1 );
+console.log( o1.a ); // 2
+foo( o2 );
+console.log( o2.a ); // undefined
+console.log( a ); // 2——不好，a 被泄漏到全局作用域上了!
+```
+使用`eval`和`with`会影响性能表现。       
+**这两个机制的副作用是引擎无法在编译时对作用域查找进行优化，因为引擎只能谨慎地认为这样的优化是无效的。最悲观的情况是如果出现了`eval(..)`或`with`，所有的优化可能都是无意义的，因此最简单的做法就是`完全不做`任何优化。**
+
+### 函数声明和表达式
+区分函数声明和表达式最简单的方法是看 function 关键字出现在声明中的位置(不仅仅是一行代码，而是整个声明中的位置)。如果 function 是声明中的第一个词，那么就是一个函数声明，否则就是一个函数表达式。
+```javascript
+//  函数声明
+function test () {...}
+
+//  函数表达式 IIFE1
+(function IIFE() {...})()
+
+//  IIFE2
+(function() {...}())
+
+//  IIFE3
+void function() { ... }();
+```
+
+### 提升
+只有`声明`本身会被提升，而赋值或其他运行逻辑会留在原地。**(所以这里需要区分函数声明和函数表达式)**    
+也就是说函数声明会被提升，但是函数表达式并不会被提升。    
+```javascript
+foo()
+
+function foo() {
+  console.log( a ); // undefined 
+  var a = 2;
+}
+
+/**   实际的执行顺序  */
+function foo() { 
+  var a;
+  console.log( a ); // undefined
+  a = 2; 
+}
+
+foo();
+```
+```javascript
+foo(); // TypeError
+bar(); // ReferenceError
+var foo = function bar() { 
+  // ...
+};
+
+/**   实际的执行顺序  */
+var foo;
+foo(); // TypeError
+bar(); // ReferenceError
+foo = function() {
+  var bar = ...self... 
+  // ...
+}
+```
+函数声明和变量声明都会被提升，但是函数会`首先`被提升，然后才是变量。
+```javascript
+foo() // 1
+
+var foo;
+
+function foo() {
+  console.log(1)
+}
+
+foo = function() {
+  console.log(2)
+}
+
+/**   实际的执行顺序  */
+function foo() {
+  console.log(1)
+}
+
+foo() // 1
+
+foo = function () {
+  console.log(2)
+}
+```
+出现在后面的函数声明可以`覆盖`前面的。
+```javascript
+foo() // 3
+function foo() {
+  console.log(1)
+}
+
+var foo = function () {
+  console.log(2)
+}
+
+function foo () {
+  console.log(3)
+}
 ```

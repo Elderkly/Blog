@@ -603,3 +603,6 @@ export default useDebounce;
 2. 用途：
      - useEffect：适用于不影响布局的副作用，例如数据获取、事件监听等。
      - useLayoutEffect：适用于需要同步执行的副作用，例如测量DOM节点大小、强制同步布局等。
+  
+
+## Mobx的store重置后无法正确刷新UI

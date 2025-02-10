@@ -1070,3 +1070,24 @@ function foo () {
   console.log(3)
 }
 ```
+
+## this丢失
+```typescript
+const handlerAction = async (action: string) => {
+  const handlerMapping = {
+    [HiddenAction.Selected]: documentSchduler.handler1
+  }
+  await handlerMapping[action]()       //  handler1内部的this指向global 严格模式下指向undefined
+}
+```
+
+```typescript
+const handlerAction = async (action: string) => {
+  const handlerMapping = {
+    [HiddenAction.Selected]: documentSchduler.handler1
+  }
+  await documentSchduler.handler1()       //  handler1内部的this指向documentSchduler
+}
+```
+
+**https://github.com/felix-cao/Blog/issues/90**

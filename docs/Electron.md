@@ -200,3 +200,10 @@ const CoreElectronApp = {
 
 console.log(process.argv)   //  ['--params1=value1', '--params2=value2']
 ```
+
+### Electron占用过多C盘空间
+Electron 应用内置了 Chromium 浏览器内核，具有浏览器的默认行为，即对网络请求的资源进行缓存，以提高加载速度和性能。当应用加载网页或请求资源时，这些资源会被缓存到本地，以便在下次请求相同资源时直接从缓存中读取，减少网络请求次数和加载时间。    
+**C:\Users\[Your Username]\AppData\Roaming\[App Name]**      
+
+**https://www.electronjs.org/zh/docs/latest/api/session#sesclearcache**    
+**https://stackoverflow.com/questions/31446782/how-to-clear-the-cache-data-in-electronatom-shell**

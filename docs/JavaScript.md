@@ -1091,3 +1091,39 @@ const handlerAction = async (action: string) => {
 ```
 
 **https://github.com/felix-cao/Blog/issues/90**
+
+
+## 性能优化
+#### RAIL模型
+| 名称 | 指标 | 描述 |     
+| :--: | :----------- | :-------- | 
+|Response（响应）|100ms|用户操作后 100ms 内 要有响应|
+|Animation（动画与滚动）|16ms(算上浏览器的性能损耗后实际只有10ms)|动画要 每帧 16ms 内完成|
+|Idle（空闲）|50ms|空闲时要在 50ms 内 可中断，方便随时响应用户操作|
+|Load（加载）|1000ms|页面在 1000ms 内可交互|
+
+#### JS常用优化
+- 内存：避免内存泄露
+- Worker: 对于一些耗时的任务采用Worker进行运算，避免阻塞主线程。Worker是另起一个线程不是进程。(Nodejs的child_process是另起一个进程)
+- requestAnimationFrame: 将要执行的操作插入到下一帧的开头，形成渲染管线：
+```
+JS → Style → Layout → Paint → Composite → 显示到屏幕
+```
+
+#### 强制同步布局（FSL）
+> 正常情况下浏览器通常会 延迟计算样式和布局，批量优化。     
+> 比如：你改了几个 DOM 样式 → 浏览器会等到下一帧再统一计算。
+
+如果你在修改样式后立刻读取某些属性：
+```javascript
+el.style.width = "100px";
+console.log(el.offsetWidth); // 强制浏览器计算布局
+```
+这里会触发 强制同步布局（Layout Thrashing）：
+- 浏览器本来打算稍后再批量算 Layout；
+- 但你要立即读取 → 浏览器只能立刻计算最新布局；
+- 如果循环中反复修改+读取，就会触发多次 Layout，导致性能急剧下降。
+
+#### Chrome调试工具
+- 显示变更区域： More tools --> Rendering --> Patint flashing
+- 查看图层： More tools --> Layers

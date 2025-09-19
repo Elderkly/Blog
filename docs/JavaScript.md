@@ -1094,7 +1094,7 @@ const handlerAction = async (action: string) => {
 
 
 ## 性能优化
-#### RAIL模型
+### RAIL模型
 | 名称 | 指标 | 描述 |     
 | :--: | :----------- | :-------- | 
 |Response（响应）|100ms|用户操作后 100ms 内 要有响应|
@@ -1102,7 +1102,7 @@ const handlerAction = async (action: string) => {
 |Idle（空闲）|50ms|空闲时要在 50ms 内 可中断，方便随时响应用户操作|
 |Load（加载）|1000ms|页面在 1000ms 内可交互|
 
-#### JS常用优化
+### JS常用优化
 - 内存：避免内存泄露
 - Worker: 对于一些耗时的任务采用Worker进行运算，避免阻塞主线程。Worker是另起一个线程不是进程。(Nodejs的child_process是另起一个进程)
 - requestAnimationFrame: 将要执行的操作插入到下一帧的开头，形成渲染管线：
@@ -1110,7 +1110,7 @@ const handlerAction = async (action: string) => {
 JS → Style → Layout → Paint → Composite → 显示到屏幕
 ```
 
-#### 强制同步布局（FSL）
+### 强制同步布局（FSL）
 > 正常情况下浏览器通常会 延迟计算样式和布局，批量优化。     
 > 比如：你改了几个 DOM 样式 → 浏览器会等到下一帧再统一计算。
 
